@@ -79,4 +79,12 @@ interface ILSPManagerService {
     boolean getDexObfuscate() = 42;
 
     void setDexObfuscate(boolean enable) = 43;
+
+    boolean isEnableCli() = 44;
+
+    void setEnableCli(boolean enable) = 45;
+
+    int getSessionTimeout() = 46;
+
+    void setSessionTimeout(int iTimeout) = 47;
 }

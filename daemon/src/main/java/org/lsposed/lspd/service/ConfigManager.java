@@ -91,7 +91,9 @@ public class ConfigManager {
     private boolean verboseLog = true;
     private boolean dexObfuscate = false;
     private boolean autoAddShortcut = true;
+    private boolean bEnableCli = false;
     private String miscPath = null;
+    private int iSessionTimeout = -1;
 
     private int managerUid = -1;
 
@@ -220,18 +222,24 @@ public class ConfigManager {
     private synchronized void updateConfig() {
         Map<String, Object> config = getModulePrefs("lspd", 0, "config");
 
-        Object bool = config.get("enable_verbose_log");
-        verboseLog = bool == null || (boolean) bool;
+        Object value = config.get("enable_verbose_log");
+        verboseLog = value == null || (boolean) value;
 
-        bool = config.get("enable_dex_obfuscate");
-        dexObfuscate = bool != null && (boolean) bool;
+        value = config.get("enable_dex_obfuscate");
+        dexObfuscate = value != null && (boolean) value;
 
-        bool = config.get("enable_auto_add_shortcut");
-        if (bool == null) {
+        value = config.get("enable_auto_add_shortcut");
+        if (value == null) {
             updateModulePrefs("lspd", 0, "config", "enable_auto_add_shortcut", true);
-            bool = true;
+            value = true;
         }
-        autoAddShortcut = (boolean) bool;
+        autoAddShortcut = (boolean) value;
+
+        value = config.get("enable_cli");
+        bEnableCli = value != null && (boolean) value;
+
+        value = config.get("cli_session_timeout");
+        iSessionTimeout = value == null ? -1 : (int) value;
 
         // Don't migrate to ConfigFileManager, as XSharedPreferences will be restored soon
         String string = (String) config.get("misc_path");
@@ -911,6 +919,24 @@ public class ConfigManager {
     public void setAddShortcut(boolean on) {
         updateModulePrefs("lspd", 0, "config", "enable_auto_add_shortcut", on);
         this.autoAddShortcut = on;
+    }
+
+    public boolean isEnableCli() {
+        return bEnableCli;
+    }
+
+    public void setEnableCli(boolean on) {
+        updateModulePrefs("lspd", 0, "config", "enable_cli", on);
+        bEnableCli = on;
+    }
+
+    public int getSessionTimeout() {
+        return iSessionTimeout;
+    }
+
+    public void setSessionTimeout(int iTimeout) {
+        updateModulePrefs("lspd", 0, "config", "cli_session_timeout", iTimeout);
+        iSessionTimeout = iTimeout;
     }
 
     public ParcelFileDescriptor getManagerApk() {

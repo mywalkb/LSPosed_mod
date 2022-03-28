@@ -88,6 +88,7 @@ extract "$ZIPFILE" 'daemon.apk'         "$MODPATH"
 extract "$ZIPFILE" 'daemon'             "$MODPATH"
 rm -f /data/adb/lspd/manager.apk
 extract "$ZIPFILE" 'manager.apk'        '/data/adb/lspd'
+extract "$ZIPFILE" 'cli'                '/data/adb/lspd/bin'
 
 ui_print "- Extracting daemon libraries"
 if [ "$ARCH" = "arm" ] ; then
@@ -162,6 +163,7 @@ fi
 
 set_perm_recursive "$MODPATH" 0 0 0755 0644
 chmod 0744 "$MODPATH/daemon"
+chmod 0700 "/data/adb/lspd/bin/cli"
 
 if [ "$(grep_prop ro.maple.enable)" == "1" ] && [ "$FLAVOR" == "zygisk" ]; then
   ui_print "- Add ro.maple.enable=0"

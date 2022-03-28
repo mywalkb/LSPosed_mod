@@ -332,6 +332,21 @@ public class SettingsFragment extends BaseFragment {
                     translation_contributors.setSummary(translators);
                 }
             }
+
+            SwitchPreference prefCli = findPreference("enable_cli");
+            Preference prefSessionTimeout = findPreference("cli_session_timeout");
+            if (prefCli != null && prefSessionTimeout != null) {
+                prefCli.setEnabled(installed);
+                prefCli.setChecked(!installed || ConfigManager.isEnableCli());
+                prefCli.setOnPreferenceChangeListener((preference, newValue) -> {
+                    ConfigManager.setEnableCli((boolean) newValue);
+                    prefSessionTimeout.setEnabled((boolean) newValue);
+                    return true;
+                });
+                prefSessionTimeout.setEnabled(!installed ? false : prefCli.isChecked());
+                ((SimpleMenuPreference) prefSessionTimeout).setValue(!installed ? "-1" : "" + ConfigManager.getSessionTimeout());
+                prefSessionTimeout.setOnPreferenceChangeListener((preference, newValue) -> ConfigManager.setSessionTimeout(Integer.parseInt((String) newValue)));
+            }
         }
 
         @NonNull

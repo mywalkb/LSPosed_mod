@@ -49,6 +49,7 @@ public class ServiceManager {
     private static LSPManagerService managerService = null;
     private static LSPSystemServerService systemServerService = null;
     private static LogcatService logcatService = null;
+    private static CLIService cliService = null;
 
     private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -101,11 +102,11 @@ public class ServiceManager {
         Process.setThreadPriority(Process.THREAD_PRIORITY_FOREGROUND);
         Looper.prepareMainLooper();
 
-
         mainService = new LSPosedService();
         applicationService = new LSPApplicationService();
         managerService = new LSPManagerService();
         systemServerService = new LSPSystemServerService(systemServerMaxRetry);
+        cliService = new CLIService();
 
         systemServerService.putBinderForSystemServer();
 
@@ -178,6 +179,10 @@ public class ServiceManager {
 
     public static LogcatService getLogcatService() {
         return logcatService;
+    }
+
+    public static CLIService getCLIService() {
+        return cliService;
     }
 
     public static boolean systemServerRequested() {

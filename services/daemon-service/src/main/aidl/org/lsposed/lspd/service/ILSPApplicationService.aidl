@@ -12,4 +12,6 @@ interface ILSPApplicationService {
     Bundle requestRemotePreference(String packageName, int userId, IBinder callback);
 
     ParcelFileDescriptor requestInjectedManagerBinder(out List<IBinder> binder);
+
+    int requestCLIBinder(String sPid, out List<IBinder> binder);
 }

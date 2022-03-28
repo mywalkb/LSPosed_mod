@@ -1,0 +1,17 @@
+#!/system/bin/sh
+
+dex_path="$(magisk --path)/.magisk/modules"
+if [ -d "$dex_path/riru_lsposed" ]; then
+  dex_path="$dex_path/riru_lsposed"
+elif [ -d "$dex_path/zygisk_lsposed" ]; then
+  dex_path="$dex_path/zygisk_lsposed"
+else
+  echo "No lsposed module path found"
+  exit 1
+fi
+
+dex_path="$dex_path/daemon.apk"
+
+java_potions="-Djava.class.path=$dex_path"
+
+exec app_process $java_potions /system/bin org.lsposed.lspd.cli.Main "$@"

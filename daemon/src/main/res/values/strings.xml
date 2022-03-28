@@ -6,4 +6,7 @@
     <string name="xposed_module_updated_notification_content">%s has been updated, please force stop and restart apps in its scope</string>
     <string name="xposed_module_updated_notification_title_system">Xposed module updated, system reboot required</string>
     <string name="xposed_module_updated_notification_content_system">%s has been updated, since the scope contains System Framework, required reboot to apply changes</string>
+
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
 </resources>

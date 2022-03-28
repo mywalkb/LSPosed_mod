@@ -359,4 +359,42 @@ public class ConfigManager {
             return false;
         }
     }
+
+    public static boolean isEnableCli() {
+        try {
+            return LSPManagerServiceHolder.getService().isEnableCli();
+        } catch (RemoteException e) {
+            Log.e(App.TAG, Log.getStackTraceString(e));
+            return false;
+        }
+    }
+
+    public static boolean setEnableCli(boolean enabled) {
+        try {
+            LSPManagerServiceHolder.getService().setEnableCli(enabled);
+            return true;
+        } catch (RemoteException e) {
+            Log.e(App.TAG, Log.getStackTraceString(e));
+            return false;
+        }
+    }
+
+    public static int getSessionTimeout() {
+        try {
+            return LSPManagerServiceHolder.getService().getSessionTimeout();
+        } catch (RemoteException e) {
+            Log.e(App.TAG, Log.getStackTraceString(e));
+            return -2;
+        }
+    }
+
+    public static boolean setSessionTimeout(int iTimeout) {
+        try {
+            LSPManagerServiceHolder.getService().setSessionTimeout(iTimeout);
+            return true;
+        } catch (RemoteException e) {
+            Log.e(App.TAG, Log.getStackTraceString(e));
+            return false;
+        }
+    }
 }

@@ -1,0 +1,40 @@
+package org.lsposed.lspd;
+
+import io.github.xposed.xposedservice.utils.ParceledListSlice;
+import org.lsposed.lspd.models.Application;
+
+interface ICLIService {
+    String getApi() = 1;
+
+    ParceledListSlice<PackageInfo> getInstalledPackagesFromAllUsers(int flags, boolean filterNoProcess) = 2;
+
+    String[] enabledModules() = 3;
+
+    boolean enableModule(String packageName) = 4;
+
+    boolean disableModule(String packageName) = 5;
+
+    boolean setModuleScope(String packageName, in ParceledListSlice<Application> scope) = 6;
+
+    ParceledListSlice<Application> getModuleScope(String packageName) = 7;
+
+    boolean isVerboseLog() = 8;
+
+    void setVerboseLog(boolean enabled) = 9;
+
+    ParcelFileDescriptor getVerboseLog() = 10;
+
+    ParcelFileDescriptor getModulesLog() = 11;
+
+    int getXposedVersionCode() = 12;
+
+    String getXposedVersionName() = 13;
+
+    int getXposedApiVersion() = 14;
+
+    boolean clearLogs(boolean verbose) = 15;
+
+    void getLogs(in ParcelFileDescriptor zipFd) = 16;
+
+    String getLastErrorMsg() = 17;
+}
