@@ -43,7 +43,7 @@ buildscript {
 }
 
 val repo = FileRepository(rootProject.file(".git"))
-val refId = repo.refDatabase.exactRef("refs/remotes/origin/master").objectId!!
+val refId = repo.refDatabase.exactRef("refs/remotes/origin/main").objectId!!
 val commitCount = Git(repo).log().add(refId).call().count()
 
 val injectedPackageName by extra("com.android.shell")
