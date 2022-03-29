@@ -1,8 +1,12 @@
 # LSPosed Framework
 
-![Build](https://shields.io/github/workflow/status/LSPosed/LSPosed/Core?event=push&logo=github&label=Build) [![Crowdin](https://img.shields.io/badge/Localization-Crowdin-blueviolet?logo=Crowdin)](https://lsposed.crowdin.com/lsposed) [![Channel](https://img.shields.io/badge/Follow-Telegram-blue.svg?logo=telegram)](https://t.me/LSPosed) [![Chat](https://img.shields.io/badge/Join-QQ%E9%A2%91%E9%81%93-red?logo=tencent-qq&logoColor=red)](https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&inviteCode=Xz9dJ&from=246610&biz=ka) [![Download](https://img.shields.io/github/v/release/LSPosed/LSPosed?color=orange&logoColor=orange&label=Download&logo=DocuSign)](https://github.com/LSPosed/LSPosed/releases/latest) [![Total](https://shields.io/github/downloads/LSPosed/LSPosed/total?logo=Bookmeter&label=Counts&logoColor=yellow&color=yellow)](https://github.com/LSPosed/LSPosed/releases)
+![Build](https://shields.io/github/workflow/status/mywalkb/LSPosed_mod/Core?event=push&logo=github&label=Build) [![Crowdin](https://img.shields.io/badge/Localization-Crowdin-blueviolet?logo=Crowdin)](https://lsposed.crowdin.com/lsposed) [![Download](https://img.shields.io/github/v/release/mywalkb/LSPosed_mod?color=orange&logoColor=orange&label=Download&logo=DocuSign)](https://github.com/mywalkb/LSPosed_mod/releases/latest) [![Total](https://shields.io/github/downloads/mywalkb/LSPosed_mod/total?logo=Bookmeter&label=Counts&logoColor=yellow&color=yellow)](https://github.com/mywalkb/LSPosed_mod/releases)
 
 ## Introduction 
+
+LSPosed is a great XPosed Framework, but it has a big problem, only manager can manage scope. 
+LSPosed team don't accept PR for CLI or API Module, the TODO issues are old more one year and never completed, is more important the GUI changed many times but not CLI or API Module.
+The scope of this fork is develope cli and api module.
 
 A Riru / Zygisk module trying to provide an ART hooking framework which delivers consistent APIs with the OG Xposed, leveraging LSPlant hooking framework.
 
@@ -28,13 +32,13 @@ Android 8.1 ~ 13 DP2
 
 ## Download
 
-For stable releases, please go to [Github Releases page](https://github.com/LSPosed/LSPosed/releases)
-For canary build, please check [Github Actions](https://github.com/LSPosed/LSPosed/actions)
+For stable releases, please go to [Github Releases page](https://github.com/mywalkb/LSPosed_mod/releases)
+For canary build, please check [Github Actions](https://github.com/mywalkb/LSPosed_mod/actions)
 Note: debug builds are only available in Github Actions.
 
 ## Get Help
 
-- GitHub issues: [Issues](https://github.com/LSPosed/LSPosed/issues/)
+- GitHub issues: [Issues](https://github.com/mywalkb/LSPosed_mod/issues/)
 - (For Chinese speakers) 本项目只接受英语**标题**的issue。如果您不懂英语，请使用[翻译工具](https://www.deepl.com/zh/translator)
 
 ## For Developers
@@ -47,18 +51,13 @@ We use our own module repository. We welcome developers to submit modules to our
 
 - [LSPosed Module Repository](https://github.com/Xposed-Modules-Repo)
 
-## Community Discussion
-
-- Telegram: [@LSPosed](https://t.me/s/LSPosed)
-
-Notice: These community groups don't accept any bug report, please use [Get help](#get-help) to report.
-
 ## Translation Contributing
 
 You can contribute translation [here](https://lsposed.crowdin.com/lsposed).
 
 ## Credits 
 
+- [LSPosed](https://github.com/LSPosed/LSPosed): fork source (makes all these possible)
 - [Magisk](https://github.com/topjohnwu/Magisk/): makes all these possible
 - [Riru](https://github.com/RikkaApps/Riru): provides a way to inject code into zygote process
 - [XposedBridge](https://github.com/rovo89/XposedBridge): the OG Xposed framework APIs
