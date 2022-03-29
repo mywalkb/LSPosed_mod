@@ -266,6 +266,10 @@ val pushDaemon = task<Exec>("pushDaemon") {
     workingDir("${project(":daemon").buildDir}/$apkDir/apk/debug")
     commandLine(adb, "push", "daemon-debug.apk", "/data/local/tmp/daemon.apk")
 }
+val mvDaemon = task<Exec>("mvDaemon") {
+    dependsOn(pushDaemon)
+    commandLine(adb, "shell", "su", "-c", "mv -f /data/local/tmp/daemon.apk /data/adb/modules/*_lsposed/")
+}
 val pushDaemonNative = task<Exec>("pushDaemonNative") {
     dependsOn(":daemon:assembleDebug")
     doFirst {
@@ -276,12 +280,16 @@ val pushDaemonNative = task<Exec>("pushDaemonNative") {
             }
             outputStream.toString().trim()
         }
-        workingDir("${project(":daemon").buildDir}/intermediates/ndkBuild/debug/obj/local/$abi")
+        workingDir("${project(":daemon").buildDir}/intermediates/cmake/debug/obj/$abi")
     }
     commandLine(adb, "push", "libdaemon.so", "/data/local/tmp/libdaemon.so")
 }
+val mvDaemonNative = task<Exec>("mvDaemonNative") {
+    dependsOn(pushDaemonNative)
+    commandLine(adb, "shell", "su", "-c", "mv -f /data/local/tmp/libdaemon.so /data/adb/modules/*_lsposed/")
+}
 val reRunDaemon = task<Exec>("reRunDaemon") {
-    dependsOn(pushDaemon, pushDaemonNative, killLspd)
+    dependsOn(mvDaemon, mvDaemonNative, killLspd)
     // tricky to pass a minus number to avoid the injection warning
     commandLine(
         adb,
