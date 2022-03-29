@@ -100,6 +100,10 @@ public class CLIService extends ICLIService.Stub {
         var iPPid = getParentPid(iPid);
         Log.d(TAG, "cli validating session pid=" + iPid + " ppid=" + iPPid);
         if (iPPid != -1) {
+            int timeout = ConfigManager.getInstance().getSessionTimeout();
+            if (timeout == -2) {
+                return true;
+            }
             Session session = sessions.get(iPPid);
             if (session != null) {
                 if (!session.bValid) {
@@ -113,7 +117,7 @@ public class CLIService extends ICLIService.Stub {
                     }
                 }
 
-                LocalDateTime ldtExpire = LocalDateTime.now().minusMinutes(ConfigManager.getInstance().getSessionTimeout());
+                LocalDateTime ldtExpire = LocalDateTime.now().minusMinutes(timeout);
 
                 if (session.ldtStartSession.isAfter(ldtExpire)) {
                     return true;

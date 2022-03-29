@@ -89,6 +89,7 @@
     </string-array>
 
     <string-array name="timeout_texts" translatable="false">
+        <item>@string/disabled</item>
         <item>@string/one_command</item>
         <item>1</item>
         <item>3</item>
@@ -99,6 +100,7 @@
     </string-array>
 
     <string-array name="timeout_values" translatable="false">
+        <item>-2</item>
         <item>-1</item>
         <item>1</item>
         <item>3</item>

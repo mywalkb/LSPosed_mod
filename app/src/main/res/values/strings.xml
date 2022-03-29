@@ -193,6 +193,7 @@
     <string name="pref_summary_enable_cli">(experimental feature)</string>
     <string name="timeout_session">Session timeout in minutes</string>
     <string name="one_command">One command</string>
+    <string name="disabled">Disabled</string>
 
     <!-- Module Repo -->
     <string name="module_readme">Readme</string>
