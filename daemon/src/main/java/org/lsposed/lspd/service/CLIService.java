@@ -27,6 +27,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -183,11 +184,7 @@ public class CLIService extends ICLIService.Stub {
 
     public static boolean applicationStageNameValid(int pid, String processName) {
         var infoArr = processName.split(":");
-        if (infoArr.length != 2) {
-            return false;
-        }
-
-        if (!infoArr[0].equals("lsp-cli")) {
+        if (infoArr.length != 2 || !infoArr[0].equals("lsp-cli")) {
             return false;
         }
 
@@ -198,12 +195,9 @@ public class CLIService extends ICLIService.Stub {
     }
 
     private static boolean isValidXposedModule(String sPackageName) throws RemoteException {
-        PackageInfo pkgInfo = PackageService.getPackageInfoFromAllUsers(sPackageName, PackageService.MATCH_ALL_FLAGS).values().stream().findFirst().orElse(null);
-        if (pkgInfo != null && pkgInfo.applicationInfo != null &&
-               pkgInfo.applicationInfo.metaData != null &&pkgInfo.applicationInfo.metaData.containsKey("xposedmodule")) {
-            return true;
-        }
-        return false;
+        var appInfo = PackageService.getApplicationInfo(sPackageName, PackageManager.GET_META_DATA | PackageService.MATCH_ALL_FLAGS, 0);
+
+        return appInfo != null && appInfo.metaData != null && appInfo.metaData.containsKey("xposedmodule");
     }
 
     @Override

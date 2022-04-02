@@ -295,7 +295,7 @@ val mvDaemonNative = task<Exec>("mvDaemonNative") {
     commandLine(adb, "shell", "su", "-c", "mv -f /data/local/tmp/libdaemon.so /data/adb/modules/*_lsposed/")
 }
 val reRunDaemon = task<Exec>("reRunDaemon") {
-    dependsOn(mvDaemon, mvDaemonNative, killLspd)
+    dependsOn(killLspd, mvDaemon, mvDaemonNative)
     // tricky to pass a minus number to avoid the injection warning
     commandLine(
         adb,
