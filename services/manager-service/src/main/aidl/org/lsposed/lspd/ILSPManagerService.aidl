@@ -80,11 +80,13 @@ interface ILSPManagerService {
 
     void setDexObfuscate(boolean enable) = 43;
 
-    boolean isEnableCli() = 44;
+    boolean dex2oatWrapperAlive() = 44;
 
-    void setEnableCli(boolean enable) = 45;
+    boolean isEnableCli() = 64;
 
-    int getSessionTimeout() = 46;
+    void setEnableCli(boolean enable) = 65;
 
-    void setSessionTimeout(int iTimeout) = 47;
+    int getSessionTimeout() = 66;
+
+    void setSessionTimeout(int iTimeout) = 67;
 }

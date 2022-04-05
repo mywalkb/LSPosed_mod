@@ -29,6 +29,8 @@ import android.os.Looper;
 import android.os.Process;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
 import com.android.internal.os.BinderInternal;
 
 import org.lsposed.daemon.BuildConfig;
@@ -55,6 +57,7 @@ public class ServiceManager {
 
     private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     public static Dex2OatService getDex2OatService() {
         return dex2OatService;
     }
@@ -105,11 +108,6 @@ public class ServiceManager {
         logcatService = new LogcatService();
         logcatService.start();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            dex2OatService = new Dex2OatService();
-            dex2OatService.start();
-        }
-
         Process.setThreadPriority(Process.THREAD_PRIORITY_FOREGROUND);
         Looper.prepareMainLooper();
 
@@ -118,6 +116,9 @@ public class ServiceManager {
         managerService = new LSPManagerService();
         systemServerService = new LSPSystemServerService(systemServerMaxRetry);
         cliService = new CLIService();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            dex2OatService = new Dex2OatService();
+        }
 
         systemServerService.putBinderForSystemServer();
 
