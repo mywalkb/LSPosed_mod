@@ -63,7 +63,7 @@ public class CrashReportActivity extends AppCompatActivity {
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(this, R.string.crash_info_copied, Toast.LENGTH_LONG).show();
             }
-            NavUtil.startURL(this, "https://github.com/LSPosed/LSPosed/issues");
+            NavUtil.startURL(this, "https://github.com/mywalkb/LSPosed_mod/issues");
         });
 
     }

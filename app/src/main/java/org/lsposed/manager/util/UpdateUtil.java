@@ -27,7 +27,7 @@ import okio.Okio;
 public class UpdateUtil {
     public static void loadRemoteVersion() {
         var request = new Request.Builder()
-                .url("https://api.github.com/repos/LSPosed/LSPosed/releases/latest")
+                .url("https://api.github.com/repos/mywalkb/LSPosed_mod/releases/latest")
                 .addHeader("Accept", "application/vnd.github.v3+json")
                 .build();
         var callback = new Callback() {
