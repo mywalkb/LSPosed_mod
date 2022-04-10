@@ -116,6 +116,7 @@ public class ServiceManager {
         managerService = new LSPManagerService();
         systemServerService = new LSPSystemServerService(systemServerMaxRetry);
         cliService = new CLIService();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             dex2OatService = new Dex2OatService();
         }
