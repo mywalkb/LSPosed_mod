@@ -85,6 +85,14 @@ public class LoadedApkGetCLHooker extends XC_MethodHook {
             IBinder moduleBinder = serviceClient.requestModuleBinder(lpparam.packageName);
             if (moduleBinder != null) {
                 hookNewXSP(lpparam);
+                XposedHelpers.findAndHookMethod("android.app.Activity", lpparam.classLoader, "getSystemService", String.class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        if (((String)param.args[0]).equals("LSPosed")) {
+                            param.setResult(moduleBinder);
+                        }
+                    }
+                });
             }
 
             XC_LoadPackage.callAll(lpparam);
