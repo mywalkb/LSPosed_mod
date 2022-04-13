@@ -112,18 +112,28 @@ jobs:
       with:
         name: ${{ steps.prepareArtifact.outputs.zygiskDebugName }}
         path: './LSPosed-zygisk-debug/*'
-    - name: Upload mappings
+    - name: Upload XposedService Release jar
       uses: actions/upload-artifact@v2
       with:
-        name: mappings
-        path: |
-          magisk-loader/build/outputs/mapping
-          app/build/outputs/mapping
-    - name: Upload symbols
+        name: xposed_service-release
+        path: services/xposed-service/interface/build/intermediates/javac/release/classes/*
+    - name: Upload XposedService Debug jar
       uses: actions/upload-artifact@v2
       with:
-        name: symbols
-        path: |
-          magisk-loader/build/symbols
-          daemon/build/symbols
-          dex2oat/build/symbols
+        name: xposed_service-debug
+        path: services/xposed-service/interface/build/intermediates/javac/debug/classes/*
+    # - name: Upload mappings
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: mappings
+    #     path: |
+    #       magisk-loader/build/outputs/mapping
+    #       app/build/outputs/mapping
+    # - name: Upload symbols
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: symbols
+    #     path: |
+    #       magisk-loader/build/symbols
+    #       daemon/build/symbols
+    #       dex2oat/build/symbols

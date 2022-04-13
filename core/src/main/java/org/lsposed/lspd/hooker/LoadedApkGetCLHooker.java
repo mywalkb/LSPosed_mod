@@ -85,6 +85,8 @@ public class LoadedApkGetCLHooker extends XC_MethodHook {
             IBinder moduleBinder = serviceClient.requestModuleBinder(lpparam.packageName);
             if (moduleBinder != null) {
                 hookNewXSP(lpparam);
+                // Let the module to receive the binder for access to xposedservice
+                // Hook is only for module, not app
                 XposedHelpers.findAndHookMethod("android.app.Activity", lpparam.classLoader, "getSystemService", String.class, new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) {

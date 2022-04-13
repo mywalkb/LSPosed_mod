@@ -1,6 +1,6 @@
 [submodule "services/xposed-service"]
 	path = services/xposed-service
-	url = https://github.com/libxposed/XposedService.git
+	url = https://github.com/mywalkb/XposedService.git
 [submodule "external/cxx"]
 	path = external/cxx
 	url = https://github.com/LSPosed/libcxx.git
