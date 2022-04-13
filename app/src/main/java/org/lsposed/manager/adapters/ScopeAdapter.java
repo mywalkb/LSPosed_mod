@@ -257,7 +257,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
         int itemId = item.getItemId();
         if (itemId == R.id.use_recommended) {
             if (!checkedList.isEmpty()) {
-                new BlurBehindDialogBuilder(activity)
+                new BlurBehindDialogBuilder(activity, R.style.ThemeOverlay_MaterialAlertDialog_Centered_FullWidthButtons)
                         .setMessage(R.string.use_recommended_message)
                         .setPositiveButton(android.R.string.ok, (dialog, which) -> checkRecommended())
                         .setNegativeButton(android.R.string.cancel, null)
@@ -328,7 +328,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
             if (info.packageName.equals("android")) {
                 ConfigManager.reboot(false);
             } else {
-                new BlurBehindDialogBuilder(activity)
+                new BlurBehindDialogBuilder(activity, R.style.ThemeOverlay_MaterialAlertDialog_Centered_FullWidthButtons)
                         .setTitle(R.string.force_stop_dlg_title)
                         .setMessage(R.string.force_stop_dlg_text)
                         .setPositiveButton(android.R.string.ok, (dialog, which) -> ConfigManager.forceStopPackage(info.packageName, info.uid / 100000))
@@ -416,12 +416,15 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
                 holder.appIcon.setImageDrawable(pm.getDefaultActivityIcon());
             }
         });
-        SpannableStringBuilder sb = new SpannableStringBuilder(android ? "" : activity.getString(R.string.app_description, appInfo.packageName, appInfo.packageInfo.versionName));
-        if (android) holder.appDescription.setVisibility(View.GONE);
-        else {
-            holder.appDescription.setVisibility(View.VISIBLE);
-            holder.appDescription.setText(sb);
-            sb = new SpannableStringBuilder();
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        if (android) {
+            holder.appPackageName.setVisibility(View.GONE);
+            holder.appVersionName.setVisibility(View.GONE);
+        } else {
+            holder.appPackageName.setVisibility(View.VISIBLE);
+            holder.appVersionName.setVisibility(View.VISIBLE);
+            holder.appPackageName.setText(appInfo.packageName);
+            holder.appVersionName.setText(activity.getString(R.string.app_version, appInfo.packageInfo.versionName));
         }
         if (!recommendedList.isEmpty() && recommendedList.contains(appInfo.application)) {
             String recommended = activity.getString(R.string.requested_by_module);
@@ -601,7 +604,8 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
         ConstraintLayout root;
         ImageView appIcon;
         TextView appName;
-        TextView appDescription;
+        TextView appPackageName;
+        TextView appVersionName;
         TextView hint;
         MaterialCheckBox checkbox;
 
@@ -610,7 +614,8 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
             root = binding.itemRoot;
             appIcon = binding.appIcon;
             appName = binding.appName;
-            appDescription = binding.description;
+            appPackageName = binding.appPackageName;
+            appVersionName = binding.appVersionName;
             checkbox = binding.checkbox;
             hint = binding.hint;
             checkbox.setVisibility(View.VISIBLE);
@@ -665,7 +670,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
     public void onBackPressed() {
         fragment.searchView.clearFocus();
         if (isLoaded && enabled && checkedList.isEmpty()) {
-            var builder = new BlurBehindDialogBuilder(activity);
+            var builder = new BlurBehindDialogBuilder(activity, R.style.ThemeOverlay_MaterialAlertDialog_Centered_FullWidthButtons);
             builder.setMessage(!recommendedList.isEmpty() ? R.string.no_scope_selected_has_recommended : R.string.no_scope_selected);
             if (!recommendedList.isEmpty()) {
                 builder.setPositiveButton(android.R.string.ok, (dialog, which) -> checkRecommended());
