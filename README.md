@@ -6,7 +6,7 @@
 
 LSPosed is a great XPosed Framework, but it has a big problem, only manager can manage scope. 
 LSPosed team don't accept PR for CLI or API Module, the TODO issues are old more one year and never completed, is more important the GUI changed many times but not CLI or API Module.
-The scope of this fork is develope cli and api module.
+In my fork API Module and CLI are implemented. CLI require root user because must access files readable only by root.
 
 A Riru / Zygisk module trying to provide an ART hooking framework which delivers consistent APIs with the OG Xposed, leveraging LSPlant hooking framework.
 
