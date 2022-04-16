@@ -93,32 +93,32 @@ jobs:
         unzip magisk-loader/release/LSPosed-v*-zygisk-release.zip -d LSPosed-zygisk-release
         unzip magisk-loader/release/LSPosed-v*-zygisk-debug.zip -d LSPosed-zygisk-debug
     - name: Upload riru release
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.prepareArtifact.outputs.riruReleaseName }}
         path: './LSPosed-riru-release/*'
     - name: Upload riru debug
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.prepareArtifact.outputs.riruDebugName }}
         path: './LSPosed-riru-debug/*'
     - name: Upload zygisk release
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.prepareArtifact.outputs.zygiskReleaseName }}
         path: './LSPosed-zygisk-release/*'
     - name: Upload zygisk debug
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.prepareArtifact.outputs.zygiskDebugName }}
         path: './LSPosed-zygisk-debug/*'
     - name: Upload XposedService Release jar
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: xposed_service-release
         path: services/xposed-service/interface/build/intermediates/javac/release/classes/*
     - name: Upload XposedService Debug jar
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: xposed_service-debug
         path: services/xposed-service/interface/build/intermediates/javac/debug/classes/*
