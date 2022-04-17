@@ -40,6 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LSPApplicationService extends ILSPApplicationService.Stub {
     final static int DEX_TRANSACTION_CODE = 1310096052;
+    final static int OBFUSCATION_MAP_TRANSACTION_CODE = 724533732;
     // key: <uid, pid>
     private final static Map<Pair<Integer, Integer>, ProcessInfo> processes = new ConcurrentHashMap<>();
 
@@ -81,13 +82,26 @@ public class LSPApplicationService extends ILSPApplicationService.Stub {
     @Override
     public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
         Log.d(TAG, "LSPApplicationService.onTransact: code=" + code);
-        if (code == DEX_TRANSACTION_CODE) {
-            var shm = ConfigManager.getInstance().getPreloadDex();
-            if (shm == null) return false;
-            // assume that write only a fd
-            shm.writeToParcel(reply, 0);
-            reply.writeLong(shm.getSize());
-            return true;
+        switch (code) {
+            case DEX_TRANSACTION_CODE: {
+                var shm = ConfigManager.getInstance().getPreloadDex();
+                if (shm == null) return false;
+                // assume that write only a fd
+                shm.writeToParcel(reply, 0);
+                reply.writeLong(shm.getSize());
+                return true;
+            }
+            case OBFUSCATION_MAP_TRANSACTION_CODE: {
+                var obfuscation = ConfigManager.getInstance().dexObfuscate();
+                var signatures = ObfuscationManager.getSignatures();
+                reply.writeInt(signatures.size() * 2);
+                for(Map.Entry<String,String> entry : signatures.entrySet()){
+                    reply.writeString(entry.getKey());
+                    // return val = key if obfuscation disabled
+                    reply.writeString(obfuscation ? entry.getValue() : entry.getKey());
+                }
+                return true;
+            }
         }
         return super.onTransact(code, data, reply, flags);
     }
