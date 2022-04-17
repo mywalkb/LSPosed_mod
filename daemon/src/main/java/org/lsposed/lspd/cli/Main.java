@@ -18,8 +18,6 @@ import org.lsposed.lspd.util.SignInfo;
 import static org.lsposed.lspd.cli.Utils.CMDNAME;
 import static org.lsposed.lspd.cli.Utils.ERRCODES;
 
-import io.github.xposed.xposedservice.utils.ParceledListSlice;
-
 import picocli.CommandLine;
 import picocli.CommandLine.IExecutionExceptionHandler;
 import picocli.CommandLine.IExitCodeExceptionMapper;
@@ -147,13 +145,12 @@ class SetModulesCommand implements Callable<Integer> {
         boolean bMsgReboot = false;
 
         for (var module : lstModules) {
-            var scope = manager.getModuleScope(module);
-            if (scope == null)
+            var lstScope = manager.getModuleScope(module);
+            if (lstScope == null)
             {
                 System.err.println(manager.getLastErrorMsg());
                 continue;
             }
-            var lstScope = scope.getList();
             if (objArgs.bEnable) {
                 if (lstScope.size() < 2) {
                     System.err.println("Scope list is empty " + module + " not enabled");
@@ -228,14 +225,13 @@ class ListScopeCommand implements Callable<Integer> {
     public Integer call() throws RemoteException {
         ICLIService manager = Main.getManager();
 
-        var modScope = manager.getModuleScope(moduleName);
-        if (modScope == null)
+        var lstScope = manager.getModuleScope(moduleName);
+        if (lstScope == null)
         {
             System.err.println(manager.getLastErrorMsg());
             return ERRCODES.LS_SCOPE.ordinal();
         }
 
-        var lstScope = modScope.getList();
         for (var scope : lstScope) {
             System.out.println(scope.packageName + "/" + scope.userId);
         }
@@ -279,12 +275,11 @@ class SetScopeCommand implements Callable<Integer> {
 
         boolean bAndroidExist = false;
         if (objArgs.bSet) {
-            var modScope = manager.getModuleScope(moduleName);
-            if (modScope == null) {
+            var lstScope = manager.getModuleScope(moduleName);
+            if (lstScope == null) {
                 System.err.println(manager.getLastErrorMsg());
                 return ERRCODES.SET_SCOPE.ordinal();
             }
-            var lstScope = modScope.getList();
             bAndroidExist = Utils.checkPackageInScope("android", lstScope);
         }
 
@@ -304,19 +299,18 @@ class SetScopeCommand implements Callable<Integer> {
             System.err.println("Reboot is required");
         }
         if (objArgs.bSet) {
-            if (!manager.setModuleScope(moduleName, new ParceledListSlice<>(Arrays.asList(scopes)))) {
+            if (!manager.setModuleScope(moduleName, Arrays.asList(scopes))) {
                 throw new RuntimeException("Failed to set scope for " + moduleName);
             }
             if (scopes.length < 2) {
                 manager.disableModule(moduleName);
             }
         } else {
-            var modScope = manager.getModuleScope(moduleName);
-            if (modScope == null) {
+            var lstScope = manager.getModuleScope(moduleName);
+            if (lstScope == null) {
                 System.err.println(manager.getLastErrorMsg());
                 return ERRCODES.SET_SCOPE.ordinal();
             }
-            var lstScope = modScope.getList();
             for (var scope : scopes) {
                 if (objArgs.bAppend) {
                     Application app = new Application();
@@ -327,7 +321,7 @@ class SetScopeCommand implements Callable<Integer> {
                     lstScope.removeIf(app -> scope.packageName.equals(app.packageName) && scope.userId == app.userId);
                 }
             }
-            if (!manager.setModuleScope(moduleName, new ParceledListSlice<>(lstScope))) {
+            if (!manager.setModuleScope(moduleName, lstScope)) {
                 throw new RuntimeException("Failed to set scope for " + moduleName);
             }
             if (lstScope.size() < 2) {

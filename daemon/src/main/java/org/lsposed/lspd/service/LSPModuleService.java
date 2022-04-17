@@ -29,7 +29,6 @@ import org.lsposed.daemon.BuildConfig;
 import static org.lsposed.lspd.service.ServiceManager.TAG;
 
 import io.github.xposed.xposedservice.IXposedService;
-import io.github.xposed.xposedservice.utils.ParceledListSlice;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ public class LSPModuleService extends IXposedService.Stub {
     }
 
     @Override
-    public boolean setModuleScope(ParceledListSlice<io.github.xposed.xposedservice.models.Application> scope) throws RemoteException {
+    public boolean setModuleScope(List<io.github.xposed.xposedservice.models.Application> scope) throws RemoteException {
         var pid = getCallingPid();
         var uid = getCallingUid();
         String packageName = ConfigManager.getInstance().getModule(uid);
@@ -84,9 +83,8 @@ public class LSPModuleService extends IXposedService.Stub {
 
         Log.d(TAG, "setModuleScope calling uid: " + uid + " calling pid: " + pid + " package " + packageName);
 
-        var list = scope.getList();
         List<org.lsposed.lspd.models.Application> newlist = new ArrayList();
-        for (var app : list) {
+        for (var app : scope) {
             var app2 = new org.lsposed.lspd.models.Application();
             app2.packageName = app.packageName;
             app2.userId = app.userId;
@@ -96,7 +94,7 @@ public class LSPModuleService extends IXposedService.Stub {
     }
 
     @Override
-    public ParceledListSlice<io.github.xposed.xposedservice.models.Application> getModuleScope() throws RemoteException {
+    public List<io.github.xposed.xposedservice.models.Application> getModuleScope() throws RemoteException {
         var pid = getCallingPid();
         var uid = getCallingUid();
         String packageName = ConfigManager.getInstance().getModule(uid);
@@ -115,6 +113,6 @@ public class LSPModuleService extends IXposedService.Stub {
             newlist.add(app2);
         }
         if (list == null) return null;
-        else return new ParceledListSlice<>(newlist);
+        else return newlist;
     }
 }

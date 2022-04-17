@@ -245,23 +245,23 @@ public class CLIService extends ICLIService.Stub {
     }
 
     @Override
-    public boolean setModuleScope(String packageName, ParceledListSlice<Application> scope) throws RemoteException {
+    public boolean setModuleScope(String packageName, List<Application> scope) throws RemoteException {
         if (!isValidXposedModule(packageName)) {
             sLastMsg = "Module " + packageName + " is not a valid xposed module";
             return false;
         }
-        return ConfigManager.getInstance().setModuleScope(packageName, scope.getList());
+        return ConfigManager.getInstance().setModuleScope(packageName, scope);
     }
 
     @Override
-    public ParceledListSlice<Application> getModuleScope(String packageName) throws RemoteException {
+    public List<Application> getModuleScope(String packageName) throws RemoteException {
         if (!isValidXposedModule(packageName)) {
             sLastMsg = "Module " + packageName + " is not a valid xposed module";
             return null;
         }
         List<Application> list = ConfigManager.getInstance().getModuleScope(packageName);
         if (list == null) return null;
-        else return new ParceledListSlice<>(list);
+        else return list;
     }
 
     @Override
