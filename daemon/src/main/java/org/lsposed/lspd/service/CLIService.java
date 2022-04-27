@@ -65,6 +65,7 @@ public class CLIService extends ICLIService.Stub {
     private static final String CHANNEL_ID = "lsposedpin";
     private static final String CHANNEL_NAME = "Pin code";
     private static final int CHANNEL_IMP = NotificationManager.IMPORTANCE_HIGH;
+    private static final int NOTIFICATION_ID = 114514;
 
     // E/JavaBinder      ] *** Uncaught remote exception!  (Exceptions are not yet supported across processes.)
     private String sLastMsg;
@@ -166,7 +167,7 @@ public class CLIService extends ICLIService.Stub {
                     new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, CHANNEL_IMP);
             im.createNotificationChannels("android",
                     new android.content.pm.ParceledListSlice<>(Collections.singletonList(channel)));
-            im.enqueueNotificationWithTag("android", "android", "" + LSPManagerService.NOTIFICATION_ID, LSPManagerService.NOTIFICATION_ID, notification, 0);
+            im.enqueueNotificationWithTag("android", "android", "" + NOTIFICATION_ID, NOTIFICATION_ID, notification, 0);
         } catch (Throwable e) {
             Log.e(TAG, "post notification", e);
         }

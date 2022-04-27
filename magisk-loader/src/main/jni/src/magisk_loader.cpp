@@ -26,7 +26,6 @@
 #include "elf_util.h"
 #include "loader.h"
 #include "magisk_loader.h"
-#include "native_hook.h"
 #include "native_util.h"
 #include "service.h"
 #include "symbol_cache.h"
@@ -129,10 +128,12 @@ namespace lspd {
                         return UnhookFunction(t) == RT_SUCCESS ;
                     },
                     .art_symbol_resolver = [](auto symbol) {
-                        return GetArt()->getSymbAddress<void*>(symbol);
+                        return GetArt()->getSymbAddress(symbol);
+                    },
+                    .art_symbol_prefix_resolver = [](auto symbol) {
+                        return GetArt()->getSymbPrefixFirstOffset(symbol);
                     },
                 };
-                InstallInlineHooks(env, initInfo);
                 InitHooks(env, initInfo);
                 SetupEntryClass(env);
                 FindAndCall(env, "forkCommon",
@@ -201,10 +202,12 @@ namespace lspd {
                         return UnhookFunction(t) == RT_SUCCESS;
                     },
                     .art_symbol_resolver = [](auto symbol){
-                        return GetArt()->getSymbAddress<void*>(symbol);
+                        return GetArt()->getSymbAddress(symbol);
+                    },
+                    .art_symbol_prefix_resolver = [](auto symbol) {
+                        return GetArt()->getSymbPrefixFirstOffset(symbol);
                     },
             };
-            InstallInlineHooks(env, initInfo);
             auto [dex_fd, size] = instance->RequestLSPDex(env, binder);
             auto obfs_map = instance->RequestObfuscationMap(env, binder);
             ConfigBridge::GetInstance()->obfuscation_map(std::move(obfs_map));
