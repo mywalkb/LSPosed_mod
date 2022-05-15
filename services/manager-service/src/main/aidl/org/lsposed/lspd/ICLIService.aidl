@@ -1,12 +1,12 @@
 package org.lsposed.lspd;
 
-import io.github.xposed.xposedservice.utils.ParceledListSlice;
+import rikka.parcelablelist.ParcelableListSlice;
 import org.lsposed.lspd.models.Application;
 
 interface ICLIService {
     String getApi() = 1;
 
-    ParceledListSlice<PackageInfo> getInstalledPackagesFromAllUsers(int flags, boolean filterNoProcess) = 2;
+    ParcelableListSlice<PackageInfo> getInstalledPackagesFromAllUsers(int flags, boolean filterNoProcess) = 2;
 
     String[] enabledModules() = 3;
 

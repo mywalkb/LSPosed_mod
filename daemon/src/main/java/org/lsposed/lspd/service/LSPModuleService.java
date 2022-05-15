@@ -48,11 +48,6 @@ public class LSPModuleService extends IXposedService.Stub {
     }
 
     @Override
-    public ParcelFileDescriptor getModuleFile() {
-        return null;
-    }
-
-    @Override
     public int getXposedApiVersion() {
         return BuildConfig.API_CODE;
     }

@@ -54,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.time.LocalDateTime;
 
-import io.github.xposed.xposedservice.utils.ParceledListSlice;
+import rikka.parcelablelist.ParcelableListSlice;
 
 public class CLIService extends ICLIService.Stub {
 
@@ -227,7 +227,7 @@ public class CLIService extends ICLIService.Stub {
     }
 
     @Override
-    public ParceledListSlice<PackageInfo> getInstalledPackagesFromAllUsers(int flags, boolean filterNoProcess) throws RemoteException {
+    public ParcelableListSlice<PackageInfo> getInstalledPackagesFromAllUsers(int flags, boolean filterNoProcess) throws RemoteException {
         return PackageService.getInstalledPackagesFromAllUsers(flags, filterNoProcess);
     }
 
