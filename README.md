@@ -39,6 +39,7 @@ Note: debug builds are only available in Github Actions.
 ## Get Help
 
 - GitHub issues: [Issues](https://github.com/mywalkb/LSPosed_mod/issues/)
+- [Wiki](https://github.com/mywalkb/LSPosed_mod/wiki)
 - (For Chinese speakers) 本项目只接受英语**标题**的issue。如果您不懂英语，请使用[翻译工具](https://www.deepl.com/zh/translator)
 
 ## For Developers
