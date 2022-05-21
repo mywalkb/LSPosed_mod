@@ -71,21 +71,26 @@ public class LSPModuleService extends IXposedService.Stub {
     public boolean setModuleScope(List<io.github.xposed.xposedservice.models.Application> scope) throws RemoteException {
         var pid = getCallingPid();
         var uid = getCallingUid();
-        String packageName = ConfigManager.getInstance().getModule(uid);
+        ConfigManager config = ConfigManager.getInstance();
+        String packageName = config.getModule(uid);
+        List<String> listDeny = config.getDenyListPackages();
 
         if (packageName == null) throw new RemoteException("failed to retried package name");
-        if (!Arrays.stream(ConfigManager.getInstance().enabledModules()).anyMatch(x -> x.equals(packageName))) throw new RemoteException("module not enabled");
+        if (!Arrays.stream(config.enabledModules()).anyMatch(x -> x.equals(packageName))) throw new RemoteException("module not enabled");
 
         Log.d(TAG, "setModuleScope calling uid: " + uid + " calling pid: " + pid + " package " + packageName);
 
         List<org.lsposed.lspd.models.Application> newlist = new ArrayList();
         for (var app : scope) {
+            if (listDeny.contains(app.packageName)) {
+                throw new RemoteException(app.packageName + " is in magisk deny list");
+            }
             var app2 = new org.lsposed.lspd.models.Application();
             app2.packageName = app.packageName;
             app2.userId = app.userId;
             newlist.add(app2);
         }
-        return ConfigManager.getInstance().setModuleScope(packageName, newlist);
+        return config.setModuleScope(packageName, newlist);
     }
 
     @Override
@@ -109,5 +114,10 @@ public class LSPModuleService extends IXposedService.Stub {
         }
         if (list == null) return null;
         else return newlist;
+    }
+
+    @Override
+    public List<String> getDenyListPackages() throws RemoteException {
+        return ConfigManager.getInstance().getDenyListPackages();
     }
 }
