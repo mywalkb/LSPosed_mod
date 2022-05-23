@@ -425,6 +425,7 @@ public class Main implements Runnable {
         if (objManager == null) {
             try {
                 objManager = getCLIService();
+                if (objManager == null) throw new RemoteException();
             } catch (RemoteException re) {
                 System.err.println("Get manager binder fail, maybe the daemon hasn't started yet or you have not enabled cli");
                 System.exit(ERRCODES.NO_DAEMON.ordinal());
