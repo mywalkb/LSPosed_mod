@@ -36,7 +36,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.eclipse.jgit:org.eclipse.jgit:6.1.0.202203080745-r")
+        classpath("org.eclipse.jgit:org.eclipse.jgit:6.2.0.202206071550-r")
     }
 }
 
@@ -53,7 +53,7 @@ val verCode by extra(commitCount + 4200)
 val verName by extra("1.8.3")
 val androidTargetSdkVersion by extra(33)
 val androidMinSdkVersion by extra(27)
-val androidBuildToolsVersion by extra("33.0.0")
+val androidBuildToolsVersion by extra("32.0.0")
 val androidCompileSdkVersion by extra(33)
 val androidCompileNdkVersion by extra("24.0.8215888")
 val androidSourceCompatibility by extra(JavaVersion.VERSION_11)
