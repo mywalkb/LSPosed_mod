@@ -158,7 +158,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("dev.rikka.rikkax.appcompat:appcompat:1.4.1")
     implementation("dev.rikka.rikkax.core:core:1.4.0")
-    implementation("dev.rikka.rikkax.insets:insets:1.2.0")
+    implementation("dev.rikka.rikkax.insets:insets:1.3.0")
     implementation("dev.rikka.rikkax.material:material:2.4.0")
     implementation("dev.rikka.rikkax.material:material-preference:2.0.0")
     implementation("dev.rikka.rikkax.preference:simplemenu-preference:1.0.3")
@@ -170,7 +170,7 @@ dependencies {
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
     implementation(projects.services.managerService)
 
-    val appCenter = "4.4.3"
+    val appCenter = "4.4.4"
     debugImplementation("com.microsoft.appcenter:appcenter-crashes:${appCenter}")
     debugImplementation("com.microsoft.appcenter:appcenter-analytics:${appCenter}")
 }
