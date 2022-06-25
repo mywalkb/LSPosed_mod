@@ -101,4 +101,21 @@
                 android:title="@string/menu_restore" />
         </menu>
     </item>
+
+    <item
+        android:showAsAction="never"
+        android:title="@string/menu_select">
+        <menu>
+            <item
+                android:id="@+id/select_all"
+                android:title="@string/menu_select_all" />
+            <item
+                android:id="@+id/select_none"
+                android:title="@string/menu_select_none" />
+            <item
+                android:id="@+id/automatic_add"
+                android:checkable="true"
+                android:title="@string/menu_automatic_add" />
+        </menu>
+    </item>
 </menu>

@@ -95,4 +95,8 @@ interface ILSPManagerService {
     int getSessionTimeout() = 66;
 
     void setSessionTimeout(int iTimeout) = 67;
+
+    boolean getAutomaticAdd(String packageName) = 68;
+
+    boolean setAutomaticAdd(String packageName, boolean enable) = 69;
 }

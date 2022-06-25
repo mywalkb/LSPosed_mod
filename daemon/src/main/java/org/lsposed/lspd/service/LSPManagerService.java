@@ -863,4 +863,14 @@ public class LSPManagerService extends ILSPManagerService.Stub {
             return 0;
         }
     }
+
+    @Override
+    public boolean setAutomaticAdd(String packageName, boolean enabled) {
+        return ConfigManager.getInstance().setAutomaticAdd(packageName, enabled);
+    }
+
+    @Override
+    public boolean getAutomaticAdd(String packageName) {
+        return ConfigManager.getInstance().getAutomaticAdd(packageName);
+    }
 }

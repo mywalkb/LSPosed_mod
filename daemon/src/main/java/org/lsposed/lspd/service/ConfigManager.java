@@ -139,7 +139,9 @@ public class ConfigManager {
             "module_pkg_name text NOT NULL UNIQUE," +
             "apk_path text NOT NULL, " +
             "enabled BOOLEAN DEFAULT 0 " +
-            "CHECK (enabled IN (0, 1))" +
+            "CHECK (enabled IN (0, 1))," +
+            "automatic_add BOOLEAN DEFAULT 0 " +
+            "CHECK (automatic_add IN (0, 1))" +
             ");");
     private final SQLiteStatement createScopeTable = db.compileStatement("CREATE TABLE IF NOT EXISTS scope (" +
             "mid integer," +
@@ -372,6 +374,11 @@ public class ConfigManager {
                         db.compileStatement("DROP TABLE old_scope;").execute();
                         db.compileStatement("DROP TABLE old_configs;").execute();
                         db.setVersion(2);
+                    });
+                case 2:
+                    executeInTransaction(() -> {
+                        db.compileStatement("ALTER TABLE modules ADD COLUMN automatic_add BOOLEAN DEFAULT 0 CHECK (automatic_add IN (0, 1));").execute();
+                        db.setVersion(3);
                     });
                 default:
                     break;
@@ -781,20 +788,7 @@ public class ConfigManager {
     }
 
     public String[] enabledModules() {
-        try (Cursor cursor = db.query("modules", new String[]{"module_pkg_name"}, "enabled = 1", null, null, null, null)) {
-            if (cursor == null) {
-                Log.e(TAG, "query enabled modules failed");
-                return null;
-            }
-            int modulePkgNameIdx = cursor.getColumnIndex("module_pkg_name");
-            HashSet<String> result = new HashSet<>();
-            while (cursor.moveToNext()) {
-                var pkgName = cursor.getString(modulePkgNameIdx);
-                if (pkgName.equals("lspd")) continue;
-                result.add(pkgName);
-            }
-            return result.toArray(new String[0]);
-        }
+        return listModules("enabled");
     }
 
     public boolean removeModule(String packageName) {
@@ -1104,5 +1098,42 @@ public class ConfigManager {
 
     synchronized SharedMemory getPreloadDex() {
         return ConfigFileManager.getPreloadDex(dexObfuscate);
+    }
+
+    public boolean getAutomaticAdd(String packageName) {
+        try (Cursor cursor = db.query("modules", new String[]{"automatic_add"},
+               "module_pkg_name = ? and automatic_add = 1", new String[]{packageName}, null, null, null, null)) {
+            return cursor == null || cursor.moveToNext();
+        }
+    }
+
+    public boolean setAutomaticAdd(String packageName, boolean enable) {
+        boolean changed = executeInTransaction(() -> {
+            ContentValues values = new ContentValues();
+            values.put("automatic_add", enable ? 1 : 0);
+            return db.update("modules", values, "module_pkg_name = ?", new String[]{packageName}) > 0;
+        });
+        return true;
+    }
+
+    public String[] getAutomaticAddModules() {
+        return listModules("automatic_add");
+    }
+
+    private String[] listModules(String column) {
+        try (Cursor cursor = db.query("modules", new String[]{"module_pkg_name"}, column + " = 1", null, null, null, null)) {
+            if (cursor == null) {
+                Log.e(TAG, "query " + column + " modules failed");
+                return null;
+            }
+            int modulePkgNameIdx = cursor.getColumnIndex("module_pkg_name");
+            HashSet<String> result = new HashSet<>();
+            while (cursor.moveToNext()) {
+                var pkgName = cursor.getString(modulePkgNameIdx);
+                if (pkgName.equals("lspd")) continue;
+                result.add(pkgName);
+            }
+            return result.toArray(new String[0]);
+        }
     }
 }

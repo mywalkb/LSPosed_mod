@@ -33,9 +33,11 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
 
 import org.lsposed.daemon.BuildConfig;
+import org.lsposed.lspd.models.Application;
 
 import java.util.Arrays;
 
@@ -126,6 +128,7 @@ public class LSPosedService extends ILSPosedService.Stub {
                 break;
             case Intent.ACTION_PACKAGE_ADDED:
             case Intent.ACTION_PACKAGE_CHANGED: {
+                var configManager = ConfigManager.getInstance();
                 // make sure that the change is for the complete package, not only a
                 // component
                 String[] components = intent.getStringArrayExtra(Intent.EXTRA_CHANGED_COMPONENT_NAME_LIST);
@@ -137,10 +140,31 @@ public class LSPosedService extends ILSPosedService.Stub {
                     // module to send a broadcast when modules that have not been activated are
                     // uninstalled.
                     // If cache not updated, assume it's not xposed module
-                    isXposedModule = ConfigManager.getInstance().updateModuleApkPath(moduleName, ConfigManager.getInstance().getModuleApkPath(applicationInfo), false);
-                } else if (ConfigManager.getInstance().isUidHooked(uid)) {
-                    // it will automatically remove obsolete app from database
-                    ConfigManager.getInstance().updateAppCache();
+                    isXposedModule = configManager.updateModuleApkPath(moduleName, ConfigManager.getInstance().getModuleApkPath(applicationInfo), false);
+                } else {
+                    if (configManager.isUidHooked(uid)) {
+                        // it will automatically remove obsolete app from database
+                        configManager.updateAppCache();
+                    }
+                    if (intentAction.equals(Intent.ACTION_PACKAGE_ADDED)) {
+                        for (String module : configManager.getAutomaticAddModules()) {
+                            var list = configManager.getModuleScope(module);
+                            if (list != null) {
+                                Application scope = new Application();
+                                scope.packageName = moduleName;
+                                scope.userId = userId;
+
+                                list.add(scope);
+                                try {
+                                    if (!configManager.setModuleScope(module, list)) {
+                                        Log.e(TAG, "failed set scope for " + module);
+                                    }
+                                } catch(RemoteException re) {
+                                    Log.e(TAG, "failed set scope for " + module, re);
+                                }
+                            }
+                        }
+                    }
                 }
                 broadcastAndShowNotification(moduleName, userId, intent, isXposedModule);
                 break;

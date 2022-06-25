@@ -296,6 +296,23 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
                 fragment.showHint(R.string.enable_documentui, true);
                 return false;
             }
+        } else if (itemId == R.id.select_all) {
+            var tmpChkList = new HashSet<ApplicationWithEquals>();
+            for (AppInfo info : searchList) {
+                if (info.packageName.equals("android")) {
+                    fragment.showHint(R.string.reboot_required, true, R.string.reboot, v -> ConfigManager.reboot(false));
+                }
+                tmpChkList.add(info.application);
+            }
+            ConfigManager.setModuleScope(module.packageName, tmpChkList);
+        } else if (itemId == R.id.select_none) {
+            if (ConfigManager.getModuleScope(module.packageName).contains(new ApplicationWithEquals("android", 0))) {
+                fragment.showHint(R.string.reboot_required, true, R.string.reboot, v -> ConfigManager.reboot(false));
+            }
+            ConfigManager.setModuleScope(module.packageName, new HashSet<ApplicationWithEquals>());
+        } else if (itemId == R.id.automatic_add) {
+            item.setChecked(!item.isChecked());
+            ConfigManager.setAutomaticAdd(module.packageName, item.isChecked());
         } else if (!AppHelper.onOptionsItemSelected(item, preferences)) {
             return false;
         }
@@ -380,6 +397,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
                 menu.findItem(R.id.item_sort_by_name).setChecked(true);
                 break;
         }
+        menu.findItem(R.id.automatic_add).setChecked(ConfigManager.getAutomaticAdd(module.packageName));
     }
 
     @Override

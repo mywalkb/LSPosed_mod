@@ -403,4 +403,23 @@ public class ConfigManager {
             return ILSPManagerService.DEX2OAT_CRASHED;
         }
     }
+
+    public static boolean getAutomaticAdd(String packageName) {
+        try {
+            return LSPManagerServiceHolder.getService().getAutomaticAdd(packageName);
+        } catch (RemoteException e) {
+            Log.e(App.TAG, Log.getStackTraceString(e));
+            return false;
+        }
+    }
+
+    public static boolean setAutomaticAdd(String packageName, boolean enable) {
+        try {
+            LSPManagerServiceHolder.getService().setAutomaticAdd(packageName, enable);
+            return true;
+        } catch (RemoteException e) {
+            Log.e(App.TAG, Log.getStackTraceString(e));
+            return false;
+        }
+    }
 }
