@@ -877,6 +877,7 @@ public class ConfigManager {
     }
 
     public void updateAppCache() {
+        lastScopeCacheTime = 0; // force update app cache
         // Called by oneway binder
         cacheScopes();
     }
