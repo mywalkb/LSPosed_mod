@@ -139,7 +139,7 @@ public class ConfigManager {
             "module_pkg_name text NOT NULL UNIQUE," +
             "apk_path text NOT NULL, " +
             "enabled BOOLEAN DEFAULT 0 " +
-            "CHECK (enabled IN (0, 1))," +
+            "CHECK (enabled IN (0, 1)), " +
             "automatic_add BOOLEAN DEFAULT 0 " +
             "CHECK (automatic_add IN (0, 1))" +
             ");");
@@ -1113,7 +1113,7 @@ public class ConfigManager {
             values.put("automatic_add", enable ? 1 : 0);
             return db.update("modules", values, "module_pkg_name = ?", new String[]{packageName}) > 0;
         });
-        return true;
+        return changed;
     }
 
     public String[] getAutomaticAddModules() {
