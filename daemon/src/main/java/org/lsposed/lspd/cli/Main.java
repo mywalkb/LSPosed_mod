@@ -10,6 +10,9 @@ import android.os.ServiceManager;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.lsposed.lspd.models.Application;
 import org.lsposed.lspd.ICLIService;
 import org.lsposed.lspd.service.ILSPApplicationService;
@@ -23,15 +26,22 @@ import picocli.CommandLine.IExecutionExceptionHandler;
 import picocli.CommandLine.IExitCodeExceptionMapper;
 import picocli.CommandLine.ParseResult;
 
+import java.io.ByteArrayOutputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import java.time.LocalDateTime;
 
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 @CommandLine.Command(name = "log")
 class LogCommand implements Callable<Integer> {
@@ -97,7 +107,6 @@ class ListModulesCommand implements Callable<Integer> {
     private static final int MATCH_ANY_USER = 0x00400000; // PackageManager.MATCH_ANY_USER
     private static final int MATCH_ALL_FLAGS = PackageManager.MATCH_DISABLED_COMPONENTS | PackageManager.MATCH_DIRECT_BOOT_AWARE |
                                                    PackageManager.MATCH_DIRECT_BOOT_UNAWARE | PackageManager.MATCH_UNINSTALLED_PACKAGES | MATCH_ANY_USER;
-
 
     @Override
     public Integer call() throws RemoteException {
@@ -202,7 +211,7 @@ class Scope extends Application {
         }
     }
 
-    private Scope(String packageName, int userId) {
+    public Scope(String packageName, int userId) {
         this.packageName = packageName;
         this.userId = userId;
     }
@@ -380,7 +389,178 @@ class StatusCommand implements Callable<Integer> {
     }
 }
 
-@CommandLine.Command(name = CMDNAME, subcommands = {LogCommand.class, ModulesCommand.class, ScopeCommand.class, StatusCommand.class}, version = "0.1")
+@CommandLine.Command(name = "backup")
+class BackupCommand implements Callable<Integer> {
+    @CommandLine.Option(names = {"-h", "--help", "help"}, usageHelp = true, description = "display this help message")
+    boolean usageHelpRequested;
+    @CommandLine.Parameters(index = "0..*", description = "module's name default all", paramLabel="<module name>")
+    String[] modulesName;
+    @CommandLine.Option(names = {"-f", "--file"}, description = "output file")
+    String file;
+
+    private static final int VERSION = 2;
+    private static final int MATCH_ANY_USER = 0x00400000; // PackageManager.MATCH_ANY_USER
+    private static final int MATCH_ALL_FLAGS = PackageManager.MATCH_DISABLED_COMPONENTS | PackageManager.MATCH_DIRECT_BOOT_AWARE |
+                                                   PackageManager.MATCH_DIRECT_BOOT_UNAWARE | PackageManager.MATCH_UNINSTALLED_PACKAGES | MATCH_ANY_USER;
+
+    @Override
+    public Integer call() throws RemoteException {
+        ICLIService manager = Main.getManager();
+
+        if (modulesName == null) {
+            List<String> modules = new ArrayList<>();
+            var packages = manager.getInstalledPackagesFromAllUsers(PackageManager.GET_META_DATA | MATCH_ALL_FLAGS, false);
+            for (var packageInfo : packages.getList()) {
+                var metaData = packageInfo.applicationInfo.metaData;
+
+                if (metaData != null && metaData.containsKey("xposedmodule")) {
+                    modules.add(packageInfo.packageName);
+                }
+            }
+            modulesName = modules.toArray(new String[0]);
+        }
+        if (file == null) {
+            file = String.format("LSPosed_%s.lsp", LocalDateTime.now().toString());
+        }
+
+        var enabledModules = Arrays.asList(manager.enabledModules());
+        JSONObject rootObject = new JSONObject();
+        try {
+            rootObject.put("version", VERSION);
+            JSONArray modulesArray = new JSONArray();
+
+            for (var module : modulesName) {
+                JSONObject moduleObject = new JSONObject();
+                moduleObject.put("enable", enabledModules.contains(module));
+                moduleObject.put("package", module);
+
+                var scopes = manager.getModuleScope(module);
+                JSONArray scopeArray = new JSONArray();
+                for (var s : scopes) {
+                    JSONObject app = new JSONObject();
+                    app.put("package", s.packageName);
+                    app.put("userId", s.userId);
+                    scopeArray.put(app);
+                }
+                moduleObject.put("scope", scopeArray);
+                modulesArray.put(moduleObject);
+            }
+            rootObject.put("modules", modulesArray);
+
+            FileOutputStream fos = new FileOutputStream(file + ".gz");
+            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fos);
+            gzipOutputStream.write(rootObject.toString().getBytes());
+            gzipOutputStream.close();
+            fos.close();
+        } catch(Exception ex) {
+            throw new RemoteException(ex.getMessage());
+        }
+        return ERRCODES.NOERROR.ordinal();
+    }
+}
+
+@CommandLine.Command(name = "restore")
+class RestoreCommand implements Callable<Integer> {
+    @CommandLine.Option(names = {"-h", "--help", "help"}, usageHelp = true, description = "display this help message")
+    boolean usageHelpRequested;
+    @CommandLine.Parameters(index = "0..*", description = "module's name default all", paramLabel="<module name>")
+    String[] modulesName;
+    @CommandLine.Option(names = {"-f", "--file"}, description = "input file", required = true)
+    String file;
+
+    private static final int VERSION = 2;
+    private static final int MATCH_ANY_USER = 0x00400000; // PackageManager.MATCH_ANY_USER
+    private static final int MATCH_ALL_FLAGS = PackageManager.MATCH_DISABLED_COMPONENTS | PackageManager.MATCH_DIRECT_BOOT_AWARE |
+                                                   PackageManager.MATCH_DIRECT_BOOT_UNAWARE | PackageManager.MATCH_UNINSTALLED_PACKAGES | MATCH_ANY_USER;
+
+    @Override
+    public Integer call() throws RemoteException {
+        ICLIService manager = Main.getManager();
+
+        StringBuilder json = new StringBuilder();
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            GZIPInputStream gzipInputStream = new GZIPInputStream(fis, 64);
+            var os = new ByteArrayOutputStream();
+            byte[] buf = new byte[8192];
+            int length;
+            while ((length = gzipInputStream.read(buf)) > 0) {
+                os.write(buf, 0, length);
+            }
+            json.append(os);
+            gzipInputStream.close();
+            fis.close();
+            os.close();
+        } catch(Exception ex) {
+            throw new RemoteException(ex.getMessage());
+        }
+
+        List<String> modules;
+        if (modulesName == null) {
+            modules = new ArrayList<>();
+            var packages = manager.getInstalledPackagesFromAllUsers(PackageManager.GET_META_DATA | MATCH_ALL_FLAGS, false);
+            for (var packageInfo : packages.getList()) {
+                var metaData = packageInfo.applicationInfo.metaData;
+
+                if (metaData != null && metaData.containsKey("xposedmodule")) {
+                    modules.add(packageInfo.packageName);
+                }
+            }
+        } else {
+            modules = Arrays.asList(modulesName);
+        }
+
+        try {
+            JSONObject rootObject = new JSONObject(json.toString());
+            int version = rootObject.getInt("version");
+            if (version == VERSION || version == 1) {
+                JSONArray jsmodules = rootObject.getJSONArray("modules");
+                int len = jsmodules.length();
+                for (int i = 0; i < len; i++) {
+                    JSONObject moduleObject = jsmodules.getJSONObject(i);
+                    String name = moduleObject.getString("package");
+                    if (!modules.contains(name)) {
+                        continue;
+                    }
+                    var enabled = moduleObject.getBoolean("enable");
+                    if (enabled) {
+                        if (!manager.enableModule(name)) {
+                            System.err.println(manager.getLastErrorMsg());
+                            throw new RuntimeException("Failed to enable " + name);
+                        }
+                    } else {
+                        if (!manager.disableModule(name)) {
+                            System.err.println(manager.getLastErrorMsg());
+                            throw new RuntimeException("Failed to disable " + name);
+                        }
+                    }
+                    JSONArray scopeArray = moduleObject.getJSONArray("scope");
+                    List<Application> scopes = new ArrayList<>();
+                    for (int j = 0; j < scopeArray.length(); j++) {
+                        if (version == VERSION) {
+                            JSONObject app = scopeArray.getJSONObject(j);
+                            scopes.add(new Scope(app.getString("package"), app.getInt("userId")));
+                        } else {
+                            scopes.add(new Scope(scopeArray.getString(j), 0));
+                        }
+                    }
+                    if (!manager.setModuleScope(name, scopes)) {
+                        System.err.println(manager.getLastErrorMsg());
+                        throw new RuntimeException("Failed to set scope for " + name);
+                    }
+                }
+            } else {
+                throw new RemoteException("Unknown backup file version");
+            }
+        }catch(JSONException je) {
+            throw new RemoteException(je.getMessage());
+        }
+
+        return ERRCODES.NOERROR.ordinal();
+    }
+}
+
+@CommandLine.Command(name = CMDNAME, subcommands = {LogCommand.class, BackupCommand.class, ModulesCommand.class, RestoreCommand.class, ScopeCommand.class, StatusCommand.class}, version = "0.2")
 public class Main implements Runnable {
     @CommandLine.Option(names = {"-V", "--version", "version"}, versionHelp = true, description = "display version info")
     boolean versionInfoRequested;
