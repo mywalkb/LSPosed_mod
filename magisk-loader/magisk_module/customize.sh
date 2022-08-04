@@ -89,16 +89,6 @@ rm -f /data/adb/lspd/manager.apk
 extract "$ZIPFILE" 'manager.apk'        '/data/adb/lspd'
 extract "$ZIPFILE" 'cli'                '/data/adb/lspd/bin'
 
-ui_print "- Extracting daemon libraries"
-if [ "$ARCH" = "arm" ] ; then
-  extract "$ZIPFILE" 'lib/armeabi-v7a/libdaemon.so' "$MODPATH" true
-elif [ "$ARCH" = "arm64" ]; then
-  extract "$ZIPFILE" 'lib/arm64-v8a/libdaemon.so' "$MODPATH" true
-elif [ "$ARCH" = "x86" ]; then
-  extract "$ZIPFILE" 'lib/x86/libdaemon.so' "$MODPATH" true
-elif [ "$ARCH" = "x64" ]; then
-  extract "$ZIPFILE" 'lib/x86_64/libdaemon.so' "$MODPATH" true
-fi
 if [ "$FLAVOR" == "zygisk" ]; then
   mkdir -p "$MODPATH/zygisk"
   if [ "$ARCH" = "arm" ] || [ "$ARCH" = "arm64" ]; then
