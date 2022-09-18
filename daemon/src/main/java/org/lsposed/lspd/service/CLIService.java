@@ -309,4 +309,22 @@ public class CLIService extends ICLIService.Stub {
     public String getLastErrorMsg() {
         return sLastMsg;
     }
+
+    @Override
+    public boolean getAutomaticAdd(String packageName) throws RemoteException {
+        if (!isValidXposedModule(packageName)) {
+            sLastMsg = "Module " + packageName + " is not a valid xposed module";
+            return false;
+        }
+        return ConfigManager.getInstance().getAutomaticAdd(packageName);
+    }
+
+    @Override
+    public void setAutomaticAdd(String packageName, boolean add) throws RemoteException {
+        if (!isValidXposedModule(packageName)) {
+            sLastMsg = "Module " + packageName + " is not a valid xposed module";
+            return;
+        }
+        ConfigManager.getInstance().setAutomaticAdd(packageName, add);
+    }
 }

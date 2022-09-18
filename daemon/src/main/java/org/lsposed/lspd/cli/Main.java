@@ -433,6 +433,7 @@ class BackupCommand implements Callable<Integer> {
                 JSONObject moduleObject = new JSONObject();
                 moduleObject.put("enable", enabledModules.contains(module));
                 moduleObject.put("package", module);
+                moduleObject.put("automaticadd", manager.getAutomaticAdd(module));
 
                 var scopes = manager.getModuleScope(module);
                 JSONArray scopeArray = new JSONArray();
@@ -534,6 +535,11 @@ class RestoreCommand implements Callable<Integer> {
                             throw new RuntimeException("Failed to disable " + name);
                         }
                     }
+                    var automaticAdd = false;
+                    try {
+                        automaticAdd = moduleObject.getBoolean("automaticadd");
+                    } catch (JSONException ignore) { }
+                    manager.setAutomaticAdd(name, automaticAdd);
                     JSONArray scopeArray = moduleObject.getJSONArray("scope");
                     List<Application> scopes = new ArrayList<>();
                     for (int j = 0; j < scopeArray.length(); j++) {

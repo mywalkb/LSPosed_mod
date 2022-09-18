@@ -37,4 +37,8 @@ interface ICLIService {
     void getLogs(in ParcelFileDescriptor zipFd) = 16;
 
     String getLastErrorMsg() = 17;
+
+    boolean getAutomaticAdd(String packageName) = 18;
+
+    void setAutomaticAdd(String packageName, boolean add) = 19;
 }
