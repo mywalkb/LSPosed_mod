@@ -139,9 +139,7 @@ public class ConfigManager {
             "module_pkg_name text NOT NULL UNIQUE," +
             "apk_path text NOT NULL, " +
             "enabled BOOLEAN DEFAULT 0 " +
-            "CHECK (enabled IN (0, 1)), " +
-            "automatic_add BOOLEAN DEFAULT 0 " +
-            "CHECK (automatic_add IN (0, 1))" +
+            "CHECK (enabled IN (0, 1)) " +
             ");");
     private final SQLiteStatement createScopeTable = db.compileStatement("CREATE TABLE IF NOT EXISTS scope (" +
             "mid integer," +
@@ -376,6 +374,7 @@ public class ConfigManager {
                         db.setVersion(2);
                     });
                 case 2:
+                    // TODO check if column is already exist
                     executeInTransaction(() -> {
                         db.compileStatement("ALTER TABLE modules ADD COLUMN automatic_add BOOLEAN DEFAULT 0 CHECK (automatic_add IN (0, 1));").execute();
                         db.setVersion(3);
