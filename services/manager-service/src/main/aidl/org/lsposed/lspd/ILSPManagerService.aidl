@@ -88,6 +88,8 @@ interface ILSPManagerService {
 
     int getDex2OatWrapperCompatibility() = 44;
 
+    void clearApplicationProfileData(in String packageName) = 45;
+
     boolean isEnableCli() = 64;
 
     void setEnableCli(boolean enable) = 65;
