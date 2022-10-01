@@ -30,6 +30,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -374,11 +375,19 @@ public class ConfigManager {
                         db.setVersion(2);
                     });
                 case 2:
-                    // TODO check if column is already exist
-                    executeInTransaction(() -> {
-                        db.compileStatement("ALTER TABLE modules ADD COLUMN automatic_add BOOLEAN DEFAULT 0 CHECK (automatic_add IN (0, 1));").execute();
-                        db.setVersion(3);
-                    });
+                    try {
+                        executeInTransaction(() -> {
+                            db.compileStatement("ALTER TABLE modules ADD COLUMN automatic_add BOOLEAN DEFAULT 0 CHECK (automatic_add IN (0, 1));").execute();
+                            db.setVersion(3);
+                        });
+                    } catch (SQLiteException ex) {
+                        // Fix wrong init code for new column automatic_add
+                        if (ex.getMessage().startsWith("duplicate column name: automatic_add")) {
+                            db.setVersion(3);
+                        } else {
+                            throw ex;
+                        }
+                    }
                 default:
                     break;
             }
