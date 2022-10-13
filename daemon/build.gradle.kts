@@ -129,7 +129,7 @@ dependencies {
     implementation("com.android.tools.build:apksig:$agpVersion")
     implementation("org.apache.commons:commons-lang3:3.12.0")
     implementation("info.picocli:picocli:4.6.3")
-    compileOnly("androidx.annotation:annotation:1.4.0")
+    compileOnly("androidx.annotation:annotation:1.5.0")
     compileOnly(projects.hiddenapi.stubs)
     implementation(projects.hiddenapi.bridge)
     implementation(projects.services.daemonService)
