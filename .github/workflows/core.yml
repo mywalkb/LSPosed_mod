@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: 'recursive'
         fetch-depth: 0
@@ -32,7 +32,7 @@ jobs:
         java-version: '17'
         cache: 'gradle'
     - name: Cache Gradle Build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: |
           ~/.gradle/caches/build-cache-*
@@ -41,7 +41,7 @@ jobs:
         restore-keys: |
           gradle-builds
     - name: Cache native build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: |
           ~/.ccache
@@ -74,10 +74,10 @@ jobs:
       if: success()
       id: prepareArtifact
       run: |
-        riruReleaseName=`ls magisk-loader/release/LSPosed-v*-riru-release.zip | awk -F '(/|.zip)' '{print $3}'` && echo "::set-output name=riruReleaseName::$riruReleaseName"
-        riruDebugName=`ls magisk-loader/release/LSPosed-v*-riru-debug.zip | awk -F '(/|.zip)' '{print $3}'` && echo "::set-output name=riruDebugName::$riruDebugName"
-        zygiskReleaseName=`ls magisk-loader/release/LSPosed-v*-zygisk-release.zip | awk -F '(/|.zip)' '{print $3}'` && echo "::set-output name=zygiskReleaseName::$zygiskReleaseName"
-        zygiskDebugName=`ls magisk-loader/release/LSPosed-v*-zygisk-debug.zip | awk -F '(/|.zip)' '{print $3}'` && echo "::set-output name=zygiskDebugName::$zygiskDebugName"
+        riruReleaseName=`ls magisk-loader/release/LSPosed-v*-riru-release.zip | awk -F '(/|.zip)' '{print $3}'` && echo "riruReleaseName=$riruReleaseName" >> $GITHUB_OUTPUT
+        riruDebugName=`ls magisk-loader/release/LSPosed-v*-riru-debug.zip | awk -F '(/|.zip)' '{print $3}'` && echo "riruDebugName=$riruDebugName" >> $GITHUB_OUTPUT
+        zygiskReleaseName=`ls magisk-loader/release/LSPosed-v*-zygisk-release.zip | awk -F '(/|.zip)' '{print $3}'` && echo "zygiskReleaseName=$zygiskReleaseName" >> $GITHUB_OUTPUT
+        zygiskDebugName=`ls magisk-loader/release/LSPosed-v*-zygisk-debug.zip | awk -F '(/|.zip)' '{print $3}'` && echo "zygiskDebugName=$zygiskDebugName" >> $GITHUB_OUTPUT
         unzip magisk-loader/release/LSPosed-v*-riru-release.zip -d LSPosed-riru-release
         unzip magisk-loader/release/LSPosed-v*-riru-debug.zip -d LSPosed-riru-debug
         unzip magisk-loader/release/LSPosed-v*-zygisk-release.zip -d LSPosed-zygisk-release
@@ -113,14 +113,14 @@ jobs:
         name: xposed_service-debug
         path: services/xposed-service/interface/build/intermediates/javac/debug/classes/*
     # - name: Upload mappings
-    #   uses: actions/upload-artifact@v2
+    #   uses: actions/upload-artifact@v3
     #   with:
     #     name: mappings
     #     path: |
     #       magisk-loader/build/outputs/mapping
     #       app/build/outputs/mapping
     # - name: Upload symbols
-    #   uses: actions/upload-artifact@v2
+    #   uses: actions/upload-artifact@v3
     #   with:
     #     name: symbols
     #     path: |

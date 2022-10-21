@@ -235,10 +235,11 @@ public class RepoItemFragment extends BaseFragment implements RepoLoader.RepoLis
     @Override
     public void onModuleReleasesLoaded(OnlineModule module) {
         this.module = module;
+        var repoLoader = RepoLoader.getInstance();
         if (releaseAdapter != null) {
             runAsync(releaseAdapter::loadItems);
         }
-        if (module.getReleases().size() == 1) {
+        if ((repoLoader.getReleases(module.getName()) != null ? repoLoader.getReleases(module.getName()).size() : 1) == 1) {
             showHint(R.string.module_release_no_more, true);
         }
     }
@@ -282,13 +283,16 @@ public class RepoItemFragment extends BaseFragment implements RepoLoader.RepoLis
                 holder.title.setText(R.string.module_information_homepage);
                 holder.description.setText(module.getHomepageUrl());
             } else if (position == collaboratorsRow) {
-                holder.title.setText(R.string.module_information_collaborators);
                 List<Collaborator> collaborators = module.getCollaborators();
+                if (collaborators == null) return;
+                holder.title.setText(R.string.module_information_collaborators);
                 SpannableStringBuilder sb = new SpannableStringBuilder();
                 ListIterator<Collaborator> iterator = collaborators.listIterator();
                 while (iterator.hasNext()) {
                     Collaborator collaborator = iterator.next();
-                    String name = collaborator.getName() == null ? collaborator.getLogin() : collaborator.getName();
+                    var collaboratorLogin = collaborator.getLogin();
+                    if (collaboratorLogin == null) continue;
+                    String name = collaborator.getName() == null ? collaboratorLogin : collaborator.getName();
                     sb.append(name);
                     CustomTabsURLSpan span = new CustomTabsURLSpan(requireActivity(), String.format("https://github.com/%s", collaborator.getLogin()));
                     sb.setSpan(span, sb.length() - name.length(), sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -370,19 +374,20 @@ public class RepoItemFragment extends BaseFragment implements RepoLoader.RepoLis
         public void loadItems() {
             var channels = resources.getStringArray(R.array.update_channel_values);
             var channel = App.getPreferences().getString("update_channel", channels[0]);
-            var releases = module.getReleases();
+            var releases = RepoLoader.getInstance().getReleases(module.getName());
+            if (releases == null) releases = module.getReleases();
             List<Release> tmpList;
             if (channel.equals(channels[0])) {
-                tmpList = releases.parallelStream().filter(t -> {
-                    if (t.getIsPrerelease()) return false;
-                    var name = t.getName().toLowerCase(LocaleDelegate.getDefaultLocale());
-                    return !name.startsWith("snapshot") && !name.startsWith("nightly");
-                }).collect(Collectors.toList());
+                tmpList = releases != null ? releases.parallelStream().filter(t -> {
+                    if (Boolean.TRUE.equals(t.getIsPrerelease())) return false;
+                    var name = t.getName() != null ? t.getName().toLowerCase(LocaleDelegate.getDefaultLocale()) : null;
+                    return !(name != null && name.startsWith("snapshot")) && !(name != null && name.startsWith("nightly"));
+                }).collect(Collectors.toList()) : null;
             } else if (channel.equals(channels[1])) {
-                tmpList = releases.parallelStream().filter(t -> {
-                    var name = t.getName().toLowerCase(LocaleDelegate.getDefaultLocale());
-                    return !name.startsWith("snapshot") && !name.startsWith("nightly");
-                }).collect(Collectors.toList());
+                tmpList = releases != null ? releases.parallelStream().filter(t -> {
+                    var name = t.getName() != null ? t.getName().toLowerCase(LocaleDelegate.getDefaultLocale()) : null;
+                    return !(name != null && name.startsWith("snapshot")) && !(name != null && name.startsWith("nightly"));
+                }).collect(Collectors.toList()) : null;
             } else tmpList = releases;
             runOnUiThread(() -> {
                 items = tmpList;
