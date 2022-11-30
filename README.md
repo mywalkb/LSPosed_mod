@@ -20,7 +20,7 @@ Android 8.1 ~ 13
 
 1. Install Magisk v23+ (Riru) / v24+ (Zygisk)
 2. (For Riru flavor) Install [Riru](https://github.com/RikkaApps/Riru/releases) v25+ from Magisk repo
-3. [Download](#download) and install LSPosed in Magisk app
+3. [Download](#download) and install LSPosed_mod in Magisk app
 4. Reboot
 5. Follow the prompt to add LSPosed shortcut to launcher
     - Some launchers won't show a prompt but silently add the shortcut
@@ -35,6 +35,10 @@ Android 8.1 ~ 13
 For stable releases, please go to [Github Releases page](https://github.com/mywalkb/LSPosed_mod/releases)
 For canary build, please check [Github Actions](https://github.com/mywalkb/LSPosed_mod/actions)
 Note: debug builds are only available in Github Actions.
+
+## Migration
+
+You can install LSPosed_mod on top of official LSPosed installation
 
 ## Get Help
 
