@@ -39,6 +39,7 @@ Note: debug builds are only available in Github Actions.
 ## Migration
 
 You can install LSPosed_mod on top of official LSPosed installation
+If the app is installed and not parasitic, the app must be reinstalled from apk distribuited with LSPosed_mod
 
 ## Get Help
 
