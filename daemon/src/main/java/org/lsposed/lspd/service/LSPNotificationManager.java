@@ -86,7 +86,7 @@ public class LSPNotificationManager {
         return Icon.createWithBitmap(getBitmap(R.drawable.ic_notification));
     }
 
-    private static boolean hasNotificationChannelForSystem(
+    static boolean hasNotificationChannelForSystem(
             INotificationManager nm, String channelId) throws RemoteException {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return nm.getNotificationChannelForPackage("android", 1000, channelId, null, false) != null;

@@ -26,6 +26,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.ParceledListSlice;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -47,7 +48,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -65,7 +66,7 @@ public class CLIService extends ICLIService.Stub {
     private static final String CHANNEL_ID = "lsposedpin";
     private static final String CHANNEL_NAME = "Pin code";
     private static final int CHANNEL_IMP = NotificationManager.IMPORTANCE_HIGH;
-    private static final int NOTIFICATION_ID = 114514;
+    private static final int NOTIFICATION_ID = 2000;
 
     // E/JavaBinder      ] *** Uncaught remote exception!  (Exceptions are not yet supported across processes.)
     private String sLastMsg;
@@ -163,12 +164,19 @@ public class CLIService extends ICLIService.Stub {
         notification.extras.putString("android.substName", "LSPosed");
         try {
             var nm = LSPNotificationManager.getNotificationManager();
-            // TODO review notification channel        
-/*
+            var list = new ArrayList<NotificationChannel>();
+
             final NotificationChannel channel =
                     new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, CHANNEL_IMP);
-            nm.createNotificationChannelsForPackage("android", 1000, new android.content.pm.ParceledListSlice<>(Collections.singletonList(channel)));
-            nm.enqueueNotificationWithTag("android", "android", "" + NOTIFICATION_ID, NOTIFICATION_ID, notification, 0);*/
+            channel.setShowBadge(false);
+            if (LSPNotificationManager.hasNotificationChannelForSystem(nm, CHANNEL_ID)) {
+                nm.updateNotificationChannelForPackage("android", 1000, channel);
+            } else {
+                list.add(channel);
+            }
+
+            nm.createNotificationChannelsForPackage("android", 1000, new ParceledListSlice<>(list));
+            nm.enqueueNotificationWithTag("android", "android", null, NOTIFICATION_ID, notification, 0);
         } catch (RemoteException e) {
             Log.e(TAG, "notifyStatusNotification: ", e);
         }
