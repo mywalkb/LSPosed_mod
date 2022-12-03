@@ -145,31 +145,32 @@ public class CLIService extends ICLIService.Stub {
     }
 
     private void showNotification(String sPin) {
+        var context = new FakeContext();
+        String title = context.getString(R.string.pin_request_notification_title);
+        String content = sPin;
+
+        var style = new Notification.BigTextStyle();
+        style.bigText(content);
+
+        var notification = new Notification.Builder(context, CHANNEL_ID)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setColor(Color.BLUE)
+                .setSmallIcon(LSPNotificationManager.getNotificationIcon())
+                .setAutoCancel(false)
+                .setStyle(style)
+                .build();
+        notification.extras.putString("android.substName", "LSPosed");
         try {
-            var context = new FakeContext();
-            String title = context.getString(R.string.pin_request_notification_title);
-            String content = sPin;
-
-            var style = new Notification.BigTextStyle();
-            style.bigText(content);
-
-            var notification = new Notification.Builder(context, CHANNEL_ID)
-                    .setContentTitle(title)
-                    .setContentText(content)
-                    .setColor(Color.BLUE)
-                    .setSmallIcon(LSPManagerService.getNotificationIcon())
-                    .setAutoCancel(false)
-                    .setStyle(style)
-                    .build();
-            notification.extras.putString("android.substName", "LSPosed");
-            var im = INotificationManager.Stub.asInterface(android.os.ServiceManager.getService("notification"));
+            var nm = LSPNotificationManager.getNotificationManager();
+            // TODO review notification channel        
+/*
             final NotificationChannel channel =
                     new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, CHANNEL_IMP);
-            im.createNotificationChannels("android",
-                    new android.content.pm.ParceledListSlice<>(Collections.singletonList(channel)));
-            im.enqueueNotificationWithTag("android", "android", "" + NOTIFICATION_ID, NOTIFICATION_ID, notification, 0);
-        } catch (Throwable e) {
-            Log.e(TAG, "post notification", e);
+            nm.createNotificationChannelsForPackage("android", 1000, new android.content.pm.ParceledListSlice<>(Collections.singletonList(channel)));
+            nm.enqueueNotificationWithTag("android", "android", "" + NOTIFICATION_ID, NOTIFICATION_ID, notification, 0);*/
+        } catch (RemoteException e) {
+            Log.e(TAG, "notifyStatusNotification: ", e);
         }
     }
 

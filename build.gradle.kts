@@ -36,7 +36,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.eclipse.jgit:org.eclipse.jgit:6.3.0.202209071007-r")
+        classpath("org.eclipse.jgit:org.eclipse.jgit:6.4.0.202211300538-r")
     }
 }
 val (commitCount, latestTag) = FileRepositoryBuilder().setGitDir(rootProject.file(".git"))
@@ -125,8 +125,6 @@ fun Project.configureBaseExtension() {
                     cFlags("-std=c18", *flags)
                     arguments(
                         "-DANDROID_STL=none",
-                        "-DVERSION_CODE=$verCode",
-                        "-DVERSION_NAME=$verName",
                     )
                     findInPath("ccache")?.let {
                         println("Using ccache $it")

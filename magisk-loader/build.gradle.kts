@@ -122,7 +122,6 @@ dependencies {
 
 val zipAll = task("zipAll") {
     group = "LSPosed"
-
 }
 
 fun afterEval() = android.applicationVariants.forEach { variant ->
@@ -305,11 +304,7 @@ val reRunDaemon = task<Exec>("reRunDaemon") {
     dependsOn(killLspd, mvDaemon, mvDaemonNative)
     // tricky to pass a minus number to avoid the injection warning
     commandLine(
-        adb,
-        "shell",
-        "ASH_STANDALONE=1",
-        "su",
-        "-pc",
+        adb, "shell", "ASH_STANDALONE=1", "su", "-pc",
         "/data/adb/magisk/busybox sh /data/adb/modules/*_lsposed/service.sh --system-server-max-retry=-1&"
     )
     isIgnoreExitValue = true
@@ -324,14 +319,8 @@ val pushApk = task<Exec>("pushApk") {
 val openApp = task<Exec>("openApp") {
     group = "LSPosed"
     commandLine(
-        adb,
-        "shell",
-        "am",
-        "start",
-        "-a",
-        "android.intent.action.MAIN",
-        "-c",
-        "org.lsposed.manager.LAUNCH_MANAGER",
+        adb, "shell",
+        "am", "start", "-c", "org.lsposed.manager.LAUNCH_MANAGER",
         "com.android.shell/.BugreportWarningActivity"
     )
 }

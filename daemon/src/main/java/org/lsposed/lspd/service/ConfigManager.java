@@ -92,7 +92,7 @@ public class ConfigManager {
 
     private boolean verboseLog = true;
     private boolean dexObfuscate = false;
-    private boolean autoAddShortcut = true;
+    private boolean enableStatusNotification = true;
     private boolean bEnableCli = false;
     private String miscPath = null;
     private int iSessionTimeout = -1;
@@ -231,17 +231,19 @@ public class ConfigManager {
         dexObfuscate = value != null && (boolean) value;
 
         value = config.get("enable_auto_add_shortcut");
-        if (value == null) {
-            updateModulePrefs("lspd", 0, "config", "enable_auto_add_shortcut", true);
-            value = true;
+        if (value != null) {
+            // TODO: remove
+            updateModulePrefs("lspd", 0, "config", "enable_auto_add_shortcut", null);
         }
-        autoAddShortcut = (boolean) value;
 
         value = config.get("enable_cli");
         bEnableCli = value != null && (boolean) value;
 
         value = config.get("cli_session_timeout");
         iSessionTimeout = value == null ? -1 : (int) value;
+
+        value = config.get("enable_status_notification");
+        enableStatusNotification = value == null || (boolean) value;
 
         // Don't migrate to ConfigFileManager, as XSharedPreferences will be restored soon
         String string = (String) config.get("misc_path");
@@ -917,14 +919,14 @@ public class ConfigManager {
         return bool != null && (boolean) bool;
     }
 
-    public boolean isAddShortcut() {
-        Log.d(TAG, "Auto add shortcut=" + autoAddShortcut);
-        return autoAddShortcut;
+    public boolean enableStatusNotification() {
+        Log.d(TAG, "show status notification = " + enableStatusNotification);
+        return enableStatusNotification;
     }
 
-    public void setAddShortcut(boolean on) {
-        updateModulePrefs("lspd", 0, "config", "enable_auto_add_shortcut", on);
-        this.autoAddShortcut = on;
+    public void setEnableStatusNotification(boolean enable) {
+        updateModulePrefs("lspd", 0, "config", "enable_status_notification", enable);
+        enableStatusNotification = enable;
     }
 
     public boolean isEnableCli() {
