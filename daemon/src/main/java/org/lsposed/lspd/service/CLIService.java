@@ -30,6 +30,7 @@ import android.content.pm.ParceledListSlice;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -67,6 +68,8 @@ public class CLIService extends ICLIService.Stub {
     private static final String CHANNEL_NAME = "Pin code";
     private static final int CHANNEL_IMP = NotificationManager.IMPORTANCE_HIGH;
     private static final int NOTIFICATION_ID = 2000;
+    private static final String opPkg = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ?
+            "android" : "com.android.settings";
 
     // E/JavaBinder      ] *** Uncaught remote exception!  (Exceptions are not yet supported across processes.)
     private String sLastMsg;
@@ -176,7 +179,7 @@ public class CLIService extends ICLIService.Stub {
             }
 
             nm.createNotificationChannelsForPackage("android", 1000, new ParceledListSlice<>(list));
-            nm.enqueueNotificationWithTag("android", "android", null, NOTIFICATION_ID, notification, 0);
+            nm.enqueueNotificationWithTag("android", opPkg, null, NOTIFICATION_ID, notification, 0);
         } catch (RemoteException e) {
             Log.e(TAG, "notifyStatusNotification: ", e);
         }
