@@ -174,15 +174,23 @@ public class SettingsFragment extends BaseFragment {
 
             Preference shortcut = findPreference("add_shortcut");
             if (shortcut != null) {
-                shortcut.setVisible(App.isParasitic());
-                shortcut.setEnabled(!ShortcutUtil.isLaunchShortcutPinned());
+                shortcut.setVisible(App.isParasitic() && ShortcutUtil.isRequestPinShortcutSupported(requireContext()));
+                if (ShortcutUtil.isLaunchShortcutPinned()) {
+                    shortcut.setEnabled(false);
+                    shortcut.setSummary(R.string.settings_created_shortcut_summary);
+                } else {
+                    shortcut.setEnabled(true);
+                    shortcut.setSummary(R.string.settings_create_shortcut_summary);
+                }
                 shortcut.setOnPreferenceClickListener(preference -> {
                     ShortcutUtil.requestPinLaunchShortcut(() -> {
                         shortcut.setEnabled(false);
+                        shortcut.setSummary(R.string.settings_created_shortcut_summary);
                         if (notification != null) {
                             notification.setEnabled(true);
                             notification.setSummaryOn(R.string.settings_enable_status_notification_summary);
                         }
+                        App.getPreferences().edit().putBoolean("never_show_welcome", true).apply();
                     });
                     return true;
                 });

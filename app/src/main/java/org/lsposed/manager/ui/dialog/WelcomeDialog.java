@@ -1,3 +1,22 @@
+/*
+ * This file is part of LSPosed.
+ *
+ * LSPosed is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LSPosed is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with LSPosed.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Copyright (C) 2022 LSPosed Contributors
+ */
+
 package org.lsposed.manager.ui.dialog;
 
 import android.app.Dialog;
@@ -17,18 +36,24 @@ public class WelcomeDialog extends DialogFragment {
     private static boolean shown = false;
 
     private Dialog parasiticDialog(BlurBehindDialogBuilder builder) {
-        return builder
+        var shortcutSupported = ShortcutUtil.isRequestPinShortcutSupported(requireContext());
+        builder
                 .setTitle(R.string.parasitic_welcome)
-                .setMessage(R.string.parasitic_welcome_summary)
+                .setMessage(shortcutSupported ? R.string.parasitic_welcome_summary :
+                        R.string.parasitic_welcome_summary_no_shortcut_support)
                 .setNegativeButton(R.string.never_show, (dialog, which) ->
                         App.getPreferences().edit().putBoolean("never_show_welcome", true).apply())
-                .setNeutralButton(R.string.create_shortcut, (dialog, which) ->
-                        ShortcutUtil.requestPinLaunchShortcut(null))
-                .setPositiveButton(android.R.string.ok, null)
-                .create();
+                .setPositiveButton(android.R.string.ok, null);
+        if (shortcutSupported)
+            builder.setNeutralButton(R.string.create_shortcut, (dialog, which) ->
+                    ShortcutUtil.requestPinLaunchShortcut(() ->
+                            App.getPreferences().edit().putBoolean("never_show_welcome",
+                                    true).apply()));
+        return builder.create();
     }
 
     private Dialog appDialog(BlurBehindDialogBuilder builder) {
+
         return builder
                 .setTitle(R.string.app_welcome)
                 .setMessage(R.string.app_welcome_summary)
