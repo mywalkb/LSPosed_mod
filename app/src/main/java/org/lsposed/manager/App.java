@@ -32,6 +32,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
+import android.provider.Settings;
 import android.system.Os;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,7 +44,7 @@ import org.lsposed.hiddenapibypass.HiddenApiBypass;
 import org.lsposed.manager.adapters.AppHelper;
 import org.lsposed.manager.repo.RepoLoader;
 import org.lsposed.manager.ui.activity.CrashReportActivity;
-import org.lsposed.manager.util.DoHDNS;
+import org.lsposed.manager.util.CloudflareDNS;
 import org.lsposed.manager.util.ModuleUtil;
 import org.lsposed.manager.util.ThemeUtil;
 import org.lsposed.manager.util.UpdateUtil;
@@ -85,7 +86,6 @@ public class App extends Application {
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            // TODO: set specific class name
             HiddenApiBypass.addHiddenApiExemptions("");
         }
         Looper.myQueue().addIdleHandler(() -> {
@@ -100,19 +100,17 @@ public class App extends Application {
 
         Looper.myQueue().addIdleHandler(() -> {
             if (App.getInstance() == null || App.getExecutorService() == null) return true;
-            App.getExecutorService().submit(() -> {
-                AppHelper.getDenyList(false);
-            });
+            App.getExecutorService().submit(() -> AppHelper.getDenyList(false));
             return false;
         });
         Looper.myQueue().addIdleHandler(() -> {
             if (App.getInstance() == null || App.getExecutorService() == null) return true;
-            App.getExecutorService().submit((Runnable) ModuleUtil::getInstance);
+            App.getExecutorService().submit(ModuleUtil::getInstance);
             return false;
         });
         Looper.myQueue().addIdleHandler(() -> {
             if (App.getInstance() == null || App.getExecutorService() == null) return true;
-            App.getExecutorService().submit((Runnable) RepoLoader::getInstance);
+            App.getExecutorService().submit(RepoLoader::getInstance);
             return false;
         });
     }
@@ -138,7 +136,7 @@ public class App extends Application {
     }
 
     public static ExecutorService getExecutorService() {
-        return instance.executorService;
+        return executorService;
     }
 
     public static boolean isParasitic() {
@@ -204,8 +202,11 @@ public class App extends Application {
         instance = this;
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        if ("CN".equals(Locale.getDefault().getCountry())) {
-            if (!pref.contains("doh")) {
+        if (!pref.contains("doh")) {
+            var name = "private_dns_mode";
+            if ("hostname".equals(Settings.Global.getString(getContentResolver(), name))) {
+                pref.edit().putBoolean("doh", false).apply();
+            } else {
                 pref.edit().putBoolean("doh", true).apply();
             }
         }
@@ -260,26 +261,24 @@ public class App extends Application {
 
     @NonNull
     public static OkHttpClient getOkHttpClient() {
-        if (okHttpClient == null) {
-            OkHttpClient.Builder builder = new OkHttpClient.Builder().cache(getOkHttpCache());
-            builder.addInterceptor(chain -> {
-                var request = chain.request().newBuilder();
-                request.header("User-Agent", TAG);
-                return chain.proceed(request.build());
-            });
-            HttpLoggingInterceptor log = new HttpLoggingInterceptor();
+        if (okHttpClient != null) return okHttpClient;
+        var builder = new OkHttpClient.Builder()
+                .cache(getOkHttpCache())
+                .dns(new CloudflareDNS());
+        if (BuildConfig.DEBUG) {
+            var log = new HttpLoggingInterceptor();
             log.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-            if (BuildConfig.DEBUG) builder.addInterceptor(log);
-            okHttpClient = builder.dns(new DoHDNS(builder.build())).build();
+            builder.addInterceptor(log);
         }
+        okHttpClient = builder.build();
         return okHttpClient;
     }
 
     @NonNull
-    private static Cache getOkHttpCache() {
-        if (okHttpCache == null) {
-            okHttpCache = new Cache(new File(App.getInstance().getCacheDir(), "http_cache"), 50L * 1024L * 1024L);
-        }
+    public static Cache getOkHttpCache() {
+        if (okHttpCache != null) return okHttpCache;
+        long size50MiB = 50 * 1024 * 1024;
+        okHttpCache = new Cache(new File(instance.getCacheDir(), "http_cache"), size50MiB);
         return okHttpCache;
     }
 
