@@ -32,8 +32,9 @@ Android 8.1 ~ 13
 
 ## Download
 
-For stable releases, please go to [Github Releases page](https://github.com/mywalkb/LSPosed_mod/releases)
-For canary build, please check [Github Actions](https://github.com/mywalkb/LSPosed_mod/actions)
+- For stable releases, please go to [Github Releases page](https://github.com/mywalkb/LSPosed_mod/releases)
+- For canary build, please check [Github Actions](https://github.com/mywalkb/LSPosed_mod/actions)
+
 Note: debug builds are only available in Github Actions.
 
 ## Migration
@@ -43,6 +44,7 @@ If the app is installed and not parasitic, the app must be reinstalled from apk 
 
 ## Get Help
 
+**Only bug reports from **THE LATEST DEBUG BUILD** will be accepted.**
 - GitHub issues: [Issues](https://github.com/mywalkb/LSPosed_mod/issues/)
 - [Wiki](https://github.com/mywalkb/LSPosed_mod/wiki)
 - (For Chinese speakers) 本项目只接受英语**标题**的issue。如果您不懂英语，请使用[翻译工具](https://www.deepl.com/zh/translator)
