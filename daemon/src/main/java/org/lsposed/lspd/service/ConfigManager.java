@@ -107,8 +107,6 @@ public class ConfigManager {
     private long lastScopeCacheTime = 0;
     private long requestScopeCacheTime = 0;
 
-    private boolean sepolicyLoaded = true;
-
     private String api = "(???)";
 
     static class ProcessScope {
@@ -187,7 +185,6 @@ public class ConfigManager {
     // for system server, cache is not yet ready, we need to query database for it
     public boolean shouldSkipSystemServer() {
         if (!SELinux.checkSELinuxAccess("u:r:system_server:s0", "u:r:system_server:s0", "process", "execmem")) {
-            sepolicyLoaded = false;
             Log.e(TAG, "skip injecting into android because sepolicy was not loaded properly");
             return true; // skip
         }
@@ -1048,10 +1045,6 @@ public class ConfigManager {
         if (packageName == null) return;
         var path = Paths.get(getPrefsPath(packageName, uid));
         ConfigFileManager.deleteFolderIfExists(path);
-    }
-
-    public boolean isSepolicyLoaded() {
-        return sepolicyLoaded;
     }
 
     public List<String> getDenyListPackages() {
