@@ -23,9 +23,20 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.util.Locale
+import com.android.build.api.instrumentation.AsmClassVisitorFactory
+import com.android.build.api.instrumentation.ClassContext
+import com.android.build.api.instrumentation.ClassData
+import com.android.build.api.instrumentation.InstrumentationParameters
+import com.android.build.api.instrumentation.InstrumentationScope
+import com.android.build.api.instrumentation.FramesComputationMode
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.agp.app)
+    alias(libs.plugins.lsplugin.resopt)
 }
 
 val moduleName = "LSPosed"
@@ -41,7 +52,6 @@ val injectedPackageName: String by rootProject.extra
 val injectedPackageUid: Int by rootProject.extra
 
 val defaultManagerPackageName: String by rootProject.extra
-val apiCode: Int by rootProject.extra
 val verCode: Int by rootProject.extra
 val verName: String by rootProject.extra
 
@@ -56,7 +66,6 @@ android {
         applicationId = "org.lsposed.lspd"
         multiDexEnabled = false
 
-        buildConfigField("int", "API_CODE", "$apiCode")
         buildConfigField(
             "String",
             "DEFAULT_MANAGER_PACKAGE_NAME",
@@ -109,14 +118,18 @@ android {
     }
     namespace = "org.lsposed.lspd"
 }
+abstract class Injected @Inject constructor(val magiskDir: String) {
+    @get:Inject
+    abstract val factory: ObjectFactory
+}
 
 dependencies {
-    compileOnly("androidx.annotation:annotation:1.5.0")
-    compileOnly(projects.hiddenapi.stubs)
     implementation(projects.core)
     implementation(projects.hiddenapi.bridge)
     implementation(projects.services.managerService)
     implementation(projects.services.daemonService)
+    compileOnly(libs.androidx.annotation)
+    compileOnly(projects.hiddenapi.stubs)
 }
 
 val zipAll = task("zipAll") {
@@ -213,14 +226,16 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
             from(dexOutPath)
             rename("classes.dex", "lspd.dex")
         }
+
+        val injected = objects.newInstance<Injected>(magiskDir)
         doLast {
-            fileTree(magiskDir).visit {
+            injected.factory.fileTree().from(injected.magiskDir).visit {
                 if (isDirectory) return@visit
                 val md = MessageDigest.getInstance("SHA-256")
                 file.forEachBlock(4096) { bytes, size ->
                     md.update(bytes, 0, size)
                 }
-                file(file.path + ".sha256").writeText(Hex.encodeHexString(md.digest()))
+                File(file.path + ".sha256").writeText(Hex.encodeHexString(md.digest()))
             }
         }
     }

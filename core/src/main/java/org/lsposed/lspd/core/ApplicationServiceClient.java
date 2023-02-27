@@ -58,12 +58,12 @@ public class ApplicationServiceClient implements ILSPApplicationService, IBinder
     }
 
     @Override
-    public IBinder requestModuleBinder(String name) {
+    public List<Module> getLegacyModulesList() {
         try {
-            return service.requestModuleBinder(name);
+            return service.getLegacyModulesList();
         } catch (RemoteException | NullPointerException ignored) {
         }
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -81,11 +81,6 @@ public class ApplicationServiceClient implements ILSPApplicationService, IBinder
             return service.getPrefsPath(packageName);
         } catch (RemoteException | NullPointerException ignored) {
         }
-        return null;
-    }
-
-    @Override
-    public Bundle requestRemotePreference(String packageName, int userId, IBinder callback) {
         return null;
     }
 

@@ -1,11 +1,14 @@
-package de.robv.android.xposed;
+package org.lsposed.lspd.impl;
 
-import static org.lsposed.lspd.core.ApplicationServiceClient.serviceClient;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.util.ArraySet;
 
 import androidx.annotation.Nullable;
+
+import org.lsposed.lspd.service.ILSPInjectedModuleService;
+import org.lsposed.lspd.service.IRemotePreferenceCallback;
 
 import java.util.Map;
 import java.util.Set;
@@ -13,43 +16,42 @@ import java.util.TreeMap;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import io.github.xposed.xposedservice.IXRemotePreferenceCallback;
-
 @SuppressWarnings("unchecked")
-public class XRemotePreference implements SharedPreferences {
+public class LSPosedRemotePreferences implements SharedPreferences {
 
-    private Map<String, Object> mMap = new ConcurrentHashMap<>();
+    private final Map<String, Object> mMap = new ConcurrentHashMap<>();
 
     private static final Object CONTENT = new Object();
     final WeakHashMap<OnSharedPreferenceChangeListener, Object> mListeners = new WeakHashMap<>();
 
-    IXRemotePreferenceCallback callback = new IXRemotePreferenceCallback.Stub() {
+    IRemotePreferenceCallback callback = new IRemotePreferenceCallback.Stub() {
         @Override
         synchronized public void onUpdate(Bundle bundle) {
-            if (bundle.containsKey("map"))
-                mMap = (ConcurrentHashMap<String, Object>) bundle.getSerializable("map");
-            if (bundle.containsKey("diff")) {
-                for (var key : bundle.getStringArrayList("diff")) {
-                    synchronized (mListeners) {
-                        mListeners.forEach((listener, __) -> {
-                            listener.onSharedPreferenceChanged(XRemotePreference.this, key);
-                        });
-                    }
+            Set<String> changes = new ArraySet<>();
+            if (bundle.containsKey("delete")) {
+                var deletes = bundle.getStringArrayList("delete");
+                changes.addAll(deletes);
+                for (var key : deletes) {
+                    mMap.remove(key);
+                }
+            }
+            if (bundle.containsKey("put")) {
+                var puts = (Map<String, Object>) bundle.getSerializable("put");
+                mMap.putAll(puts);
+                changes.addAll(puts.keySet());
+            }
+            synchronized (mListeners) {
+                for (var key : changes) {
+                    mListeners.keySet().forEach(listener -> listener.onSharedPreferenceChanged(LSPosedRemotePreferences.this, key));
                 }
             }
         }
     };
 
-    public XRemotePreference(String packageName) {
-        this(packageName, 0);
-    }
-
-    public XRemotePreference(String packageName, int userId) {
-        try {
-            Bundle output = serviceClient.requestRemotePreference(packageName, userId, callback.asBinder());
-            callback.onUpdate(output);
-        } catch (RemoteException e) {
-            XposedBridge.log(e);
+    public LSPosedRemotePreferences(ILSPInjectedModuleService service, String group) throws RemoteException {
+        Bundle output = service.requestRemotePreferences(group, callback);
+        if (output.containsKey("map")) {
+            mMap.putAll((Map<String, Object>) output.getSerializable("map"));
         }
     }
 
@@ -124,6 +126,5 @@ public class XRemotePreference implements SharedPreferences {
         synchronized (mListeners) {
             mListeners.remove(listener);
         }
-
     }
 }

@@ -47,6 +47,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -81,6 +82,10 @@ public class XResources extends XResourcesSuperClass {
 	private static final SparseArray<HashMap<String, Object>> sReplacements = new SparseArray<>();
 	private static final SparseArray<HashMap<String, ResourceNames>> sResourceNames = new SparseArray<>();
 
+	// A resource ID is a 32 bit number of the form: PPTTNNNN. PP is the package the resource is for;
+	// TT is the type of the resource;
+	// NNNN is the name of the resource in that type.
+	// For applications resources, PP is always 0x7f.
 	private static final byte[] sSystemReplacementsCache = new byte[256]; // bitmask: 0x000700ff => 2048 bit => 256 bytes
 	private byte[] mReplacementsCache; // bitmask: 0x0007007f => 1024 bit => 128 bytes
 	private static final HashMap<String, byte[]> sReplacementsCacheMap = new HashMap<>();
@@ -90,34 +95,17 @@ public class XResources extends XResourcesSuperClass {
 	private static final WeakHashMap<XmlResourceParser, XMLInstanceDetails> sXmlInstanceDetails = new WeakHashMap<>();
 
 	private static final String EXTRA_XML_INSTANCE_DETAILS = "xmlInstanceDetails";
-	private static final ThreadLocal<LinkedList<MethodHookParam>> sIncludedLayouts = new ThreadLocal<LinkedList<MethodHookParam>>() {
-		@Override
-		protected LinkedList<MethodHookParam> initialValue() {
-			return new LinkedList<>();
-		}
-	};
+	private static final ThreadLocal<LinkedList<MethodHookParam>> sIncludedLayouts = ThreadLocal.withInitial(() -> new LinkedList<>());
 
 	private static final HashMap<String, Long> sResDirLastModified = new HashMap<>();
 	private static final HashMap<String, String> sResDirPackageNames = new HashMap<>();
 	private static ThreadLocal<Object> sLatestResKey = null;
 
-	private boolean mIsObjectInited;
 	private String mResDir;
 	private String mPackageName;
 
-	public XResources(ClassLoader classLoader) {
+	public XResources(ClassLoader classLoader, String resDir) {
 		super(classLoader);
-	}
-
-	/** Dummy, will never be called (objects are transferred to this class only). */
-//	private XResources() {
-//		throw new UnsupportedOperationException();
-//	}
-
-	/** @hide */
-	public void initObject(String resDir) {
-		if (mIsObjectInited)
-			throw new IllegalStateException("Object has already been initialized");
 
 		this.mResDir = resDir;
 		this.mPackageName = getPackageName(resDir);
@@ -127,9 +115,12 @@ public class XResources extends XResourcesSuperClass {
 				mReplacementsCache = sReplacementsCacheMap.computeIfAbsent(resDir, k -> new byte[128]);
 			}
 		}
-
-		this.mIsObjectInited = true;
 	}
+
+	/** Dummy, will never be called (objects are transferred to this class only). */
+//	private XResources() {
+//		throw new UnsupportedOperationException();
+//	}
 
 	/** @hide */
 	public boolean isFirstLoad() {
@@ -168,6 +159,7 @@ public class XResources extends XResourcesSuperClass {
 	/**
 	 * Returns the name of the package that these resources belong to, or "android" for system resources.
 	 */
+	@NonNull
 	public String getPackageName() {
 		return mPackageName;
 	}

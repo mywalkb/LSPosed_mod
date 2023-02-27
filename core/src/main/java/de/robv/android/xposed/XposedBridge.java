@@ -25,7 +25,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.Log;
 
-import org.lsposed.lspd.core.BuildConfig;
 import org.lsposed.lspd.nativebridge.HookBridge;
 import org.lsposed.lspd.nativebridge.ResourcesHook;
 
@@ -43,6 +42,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import de.robv.android.xposed.callbacks.XC_InitPackageResources;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import io.github.libxposed.api.XposedInterface;
 
 /**
  * This class contains most of Xposed's central logic, such as initialization and callbacks used by
@@ -145,7 +145,7 @@ public final class XposedBridge {
      * Returns the currently installed version of the Xposed framework.
      */
     public static int getXposedVersion() {
-        return BuildConfig.API_CODE;
+        return XposedInterface.API;
     }
 
     /**
@@ -395,7 +395,7 @@ public final class XposedBridge {
         }
     }
 
-    public static class AdditionalHookInfo {
+    public static class AdditionalHookInfo<T extends Executable> {
         private final Object params;
 
         private AdditionalHookInfo(Executable method) {
@@ -416,11 +416,11 @@ public final class XposedBridge {
         // This method is quite critical. We should try not to use system methods to avoid
         // endless recursive
         public Object callback(Object[] args) throws Throwable {
-            XC_MethodHook.MethodHookParam param = new XC_MethodHook.MethodHookParam();
+            XC_MethodHook.MethodHookParam<T> param = new XC_MethodHook.MethodHookParam<>();
 
             var array = ((Object[]) params);
 
-            var method = (Executable) array[0];
+            var method = (T) array[0];
             var returnType = (Class<?>) array[1];
             var isStatic = (Boolean) array[2];
 
@@ -451,7 +451,12 @@ public final class XposedBridge {
             int beforeIdx = 0;
             do {
                 try {
-                    ((XC_MethodHook) callbacksSnapshot[beforeIdx]).beforeHookedMethod(param);
+                    var cb = callbacksSnapshot[beforeIdx];
+                    if (HookBridge.instanceOf(cb, XC_MethodHook.class)) {
+                        ((XC_MethodHook) cb).beforeHookedMethod(param);
+                    } else if (HookBridge.instanceOf(cb, XposedInterface.BeforeHooker.class)) {
+                        ((XposedInterface.BeforeHooker<T>) cb).before(param);
+                    }
                 } catch (Throwable t) {
                     XposedBridge.log(t);
 
@@ -483,8 +488,13 @@ public final class XposedBridge {
                 Object lastResult = param.getResult();
                 Throwable lastThrowable = param.getThrowable();
 
+                var cb = callbacksSnapshot[afterIdx];
                 try {
-                    ((XC_MethodHook) callbacksSnapshot[afterIdx]).afterHookedMethod(param);
+                    if (HookBridge.instanceOf(cb, XC_MethodHook.class)) {
+                        ((XC_MethodHook) cb).afterHookedMethod(param);
+                    } else if (HookBridge.instanceOf(cb, XposedInterface.AfterHookCallback.class)) {
+                        ((XposedInterface.AfterHooker<T>) cb).after(param);
+                    }
                 } catch (Throwable t) {
                     XposedBridge.log(t);
 

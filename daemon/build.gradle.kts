@@ -17,13 +17,15 @@
  * Copyright (C) 2021 LSPosed Contributors
  */
 
-import com.android.build.gradle.BaseExtension
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.ide.common.signing.KeystoreHelper
 import java.io.PrintStream
 import java.util.*
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.agp.app)
+    alias(libs.plugins.lsplugin.resopt)
 }
 
 val daemonName = "LSPosed"
@@ -31,10 +33,9 @@ val daemonName = "LSPosed"
 val injectedPackageName: String by rootProject.extra
 val injectedPackageUid: Int by rootProject.extra
 
-val agpVersion : String by project
+val agpVersion: String by project
 
 val defaultManagerPackageName: String by rootProject.extra
-val apiCode: Int by rootProject.extra
 
 android {
     buildFeatures {
@@ -44,7 +45,6 @@ android {
     defaultConfig {
         applicationId = "org.lsposed.daemon"
 
-        buildConfigField("int", "API_CODE", "$apiCode")
         buildConfigField(
             "String",
             "DEFAULT_MANAGER_PACKAGE_NAME",
@@ -85,18 +85,17 @@ android {
     namespace = "org.lsposed.daemon"
 }
 
-fun afterEval() = android.applicationVariants.forEach { variant ->
-    val variantCapped = variant.name.capitalize(Locale.ROOT)
-    val variantLowered = variant.name.toLowerCase(Locale.ROOT)
+android.applicationVariants.all {
+    val variantCapped = name.capitalize(Locale.ROOT)
+    val variantLowered = name.toLowerCase(Locale.ROOT)
 
-    val app = rootProject.project(":app").extensions.getByName<BaseExtension>("android")
     val outSrcDir = file("$buildDir/generated/source/signInfo/${variantLowered}")
-    val outSrc = file("$outSrcDir/org/lsposed/lspd/util/SignInfo.java")
     val signInfoTask = tasks.register("generate${variantCapped}SignInfo") {
         dependsOn(":app:validateSigning${variantCapped}")
+        val sign = rootProject.project(":app").extensions.getByType(ApplicationExtension::class.java).buildTypes.named(variantLowered).get().signingConfig
+        val outSrc = file("$outSrcDir/org/lsposed/lspd/util/SignInfo.java")
         outputs.file(outSrc)
         doLast {
-            val sign = app.buildTypes.named(variantLowered).get().signingConfig
             outSrc.parentFile.mkdirs()
             val certificateInfo = KeystoreHelper.getCertificateInfo(
                 sign?.storeType,
@@ -118,20 +117,17 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
             )
         }
     }
-    variant.registerJavaGeneratingTask(signInfoTask, outSrcDir)
-}
-
-afterEvaluate {
-    afterEval()
+    registerJavaGeneratingTask(signInfoTask, outSrcDir)
 }
 
 dependencies {
-    implementation("com.android.tools.build:apksig:$agpVersion")
-    implementation("org.apache.commons:commons-lang3:3.12.0")
-    implementation("info.picocli:picocli:4.6.3")
-    compileOnly("androidx.annotation:annotation:1.5.0")
-    compileOnly(projects.hiddenapi.stubs)
+    implementation(libs.libxposed.service.`interface`)
+    implementation(libs.agp.apksig)
+    implementation(libs.commons.lang3)
     implementation(projects.hiddenapi.bridge)
     implementation(projects.services.daemonService)
     implementation(projects.services.managerService)
+    implementation("info.picocli:picocli:4.7.1")
+    compileOnly(libs.androidx.annotation)
+    compileOnly(projects.hiddenapi.stubs)
 }

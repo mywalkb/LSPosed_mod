@@ -25,13 +25,17 @@ import static org.lsposed.lspd.service.ServiceManager.TAG;
 import static org.lsposed.lspd.service.ServiceManager.existsInGlobalNamespace;
 import static org.lsposed.lspd.service.ServiceManager.toGlobalNamespace;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityThread;
 import android.content.ContentValues;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageParser;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteStatement;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.ParcelFileDescriptor;
@@ -39,6 +43,7 @@ import android.os.RemoteException;
 import android.os.SELinux;
 import android.os.SharedMemory;
 import android.os.SystemClock;
+import android.permission.IPermissionManager;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.util.Log;
@@ -56,6 +61,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -169,7 +175,9 @@ public class ConfigManager {
     private final Map<String, Module> cachedModule = new ConcurrentHashMap<>();
 
     // packageName, userId, group, key, value
-    private final Map<Pair<String, Integer>, Map<String, ConcurrentHashMap<String, Object>>> cachedConfig = new ConcurrentHashMap<>();
+    private final Map<Pair<String, Integer>, Map<String, HashMap<String, Object>>> cachedConfig = new ConcurrentHashMap<>();
+
+    private Set<String> scopeRequestBlocked = new HashSet<>();
 
     private void updateCaches(boolean sync) {
         synchronized (cacheHandler) {
@@ -193,7 +201,18 @@ public class ConfigManager {
         }
     }
 
+    @SuppressLint("BlockedPrivateApi")
     public List<Module> getModulesForSystemServer() {
+        var at = ActivityThread.currentActivityThread();
+        Field permissionManager = null;
+        try {
+            // PackageParser need to access PermissionManager, but it's not initialized yet
+            permissionManager = ActivityThread.class.getDeclaredField("sPermissionManager");
+            permissionManager.setAccessible(true);
+            permissionManager.set(at, (IPermissionManager) ArrayList::new);
+        } catch (NoSuchFieldException | IllegalAccessException ignored) {
+        }
+
         List<Module> modules = new LinkedList<>();
         try (Cursor cursor = db.query("scope INNER JOIN modules ON scope.mid = modules.mid", new String[]{"module_pkg_name", "apk_path"}, "app_pkg_name=? AND enabled=1", new String[]{"android"}, null, null, null)) {
             int apkPathIdx = cursor.getColumnIndex("apk_path");
@@ -202,10 +221,32 @@ public class ConfigManager {
                 var module = new Module();
                 module.apkPath = cursor.getString(apkPathIdx);
                 module.packageName = cursor.getString(pkgNameIdx);
-                module.appId = -1;
+                var statPath = toGlobalNamespace("/data/user_de/0/" + module.packageName).getAbsolutePath();
+                try {
+                    module.appId = Os.stat(statPath).st_uid;
+                } catch (ErrnoException e) {
+                    Log.w(TAG, "cannot stat " + statPath, e);
+                    module.appId = -1;
+                }
+                try {
+                    var apkFile = new File(module.apkPath);
+                    var pkg = new PackageParser().parsePackage(apkFile, 0, false);
+                    module.applicationInfo = pkg.applicationInfo;
+                } catch (PackageParser.PackageParserException e) {
+                    Log.w(TAG, "failed to parse parse " + module.apkPath, e);
+                }
+                module.service = new LSPInjectedModuleService(module);
                 modules.add(module);
             }
         }
+
+        if (permissionManager != null) {
+            try {
+                permissionManager.set(at, null);
+            } catch (IllegalAccessException ignored) {
+            }
+        }
+
         return modules.parallelStream().filter(m -> {
             var file = ConfigFileManager.loadModule(m.apkPath, dexObfuscate);
             if (file == null) {
@@ -241,6 +282,9 @@ public class ConfigManager {
 
         value = config.get("enable_status_notification");
         enableStatusNotification = value == null || (boolean) value;
+
+        var set = (Set<String>) config.get("scope_request_blocked");
+        scopeRequestBlocked = set == null ? new HashSet<>() : set;
 
         // Don't migrate to ConfigFileManager, as XSharedPreferences will be restored soon
         String string = (String) config.get("misc_path");
@@ -407,8 +451,8 @@ public class ConfigManager {
     }
 
     private @NonNull
-    Map<String, ConcurrentHashMap<String, Object>> fetchModuleConfig(String name, int user_id) {
-        var config = new ConcurrentHashMap<String, ConcurrentHashMap<String, Object>>();
+    Map<String, HashMap<String, Object>> fetchModuleConfig(String name, int user_id) {
+        var config = new ConcurrentHashMap<String, HashMap<String, Object>>();
 
         try (Cursor cursor = db.query("configs", new String[]{"`group`", "`key`", "data"},
                 "module_pkg_name = ? and user_id = ?", new String[]{name, String.valueOf(user_id)}, null, null, null)) {
@@ -425,33 +469,61 @@ public class ConfigManager {
                 var data = cursor.getBlob(dataIdx);
                 var object = SerializationUtils.deserialize(data);
                 if (object == null) continue;
-                config.computeIfAbsent(group, g -> new ConcurrentHashMap<>()).put(key, object);
+                config.computeIfAbsent(group, g -> new HashMap<>()).put(key, object);
             }
         }
         return config;
     }
 
     public void updateModulePrefs(String moduleName, int userId, String group, String key, Object value) {
+        Map<String, Object> values = new HashMap<>();
+        values.put(key, value);
+        updateModulePrefs(moduleName, userId, group, values);
+    }
+
+    public void updateModulePrefs(String moduleName, int userId, String group, Map<String, Object> values) {
         var config = cachedConfig.computeIfAbsent(new Pair<>(moduleName, userId), module -> fetchModuleConfig(module.first, module.second));
-        var prefs = config.computeIfAbsent(group, g -> new ConcurrentHashMap<>());
-        if (value instanceof Serializable) {
-            prefs.put(key, value);
-            var values = new ContentValues();
-            values.put("`group`", group);
-            values.put("`key`", key);
-            values.put("data", SerializationUtils.serialize((Serializable) value));
-            values.put("module_pkg_name", moduleName);
-            values.put("user_id", String.valueOf(userId));
-            db.insertWithOnConflict("configs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-        } else {
-            prefs.remove(key);
-            db.delete("configs", "module_pkg_name=? and user_id=? and `group`=? and `key`=?", new String[]{moduleName, String.valueOf(userId), group, key});
+        config.compute(group, (g, prefs) -> {
+            HashMap<String, Object> newPrefs = prefs == null ? new HashMap<>() : new HashMap<>(prefs);
+            executeInTransaction(() -> {
+                for (var entry : values.entrySet()) {
+                    var key = entry.getKey();
+                    var value = entry.getValue();
+                    if (value instanceof Serializable) {
+                        newPrefs.put(key, value);
+                        var contents = new ContentValues();
+                        contents.put("`group`", group);
+                        contents.put("`key`", key);
+                        contents.put("data", SerializationUtils.serialize((Serializable) value));
+                        contents.put("module_pkg_name", moduleName);
+                        contents.put("user_id", String.valueOf(userId));
+                        db.insertWithOnConflict("configs", null, contents, SQLiteDatabase.CONFLICT_REPLACE);
+                    } else {
+                        newPrefs.remove(key);
+                        db.delete("configs", "module_pkg_name=? and user_id=? and `group`=? and `key`=?", new String[]{moduleName, String.valueOf(userId), group, key});
+                    }
+                }
+                var bundle = new Bundle();
+                bundle.putSerializable("config", (Serializable) config);
+                if (bundle.size() > 1024 * 1024) {
+                    throw new IllegalArgumentException("Preference too large");
+                }
+            });
+            return newPrefs;
+        });
+    }
+
+    public void deleteModulePrefs(String moduleName, int userId, String group) {
+        db.delete("configs", "module_pkg_name=? and user_id=? and `group`=?", new String[]{moduleName, String.valueOf(userId), group});
+        var config = cachedConfig.getOrDefault(new Pair<>(moduleName, userId), null);
+        if (config != null) {
+            config.remove(group);
         }
     }
 
-    public ConcurrentHashMap<String, Object> getModulePrefs(String moduleName, int userId, String group) {
+    public HashMap<String, Object> getModulePrefs(String moduleName, int userId, String group) {
         var config = cachedConfig.computeIfAbsent(new Pair<>(moduleName, userId), module -> fetchModuleConfig(module.first, module.second));
-        return config.getOrDefault(group, new ConcurrentHashMap<>());
+        return config.getOrDefault(group, new HashMap<>());
     }
 
     private synchronized void clearCache() {
@@ -497,6 +569,7 @@ public class ConfigManager {
                 var module = new Module();
                 module.packageName = packageName;
                 module.apkPath = apkPath;
+                module.service = new LSPInjectedModuleService(module);
                 modules.add(module);
             }
 
@@ -537,6 +610,7 @@ public class ConfigManager {
                     obsoletePaths.put(m.packageName, m.apkPath);
                 }
                 m.appId = pkgInfo.applicationInfo.uid;
+                m.applicationInfo = pkgInfo.applicationInfo;
                 return true;
             }).forEach(m -> {
                 var file = ConfigFileManager.loadModule(m.apkPath, dexObfuscate);
@@ -655,6 +729,7 @@ public class ConfigManager {
                 for (Application obsoleteModule : obsoleteModules) {
                     Log.d(TAG, "removing obsolete module: " + obsoleteModule.packageName + "/" + obsoleteModule.userId);
                     removeModuleScopeWithoutCache(obsoleteModule);
+                    removeBlockedScopeRequest(obsoleteModule.packageName);
                 }
             } else {
                 Log.w(TAG, "pm is dead while caching. invalidating...");
@@ -717,7 +792,7 @@ public class ConfigManager {
                 return false;
             }
             try (var zip = new ZipFile(toGlobalNamespace(apk))) {
-                return zip.getEntry("assets/xposed_init") != null;
+                return zip.getEntry("META-INF/xposed/java_init.list") != null || zip.getEntry("assets/xposed_init") != null;
             } catch (IOException e) {
                 return false;
             }
@@ -793,6 +868,37 @@ public class ConfigManager {
         updateCaches(false);
         return true;
     }
+
+    public boolean setModuleScope(String packageName, String scopePackageName, int userId) {
+        if (scopePackageName == null) return false;
+        int mid = getModuleId(packageName);
+        if (mid == -1) return false;
+        if (scopePackageName.equals("android") && userId != 0) return false;
+        executeInTransaction(() -> {
+            ContentValues values = new ContentValues();
+            values.put("mid", mid);
+            values.put("app_pkg_name", scopePackageName);
+            values.put("user_id", userId);
+            db.insertWithOnConflict("scope", null, values, SQLiteDatabase.CONFLICT_IGNORE);
+        });
+        // Called by xposed service, should be async
+        updateCaches(false);
+        return true;
+    }
+
+    public boolean removeModuleScope(String packageName, String scopePackageName, int userId) {
+        if (scopePackageName == null) return false;
+        int mid = getModuleId(packageName);
+        if (mid == -1) return false;
+        if (scopePackageName.equals("android") && userId != 0) return false;
+        executeInTransaction(() -> {
+            db.delete("scope", "mid = ? AND app_pkg_name = ? AND user_id = ?", new String[]{String.valueOf(mid), scopePackageName, String.valueOf(userId)});
+        });
+        // Called by xposed service, should be async
+        updateCaches(false);
+        return true;
+    }
+
 
     public String[] enabledModules() {
         return listModules("enabled");
@@ -909,6 +1015,24 @@ public class ConfigManager {
         updateModulePrefs("lspd", 0, "config", "enable_dex_obfuscate", on);
     }
 
+    public boolean scopeRequestBlocked(String packageName) {
+        return scopeRequestBlocked.contains(packageName);
+    }
+
+    public void blockScopeRequest(String packageName) {
+        var set = new HashSet<>(scopeRequestBlocked);
+        set.add(packageName);
+        updateModulePrefs("lspd", 0, "config", "scope_request_blocked", set);
+        scopeRequestBlocked = set;
+    }
+
+    public void removeBlockedScopeRequest(String packageName) {
+        var set = new HashSet<>(scopeRequestBlocked);
+        set.remove(packageName);
+        updateModulePrefs("lspd", 0, "config", "scope_request_blocked", set);
+        scopeRequestBlocked = set;
+    }
+
     // this is for manager and should not use the cache result
     boolean dexObfuscate() {
         Map<String, Object> config = getModulePrefs("lspd", 0, "config");
@@ -994,16 +1118,11 @@ public class ConfigManager {
     }
 
     // this is slow, avoid using it
-    public String getModule(int uid) {
+    public Module getModule(int uid) {
         for (var module : cachedModule.values()) {
-            if (module.appId == uid % PER_USER_RANGE) return module.packageName;
+            if (module.appId == uid % PER_USER_RANGE) return module;
         }
         return null;
-    }
-
-    public boolean isModule(int uid, String name) {
-        var module = cachedModule.getOrDefault(name, null);
-        return module != null && module.appId == uid % PER_USER_RANGE;
     }
 
     private void walkFileTree(Path rootDir, Consumer<Path> action) throws IOException {
@@ -1021,24 +1140,6 @@ public class ConfigManager {
                 return FileVisitResult.CONTINUE;
             }
         });
-    }
-
-    public void ensureModulePrefsPermission(int uid, String packageName) {
-        if (packageName == null) return;
-        var path = Paths.get(getPrefsPath(packageName, uid));
-        try {
-            var perms = PosixFilePermissions.fromString("rwx--x--x");
-            Files.createDirectories(path, PosixFilePermissions.asFileAttribute(perms));
-            walkFileTree(path, p -> {
-                try {
-                    Os.chown(p.toString(), uid, uid);
-                } catch (ErrnoException e) {
-                    Log.e(TAG, Log.getStackTraceString(e));
-                }
-            });
-        } catch (IOException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-        }
     }
 
     private void removeModulePrefs(int uid, String packageName) throws IOException {

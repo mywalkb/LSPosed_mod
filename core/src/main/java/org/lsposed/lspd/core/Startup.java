@@ -28,10 +28,12 @@ import android.content.res.CompatibilityInfo;
 import com.android.internal.os.ZygoteInit;
 
 import org.lsposed.lspd.deopt.PrebuiltMethodsDeopter;
+import org.lsposed.lspd.hooker.AttachHooker;
 import org.lsposed.lspd.hooker.CrashDumpHooker;
 import org.lsposed.lspd.hooker.HandleSystemServerProcessHooker;
 import org.lsposed.lspd.hooker.LoadedApkCtorHooker;
 import org.lsposed.lspd.hooker.OpenDexFileHooker;
+import org.lsposed.lspd.impl.LSPosedContext;
 import org.lsposed.lspd.service.ILSPApplicationService;
 import org.lsposed.lspd.util.Utils;
 
@@ -59,6 +61,7 @@ public class Startup {
                 ActivityThread.class, ApplicationInfo.class, CompatibilityInfo.class,
                 ClassLoader.class, boolean.class, boolean.class, boolean.class,
                 new LoadedApkCtorHooker());
+        XposedBridge.hookAllMethods(ActivityThread.class, "attach", new AttachHooker());
     }
 
     public static void bootstrapXposed() {
@@ -71,11 +74,14 @@ public class Startup {
         }
     }
 
-    public static void initXposed(boolean isSystem, String processName, ILSPApplicationService service) {
+    public static void initXposed(boolean isSystem, String processName, String appDir, ILSPApplicationService service) {
         // init logger
         ApplicationServiceClient.Init(service, processName);
         XposedBridge.initXResources();
         XposedInit.startsSystemServer = isSystem;
+        LSPosedContext.isSystemServer = isSystem;
+        LSPosedContext.appDir = appDir;
+        LSPosedContext.processName = processName;
         PrebuiltMethodsDeopter.deoptBootMethods(); // do it once for secondary zygote
     }
 }

@@ -39,6 +39,7 @@ import android.os.IBinder;
 import android.os.Process;
 import android.util.Log;
 
+import org.lsposed.lspd.impl.LSPosedContext;
 import org.lsposed.lspd.models.PreLoadedApk;
 import org.lsposed.lspd.nativebridge.NativeAPI;
 import org.lsposed.lspd.nativebridge.ResourcesHook;
@@ -181,9 +182,8 @@ public final class XposedInit {
 
         // Replace system resources
         XResources systemRes = new XResources(
-                (ClassLoader) XposedHelpers.getObjectField(Resources.getSystem(), "mClassLoader"));
+                (ClassLoader) XposedHelpers.getObjectField(Resources.getSystem(), "mClassLoader"), null);
         HiddenApiBridge.Resources_setImpl(systemRes, (ResourcesImpl) XposedHelpers.getObjectField(Resources.getSystem(), "mResourcesImpl"));
-        systemRes.initObject(null);
         setStaticObjectField(Resources.class, "mSystem", systemRes);
 
         XResources.init(latestResKey);
@@ -196,10 +196,9 @@ public final class XposedInit {
         }
 
         // Replace the returned resources with our subclass.
-        XResources newRes = new XResources(
-                (ClassLoader) XposedHelpers.getObjectField(param.getResult(), "mClassLoader"));
+        var newRes = new XResources(
+                (ClassLoader) XposedHelpers.getObjectField(param.getResult(), "mClassLoader"), resDir);
         HiddenApiBridge.Resources_setImpl(newRes, (ResourcesImpl) XposedHelpers.getObjectField(param.getResult(), "mResourcesImpl"));
-        newRes.initObject(resDir);
 
         // Invoke handleInitPackageResources().
         if (newRes.isFirstLoad()) {
@@ -221,7 +220,7 @@ public final class XposedInit {
     }
 
     public static void loadModules() {
-        var moduleList = serviceClient.getModulesList();
+        var moduleList = serviceClient.getLegacyModulesList();
         moduleList.forEach(module -> {
             var apk = module.apkPath;
             var name = module.packageName;
@@ -286,7 +285,7 @@ public final class XposedInit {
      * in <code>assets/xposed_init</code>.
      */
     private static boolean loadModule(String name, String apk, PreLoadedApk file) {
-        Log.i(TAG, "Loading module " + name + " from " + apk);
+        Log.i(TAG, "Loading legacy module " + name + " from " + apk);
 
         var sb = new StringBuilder();
         var abis = Process.is64Bit() ? Build.SUPPORTED_64_BIT_ABIS : Build.SUPPORTED_32_BIT_ABIS;
