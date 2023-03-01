@@ -52,7 +52,7 @@ jobs:
           repository: libxposed/api
           path: libxposed/api
 
-      - name: Checkout libxposed/api
+      - name: Checkout libxposed/service
         uses: actions/checkout@v3
         with:
           repository: libxposed/service
@@ -72,8 +72,7 @@ jobs:
           cd api
           echo 'org.gradle.jvmargs=-Xmx2048m' >> gradle.properties
           ./gradlew :api:publishApiPublicationToMavenLocal
-          cd ..
-          cd service
+          cd ../service
           echo 'org.gradle.jvmargs=-Xmx2048m' >> gradle.properties
           ./gradlew :interface:publishInterfacePublicationToMavenLocal
 
@@ -134,3 +133,15 @@ jobs:
         with:
           name: xposed_service-debug
           path: services/xposed-service/interface/build/intermediates/javac/debug/classes/*
+
+      - name: Upload libxposed api Release jar
+        uses: actions/upload-artifact@v3
+        with:
+          name: libxposed-release
+          path: libxposed/api/api/build/intermediates/javac/release/classes/*
+
+      - name: Upload libxposed service-interface Release jar
+        uses: actions/upload-artifact@v3
+        with:
+          name: libxposed-release
+          path: libxposed/service/interface/build/intermediates/javac/release/classes/*
