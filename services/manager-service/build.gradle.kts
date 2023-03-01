@@ -37,4 +37,5 @@ android {
 
 dependencies {
     api(libs.rikkax.parcelablelist)
+    api(projects.services.xposedService.`interface`)
 }

@@ -36,6 +36,7 @@ import com.android.internal.os.BinderInternal;
 import org.lsposed.daemon.BuildConfig;
 
 import java.io.File;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -43,6 +44,7 @@ import hidden.HiddenApiBridge;
 
 public class ServiceManager {
     public static final String TAG = "LSPosedService";
+    private static final ConcurrentHashMap<String, LSPLegacyModuleService> moduleServices = new ConcurrentHashMap<>();
     private static final File globalNamespace = new File("/proc/1/root");
     @SuppressWarnings("FieldCanBeLocal")
     private static LSPosedService mainService = null;
@@ -169,6 +171,10 @@ public class ServiceManager {
 
         Looper.loop();
         throw new RuntimeException("Main thread loop unexpectedly exited");
+    }
+
+    public static LSPLegacyModuleService getModuleService(String module) {
+        return moduleServices.computeIfAbsent(module, LSPLegacyModuleService::new);
     }
 
     public static LSPApplicationService getApplicationService() {

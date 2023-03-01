@@ -28,6 +28,7 @@ import android.app.AndroidAppHelper;
 import android.app.LoadedApk;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
+import android.os.IBinder;
 
 import androidx.annotation.NonNull;
 

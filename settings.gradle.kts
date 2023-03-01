@@ -102,4 +102,5 @@ include(
     ":magisk-loader",
     ":services:manager-service",
     ":services:daemon-service",
+    ":services:xposed-service:interface",
 )

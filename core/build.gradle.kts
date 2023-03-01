@@ -17,6 +17,7 @@
  * Copyright (C) 2021 - 2022 LSPosed Contributors
  */
 
+val apiCode: Int by rootProject.extra
 val verName: String by rootProject.extra
 val verCode: Int by rootProject.extra
 
@@ -35,6 +36,7 @@ android {
     defaultConfig {
         consumerProguardFiles("proguard-rules.pro")
 
+        buildConfigField("int", "API_CODE", "$apiCode")
         buildConfigField("String", "FRAMEWORK_NAME", """"${rootProject.name}"""")
         buildConfigField("String", "VERSION_NAME", """"$verName"""")
         buildConfigField("long", "VERSION_CODE", """$verCode""")

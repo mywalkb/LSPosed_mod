@@ -1125,6 +1125,11 @@ public class ConfigManager {
         return null;
     }
 
+    public boolean isModule(int uid, String name) {
+        var module = cachedModule.getOrDefault(name, null);
+        return module != null && module.appId == uid % PER_USER_RANGE;
+    }
+
     private void walkFileTree(Path rootDir, Consumer<Path> action) throws IOException {
         if (Files.notExists(rootDir)) return;
         Files.walkFileTree(rootDir, new SimpleFileVisitor<>() {
@@ -1140,6 +1145,24 @@ public class ConfigManager {
                 return FileVisitResult.CONTINUE;
             }
         });
+    }
+
+    public void ensureModulePrefsPermission(int uid, String packageName) {
+        if (packageName == null) return;
+        var path = Paths.get(getPrefsPath(packageName, uid));
+        try {
+            var perms = PosixFilePermissions.fromString("rwx--x--x");
+            Files.createDirectories(path, PosixFilePermissions.asFileAttribute(perms));
+            walkFileTree(path, p -> {
+                try {
+                    Os.chown(p.toString(), uid, uid);
+                } catch (ErrnoException e) {
+                    Log.e(TAG, Log.getStackTraceString(e));
+                }
+            });
+        } catch (IOException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
     }
 
     private void removeModulePrefs(int uid, String packageName) throws IOException {

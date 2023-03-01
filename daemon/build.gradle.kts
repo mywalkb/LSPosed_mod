@@ -36,6 +36,7 @@ val injectedPackageUid: Int by rootProject.extra
 val agpVersion: String by project
 
 val defaultManagerPackageName: String by rootProject.extra
+val apiCode: Int by rootProject.extra
 
 android {
     buildFeatures {
@@ -45,6 +46,7 @@ android {
     defaultConfig {
         applicationId = "org.lsposed.daemon"
 
+        buildConfigField("int", "API_CODE", "$apiCode")
         buildConfigField(
             "String",
             "DEFAULT_MANAGER_PACKAGE_NAME",
