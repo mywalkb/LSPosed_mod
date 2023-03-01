@@ -20,7 +20,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            val agpVersion = version("agp", "7.4.1")
+            val agpVersion = version("agp", "7.4.2")
             val kotlinVersion = version("kotlin", "1.8.10")
             val navVersion = version("nav", "2.5.3")
             val appCenterVersion = version("appcenter", "5.0.0")
@@ -59,7 +59,7 @@ dependencyResolutionManagement {
             library("rikkax-widget-mainswitchbar", "dev.rikka.rikkax.widget:mainswitchbar:1.0.2")
 
             library("androidx-activity", "androidx.activity:activity:1.6.1")
-            library("androidx-annotation", "androidx.annotation:annotation:1.5.0")
+            library("androidx-annotation", "androidx.annotation:annotation:1.6.0")
             library("androidx-browser", "androidx.browser:browser:1.5.0")
             library("androidx-constraintlayout", "androidx.constraintlayout:constraintlayout:2.1.4")
             library("androidx-core", "androidx.core:core:1.9.0")
