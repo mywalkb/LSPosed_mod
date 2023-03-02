@@ -137,11 +137,11 @@ jobs:
       - name: Upload libxposed api Release jar
         uses: actions/upload-artifact@v3
         with:
-          name: libxposed-release
+          name: libxposed-api-release
           path: libxposed/api/api/build/intermediates/javac/release/classes/*
 
       - name: Upload libxposed service-interface Release jar
         uses: actions/upload-artifact@v3
         with:
-          name: libxposed-release
+          name: libxposed-service-release
           path: libxposed/service/interface/build/intermediates/javac/release/classes/*
