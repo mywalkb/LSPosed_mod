@@ -41,11 +41,13 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Optional;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.XposedInit;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import io.github.libxposed.api.XposedModuleInterface;
 
@@ -68,13 +70,16 @@ public class LoadedApkGetCLHooker extends XC_MethodHook {
     private final LoadedApk loadedApk;
     private final Unhook unhook;
 
-    public LoadedApkGetCLHooker(LoadedApk loadedApk) {
+    private final boolean isFirstPackage;
+
+    public LoadedApkGetCLHooker(LoadedApk loadedApk, boolean isFirstPackage) {
         this.loadedApk = loadedApk;
+        this.isFirstPackage = isFirstPackage;
         unhook = XposedHelpers.findAndHookMethod(LoadedApk.class, "getClassLoader", this);
     }
 
     @Override
-    protected void afterHookedMethod(MethodHookParam param) {
+    protected void afterHookedMethod(MethodHookParam<?> param) {
         LoadedApk loadedApk = (LoadedApk) param.thisObject;
 
         if (loadedApk != this.loadedApk) {
@@ -84,15 +89,8 @@ public class LoadedApkGetCLHooker extends XC_MethodHook {
         try {
             Hookers.logD("LoadedApk#getClassLoader starts");
 
-            String packageName = ActivityThread.currentPackageName();
-            String processName = ActivityThread.currentProcessName();
-            boolean isFirstPackage = packageName != null && processName != null && packageName.equals(loadedApk.getPackageName());
-            if (!isFirstPackage) {
-                packageName = loadedApk.getPackageName();
-                processName = AndroidAppHelper.currentProcessName();
-            } else if (packageName.equals("android")) {
-                packageName = "system";
-            }
+            final String processName = AndroidAppHelper.currentProcessName();
+            final String packageName = isFirstPackage && "android".equals(ActivityThread.currentPackageName()) ? "system" : loadedApk.getPackageName();
 
             Object mAppDir = XposedHelpers.getObjectField(loadedApk, "mAppDir");
             ClassLoader classLoader = (ClassLoader) param.getResult();
@@ -110,7 +108,9 @@ public class LoadedApkGetCLHooker extends XC_MethodHook {
             lpparam.appInfo = loadedApk.getApplicationInfo();
             lpparam.isFirstApplication = isFirstPackage;
 
-            hookNewXSP(lpparam);
+            if (isFirstPackage && XposedInit.getLoadedModules().getOrDefault(packageName, Optional.empty()).isPresent()) {
+                hookNewXSP(lpparam);
+            }
 
             IBinder moduleBinder = serviceClient.requestModuleBinder(lpparam.packageName);
             if (moduleBinder != null) {
