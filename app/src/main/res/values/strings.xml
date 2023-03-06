@@ -213,7 +213,7 @@
     <string name="update_channel_bate">Beta</string>
     <string name="update_channel_nightly">Nightly build</string>
     <string name="settings_xposed_api_call_protection">Xposed API call protection</string>
-    <string name="settings_xposed_api_call_protection_summary">Block dynamically loaded module code to use Xposed API, this may break some modules but benefit security (experimental feature)</string>
+    <string name="settings_xposed_api_call_protection_summary">Block dynamically loaded module code to use Xposed API, this may break some modules but benefit security</string>
     <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
     <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
     <string name="settings_group_cli">CLI</string>

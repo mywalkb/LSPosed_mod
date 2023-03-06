@@ -153,14 +153,14 @@ public class SettingsFragment extends BaseFragment {
                 prefDexObfuscate.setEnabled(installed);
                 prefDexObfuscate.setChecked(!installed || ConfigManager.isDexObfuscateEnabled());
                 prefDexObfuscate.setOnPreferenceChangeListener((preference, newValue) -> {
-                    parentFragment.showHint(R.string.reboot_required, true, R.string.reboot, v -> ConfigManager.reboot(false));
+                    parentFragment.showHint(R.string.reboot_required, true, R.string.reboot, v -> ConfigManager.reboot());
                     return ConfigManager.setDexObfuscateEnabled((boolean) newValue);
                 });
             }
 
             MaterialSwitchPreference notification = findPreference("enable_status_notification");
             if (notification != null) {
-                if (App.isParasitic() && !ShortcutUtil.isLaunchShortcutPinned()) {
+                if (App.isParasitic && !ShortcutUtil.isLaunchShortcutPinned()) {
                     var s = notification.getContext().getString(R.string.disable_status_notification_error);
                     notification.setSummaryOn(notification.getSummary() + "\n" + s);
                     if (ConfigManager.enableStatusNotification()) notification.setEnabled(false);
@@ -168,7 +168,7 @@ public class SettingsFragment extends BaseFragment {
                 notification.setVisible(installed);
                 notification.setChecked(installed && ConfigManager.enableStatusNotification());
                 notification.setOnPreferenceChangeListener((p, v) -> {
-                    if ((boolean) v && App.isParasitic() && !ShortcutUtil.isLaunchShortcutPinned()) {
+                    if ((boolean) v && App.isParasitic && !ShortcutUtil.isLaunchShortcutPinned()) {
                         p.setEnabled(false);
                     }
                     return ConfigManager.setEnableStatusNotification((boolean) v);
@@ -177,7 +177,7 @@ public class SettingsFragment extends BaseFragment {
 
             Preference shortcut = findPreference("add_shortcut");
             if (shortcut != null) {
-                shortcut.setVisible(App.isParasitic());
+                shortcut.setVisible(App.isParasitic);
                 if (ShortcutUtil.isLaunchShortcutPinned()) {
                     shortcut.setEnabled(false);
                     shortcut.setSummary(R.string.settings_created_shortcut_summary);
