@@ -250,7 +250,7 @@ public class App extends Application {
                     }
                 }
             }
-        }, intentFilter);
+        }, intentFilter, Context.RECEIVER_NOT_EXPORTED);
 
         UpdateUtil.loadRemoteVersion();
 
