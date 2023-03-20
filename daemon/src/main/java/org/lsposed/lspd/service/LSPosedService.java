@@ -177,7 +177,7 @@ public class LSPosedService extends ILSPosedService.Stub {
                         // it will automatically remove obsolete app from database
                         configManager.updateAppCache();
                     }
-                    if (intentAction.equals(Intent.ACTION_PACKAGE_ADDED)) {
+                    if (intentAction.equals(Intent.ACTION_PACKAGE_ADDED) && !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) {
                         for (String module : configManager.getAutomaticAddModules()) {
                             var list = configManager.getModuleScope(module);
                             if (list != null) {
