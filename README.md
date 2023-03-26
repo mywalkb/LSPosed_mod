@@ -18,7 +18,7 @@ Android 8.1 ~ 13
 
 ## Install
 
-1. Install Magisk v24+
+1. Install Magisk v24+ (For Zygisk flavor) or Magisk 23 (For Riru flavor)
 2. (For Riru flavor) Install [Riru](https://github.com/RikkaApps/Riru/releases/latest) v26.1.7+
 3. [Download](#download) and install LSPosed in Magisk app
 4. Reboot
