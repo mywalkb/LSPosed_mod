@@ -21,12 +21,12 @@ import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.api.AndroidBasePlugin
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.lsplugin.cmaker)
     alias(libs.plugins.lsplugin.jgit)
     alias(libs.plugins.agp.lib) apply false
     alias(libs.plugins.agp.app) apply false
+    alias(libs.plugins.nav.safeargs) apply false
 }
 
 cmaker {
