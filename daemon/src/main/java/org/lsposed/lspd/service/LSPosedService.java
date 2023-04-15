@@ -179,8 +179,8 @@ public class LSPosedService extends ILSPosedService.Stub {
                         configManager.updateAppCache();
                     }
                     if (intentAction.equals(Intent.ACTION_PACKAGE_ADDED) && !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) {
-                        for (String module : configManager.getAutomaticAddModules()) {
-                            var list = configManager.getModuleScope(module);
+                        for (String moduleAdd : configManager.getAutomaticAddModules()) {
+                            var list = configManager.getModuleScope(moduleAdd);
                             if (list != null) {
                                 Application scope = new Application();
                                 scope.packageName = moduleName;
@@ -188,11 +188,11 @@ public class LSPosedService extends ILSPosedService.Stub {
 
                                 list.add(scope);
                                 try {
-                                    if (!configManager.setModuleScope(module, list)) {
-                                        Log.e(TAG, "failed set scope for " + module);
+                                    if (!configManager.setModuleScope(moduleAdd, list)) {
+                                        Log.e(TAG, "failed set scope for " + moduleAdd);
                                     }
                                 } catch(RemoteException re) {
-                                    Log.e(TAG, "failed set scope for " + module, re);
+                                    Log.e(TAG, "failed set scope for " + moduleAdd, re);
                                 }
                             }
                         }
