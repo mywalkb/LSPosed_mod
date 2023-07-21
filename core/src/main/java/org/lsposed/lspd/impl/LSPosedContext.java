@@ -212,11 +212,11 @@ public class LSPosedContext extends XposedContext {
                 }
             }
             Log.d(TAG, "Loaded module " + module.packageName + ": " + ctx);
+            module.file.moduleLibraryNames.forEach(NativeAPI::recordNativeEntrypoint);
             return true;
         } catch (Throwable e) {
             Log.d(TAG, "Loading module " + module.packageName, e);
         }
-        module.file.moduleLibraryNames.forEach(NativeAPI::recordNativeEntrypoint);
         return false;
     }
 
@@ -860,11 +860,6 @@ public class LSPosedContext extends XposedContext {
         } catch (RemoteException ignored) {
             return -1;
         }
-    }
-
-    @Override
-    public Object featuredMethod(String name, Object... args) {
-        throw new UnsupportedOperationException();
     }
 
     private <T, U extends Executable> MethodUnhooker<T, U> doHook(U hookMethod, int priority, T callback) {
