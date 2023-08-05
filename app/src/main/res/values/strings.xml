@@ -76,6 +76,7 @@
     <string name="sepolicy_incorrect">SELinux policy is incorrect</string>
     <string name="update_lsposed">Update LSPosed</string>
     <string name="update_lsposed_msg">Confirm to update LSPosed? This device will reboot after update completion</string>
+    <string name="info_copied">Copied to clipboard</string>
 
     <!-- WelcomeDialog -->
     <string name="parasitic_welcome">Welcome to LSPosed</string>
@@ -90,6 +91,7 @@
     <string name="menuSaveToSd">Save</string>
     <string name="nav_item_logs_verbose">Verbose Logs</string>
     <string name="nav_item_logs_module">Modules Logs</string>
+    <string name="logs_saving">Saving log, please wait</string>
     <string name="logs_saved">Logs saved</string>
     <string name="logs_save_failed2">Failed to save:\n%s</string>
     <string name="menuClearLog">Clear log now</string>
@@ -204,7 +206,6 @@
     <string name="settings_translation_summary">Help us translate %s into your language</string>
     <string name="settings_create_shortcut_summary">Create a shortcut that can open parasitic manager</string>
     <string name="settings_shortcut_pinned_hint">Shortcut pinned</string>
-    <string name="settings_created_shortcut_summary">A shortcut has been created to open parasitic manager</string>
     <string name="settings_unsupported_pin_shortcut_summary">The current default launcher does not support pin shortcuts</string>
     <string name="settings_enable_status_notification">Status Notification</string>
     <string name="settings_enable_status_notification_summary">Show a notification that can open parasitic manager</string>
@@ -238,13 +239,11 @@
     <string name="module_release_no_more">No more release</string>
     <string name="repo_load_failed">Failed to load module repo: %s</string>
     <string name="sort_upgradable_first">Upgradable first</string>
-
-    <!-- CrashReportActivity -->
-    <string name="version_mismatch">The version of the LSPosed framework (%1$d) does not match manager (%2$d). Please reinstall LSPosed.</string>
-    <string name="manager_crashed">Manager crashed</string>
-    <string name="send_crash_info">Send crash info</string>
-    <string name="crash_info_copied">Crash info copied to clipboard</string>
-    <string name="info_copied">Copied to clipboard</string>
+    <string name="installed">Installed</string>
+    <plurals name="module_release_assets_download_count">
+        <item quantity="one">%d download</item>
+        <item quantity="other">%d downloads</item>
+    </plurals>
 
     <!-- Colors -->
     <string name="color_sakura">Sakura</string>
@@ -266,9 +265,5 @@
     <string name="color_deep_orange">Deep orange</string>
     <string name="color_brown">Brown</string>
     <string name="color_blue_grey">Blue grey</string>
-    <string name="installed">Installed</string>
-    <plurals name="module_release_assets_download_count">
-        <item quantity="one">%d download</item>
-        <item quantity="other">%d downloads</item>
-    </plurals>
+
 </resources>
