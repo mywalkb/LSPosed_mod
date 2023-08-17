@@ -77,13 +77,6 @@ android {
         }
     }
 
-    sourceSets {
-        named("main") {
-            res {
-                srcDir(project(":app").file("src/common/res"))
-            }
-        }
-    }
     namespace = "org.lsposed.daemon"
 }
 
