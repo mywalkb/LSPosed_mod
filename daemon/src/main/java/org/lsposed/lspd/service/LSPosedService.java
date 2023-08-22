@@ -50,6 +50,7 @@ import org.lsposed.lspd.models.Application;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.zip.ZipFile;
 
@@ -63,6 +64,8 @@ public class LSPosedService extends ILSPosedService.Stub {
     public static final String ACTION_USER_REMOVED = "android.intent.action.USER_REMOVED";
     private static final String EXTRA_USER_HANDLE = "android.intent.extra.user_handle";
     private static final String EXTRA_REMOVED_FOR_ALL_USERS = "android.intent.extra.REMOVED_FOR_ALL_USERS";
+    private static boolean bootCompleted = false;
+    private IBinder appThread = null;
 
     private static boolean isModernModules(ApplicationInfo info) {
         String[] apks;
@@ -248,6 +251,7 @@ public class LSPosedService extends ILSPosedService.Stub {
     }
 
     private void dispatchBootCompleted(Intent intent) {
+        bootCompleted = true;
         try {
             var am = ActivityManagerService.getActivityManager();
             if (am != null) am.setActivityController(null, false);
@@ -263,6 +267,7 @@ public class LSPosedService extends ILSPosedService.Stub {
     }
 
     private void dispatchConfigurationChanged(Intent intent) {
+        if (!bootCompleted) return;
         ConfigFileManager.reloadConfiguration();
         var configManager = ConfigManager.getInstance();
         if (configManager.enableStatusNotification()) {
@@ -346,9 +351,10 @@ public class LSPosedService extends ILSPosedService.Stub {
                         Log.e(TAG, "performReceive: ", t);
                     }
                 });
-                if (!ordered) return;
+                if (!ordered && !Objects.equals(intent.getAction(), Intent.ACTION_LOCKED_BOOT_COMPLETED))
+                    return;
                 try {
-                    ActivityManagerService.finishReceiver(this, resultCode, data, extras, false, intent.getFlags());
+                    ActivityManagerService.finishReceiver(this, appThread, resultCode, data, extras, false, intent.getFlags());
                 } catch (RemoteException e) {
                     Log.e(TAG, "finish receiver", e);
                 }
@@ -407,7 +413,7 @@ public class LSPosedService extends ILSPosedService.Stub {
 
     private void registerBootCompleteReceiver() {
         var intentFilter = new IntentFilter(Intent.ACTION_LOCKED_BOOT_COMPLETED);
-
+        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         registerReceiver(List.of(intentFilter), 0, this::dispatchBootCompleted);
         Log.d(TAG, "registered boot receiver");
     }
@@ -472,14 +478,15 @@ public class LSPosedService extends ILSPosedService.Stub {
     }
 
     @Override
-    public void dispatchSystemServerContext(IBinder activityThread, IBinder activityToken, String api) {
+    public void dispatchSystemServerContext(IBinder appThread, IBinder activityToken, String api) {
         Log.d(TAG, "received system context");
+        this.appThread = appThread;
         ConfigManager.getInstance().setApi(api);
-        ActivityManagerService.onSystemServerContext(IApplicationThread.Stub.asInterface(activityThread), activityToken);
+        ActivityManagerService.onSystemServerContext(IApplicationThread.Stub.asInterface(appThread), activityToken);
+        registerBootCompleteReceiver();
         registerPackageReceiver();
         registerConfigurationReceiver();
         registerSecretCodeReceiver();
-        registerBootCompleteReceiver();
         registerUserChangeReceiver();
         registerOpenManagerReceiver();
         registerModuleScopeReceiver();
