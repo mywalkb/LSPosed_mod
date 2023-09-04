@@ -136,7 +136,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
                 enabled = !isChecked;
             }
             var tmpChkList = new HashSet<>(checkedList);
-            if (isChecked && !tmpChkList.isEmpty() && !ConfigManager.setModuleScope(module.packageName, tmpChkList)) {
+            if (isChecked && !tmpChkList.isEmpty() && !ConfigManager.setModuleScope(module.packageName, module.legacy, tmpChkList)) {
                 view.setChecked(false);
                 enabled = false;
             }
@@ -234,7 +234,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
             var tmpChkList = new HashSet<>(checkedList);
             tmpChkList.removeIf(i -> i.userId == module.userId);
             tmpChkList.addAll(recommendedList);
-            ConfigManager.setModuleScope(module.packageName, tmpChkList);
+            ConfigManager.setModuleScope(module.packageName, module.legacy, tmpChkList);
             checkedList = tmpChkList;
             fragment.runOnUiThread(this::notifyDataSetChanged);
         });
@@ -300,12 +300,12 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
                 }
                 tmpChkList.add(info.application);
             }
-            ConfigManager.setModuleScope(module.packageName, tmpChkList);
+            ConfigManager.setModuleScope(module.packageName, module.legacy, tmpChkList);
         } else if (itemId == R.id.select_none) {
             if (ConfigManager.getModuleScope(module.packageName).contains(new ApplicationWithEquals("android", 0))) {
                 fragment.showHint(R.string.reboot_required, true, R.string.reboot, v -> ConfigManager.reboot());
             }
-            ConfigManager.setModuleScope(module.packageName, new HashSet<ApplicationWithEquals>());
+            ConfigManager.setModuleScope(module.packageName, module.legacy, new HashSet<ApplicationWithEquals>());
         } else if (itemId == R.id.automatic_add) {
             item.setChecked(!item.isChecked());
             ConfigManager.setAutomaticAdd(module.packageName, item.isChecked());
@@ -591,7 +591,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
         } else {
             tmpChkList.remove(appInfo.application);
         }
-        if (!ConfigManager.setModuleScope(module.packageName, tmpChkList)) {
+        if (!ConfigManager.setModuleScope(module.packageName, module.legacy, tmpChkList)) {
             fragment.showHint(R.string.failed_to_save_scope_list, true);
             if (!isChecked) {
                 tmpChkList.add(appInfo.application);
@@ -612,7 +612,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
         return isLoaded;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout root;
         ImageView appIcon;
         TextView appName;
@@ -692,11 +692,11 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
             builder.setNegativeButton(!recommendedList.isEmpty() ? android.R.string.cancel : android.R.string.ok, (dialog, which) -> {
                 moduleUtil.setModuleEnabled(module.packageName, false);
                 Toast.makeText(activity, activity.getString(R.string.module_disabled_no_selection, module.getAppName()), Toast.LENGTH_LONG).show();
-                fragment.getNavController().navigateUp();
+                fragment.navigateUp();
             });
             builder.show();
         } else {
-            fragment.getNavController().navigateUp();
+            fragment.navigateUp();
         }
     }
 

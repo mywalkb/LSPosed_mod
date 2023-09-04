@@ -118,7 +118,7 @@ public class BackupUtils {
                                 scope.add(new ScopeAdapter.ApplicationWithEquals(scopeArray.getString(j), 0));
                             }
                         }
-                        ConfigManager.setModuleScope(name, scope);
+                        ConfigManager.setModuleScope(name, module.legacy, scope);
                     }
                 }
             } else {

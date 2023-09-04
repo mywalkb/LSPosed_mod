@@ -26,7 +26,6 @@ import static org.lsposed.lspd.service.ServiceManager.existsInGlobalNamespace;
 import static org.lsposed.lspd.service.ServiceManager.toGlobalNamespace;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityThread;
 import android.content.ContentValues;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -45,7 +44,6 @@ import android.os.RemoteException;
 import android.os.SELinux;
 import android.os.SharedMemory;
 import android.os.SystemClock;
-import android.permission.IPermissionManager;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.util.Log;
@@ -63,7 +61,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -135,7 +132,7 @@ public class ConfigManager {
 
         @Override
         public int hashCode() {
-            return processName.hashCode() ^ uid;
+            return Objects.hashCode(processName) ^ uid;
         }
     }
 
@@ -233,7 +230,7 @@ public class ConfigManager {
                     var pkg = new PackageParser().parsePackage(apkFile, 0, false);
                     module.applicationInfo = pkg.applicationInfo;
                 } catch (PackageParser.PackageParserException e) {
-                    Log.w(TAG, "failed to parse parse " + module.apkPath, e);
+                    Log.w(TAG, "failed to parse " + module.apkPath, e);
                 }
                 module.service = new LSPInjectedModuleService(module);
                 modules.add(module);
@@ -854,10 +851,6 @@ public class ConfigManager {
         enableModule(packageName);
         int mid = getModuleId(packageName);
         if (mid == -1) return false;
-        Application self = new Application();
-        self.packageName = packageName;
-        self.userId = 0;
-        scopes.add(self);
         executeInTransaction(() -> {
             db.delete("scope", "mid = ?", new String[]{String.valueOf(mid)});
             for (Application app : scopes) {
