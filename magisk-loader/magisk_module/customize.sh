@@ -86,8 +86,8 @@ extract "$ZIPFILE" 'sepolicy.rule'      "$MODPATH"
 extract "$ZIPFILE" 'framework/lspd.dex' "$MODPATH"
 extract "$ZIPFILE" 'daemon.apk'         "$MODPATH"
 extract "$ZIPFILE" 'daemon'             "$MODPATH"
-rm -f /data/adb/lspd/manager.apk
-extract "$ZIPFILE" 'manager.apk'        '/data/adb/lspd'
+rm -f "$MODPATH"/manager.apk
+extract "$ZIPFILE" 'manager.apk'        "$MODPATH"
 extract "$ZIPFILE" 'cli'                '/data/adb/lspd/bin'
 
 if [ "$FLAVOR" == "zygisk" ]; then

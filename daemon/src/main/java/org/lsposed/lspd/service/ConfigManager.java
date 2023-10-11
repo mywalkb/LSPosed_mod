@@ -88,6 +88,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import hidden.HiddenApiBridge;
+
 public class ConfigManager {
     private static ConfigManager instance = null;
 
@@ -218,6 +220,11 @@ public class ConfigManager {
                 var module = new Module();
                 module.apkPath = cursor.getString(apkPathIdx);
                 module.packageName = cursor.getString(pkgNameIdx);
+                var cached = cachedModule.get(module.packageName);
+                if (cached != null) {
+                    modules.add(cached);
+                    continue;
+                }
                 var statPath = toGlobalNamespace("/data/user_de/0/" + module.packageName).getAbsolutePath();
                 try {
                     module.appId = Os.stat(statPath).st_uid;
@@ -229,10 +236,15 @@ public class ConfigManager {
                     var apkFile = new File(module.apkPath);
                     var pkg = new PackageParser().parsePackage(apkFile, 0, false);
                     module.applicationInfo = pkg.applicationInfo;
+                    module.applicationInfo.sourceDir = module.apkPath;
+                    module.applicationInfo.dataDir = statPath;
+                    module.applicationInfo.deviceProtectedDataDir = statPath;
+                    HiddenApiBridge.ApplicationInfo_credentialProtectedDataDir(module.applicationInfo, statPath);
+                    module.applicationInfo.processName = module.packageName;
                 } catch (PackageParser.PackageParserException e) {
                     Log.w(TAG, "failed to parse " + module.apkPath, e);
                 }
-                module.service = new LSPInjectedModuleService(module);
+                module.service = new LSPInjectedModuleService(module.packageName);
                 modules.add(module);
             }
         }
@@ -571,7 +583,6 @@ public class ConfigManager {
                 var module = new Module();
                 module.packageName = packageName;
                 module.apkPath = apkPath;
-                module.service = new LSPInjectedModuleService(module);
                 modules.add(module);
             }
 
@@ -598,8 +609,8 @@ public class ConfigManager {
                     if (oldModule.appId != -1) {
                         Log.d(TAG, m.packageName + " did not change, skip caching it");
                     } else {
-                        // cache from system server, keep it and set only the appId
-                        oldModule.appId = pkgInfo.applicationInfo.uid;
+                        // cache from system server, update application info
+                        oldModule.applicationInfo = pkgInfo.applicationInfo;
                     }
                     return false;
                 }
@@ -613,6 +624,7 @@ public class ConfigManager {
                 }
                 m.appId = pkgInfo.applicationInfo.uid;
                 m.applicationInfo = pkgInfo.applicationInfo;
+                m.service = oldModule != null ? oldModule.service : new LSPInjectedModuleService(m.packageName);
                 return true;
             }).forEach(m -> {
                 var file = ConfigFileManager.loadModule(m.apkPath, dexObfuscate);
