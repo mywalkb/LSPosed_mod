@@ -88,6 +88,7 @@ extract "$ZIPFILE" 'daemon.apk'         "$MODPATH"
 extract "$ZIPFILE" 'daemon'             "$MODPATH"
 rm -f "$MODPATH"/manager.apk
 extract "$ZIPFILE" 'manager.apk'        "$MODPATH"
+mkdir                                   '/data/adb/lspd'
 extract "$ZIPFILE" 'cli'                '/data/adb/lspd/bin'
 
 if [ "$FLAVOR" == "zygisk" ]; then
@@ -183,6 +184,8 @@ fi
 
 set_perm_recursive "$MODPATH" 0 0 0755 0644
 set_perm_recursive "$MODPATH/bin" 0 2000 0755 0755 u:object_r:magisk_file:s0
+set_perm_recursive "/data/adb/lspd/" 0 0 0755 0644
+set_perm_recursive "/data/adb/lspd/bin" 0 0 0755 0755 u:object_r:magisk_file:s0
 chmod 0744 "$MODPATH/daemon"
 chmod 0700 "/data/adb/lspd/bin/cli"
 
