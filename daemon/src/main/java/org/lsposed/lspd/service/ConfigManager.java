@@ -96,6 +96,7 @@ public class ConfigManager {
     private final SQLiteDatabase db = openDb();
 
     private boolean verboseLog = true;
+    private boolean logWatchdog = true;
     private boolean dexObfuscate = true;
     private boolean enableStatusNotification = true;
     private boolean bEnableCli = false;
@@ -266,6 +267,9 @@ public class ConfigManager {
 
         Object value = config.get("enable_verbose_log");
         verboseLog = value == null || (boolean) value;
+
+        value = config.get("force_enable_log");
+        logWatchdog = value == null || (boolean) value;
 
         value = config.get("enable_dex_obfuscate");
         dexObfuscate = value == null || (boolean) value;
@@ -1019,6 +1023,21 @@ public class ConfigManager {
 
     public boolean verboseLog() {
         return BuildConfig.DEBUG || verboseLog;
+    }
+
+    public void setLogWatchdog(boolean on) {
+        var logcatService = ServiceManager.getLogcatService();
+        if (on) {
+            logcatService.enableWatchdog();
+        } else {
+            logcatService.disableWatchdog();
+        }
+        updateModulePrefs("lspd", 0, "config", "force_enable_log", on);
+        logWatchdog = on;
+    }
+
+    public boolean isLogWatchdogEnabled() {
+        return logWatchdog;
     }
 
     public void setDexObfuscate(boolean on) {

@@ -671,4 +671,14 @@ public class LSPManagerService extends ILSPManagerService.Stub {
     public boolean getAutomaticAdd(String packageName) {
         return ConfigManager.getInstance().getAutomaticAdd(packageName);
     }
+
+    @Override
+    public void setLogWatchdog(boolean enabled) {
+        ConfigManager.getInstance().setLogWatchdog(enabled);
+    }
+
+    @Override
+    public boolean isLogWatchdogEnabled() {
+        return ConfigManager.getInstance().isLogWatchdogEnabled();
+    }
 }
