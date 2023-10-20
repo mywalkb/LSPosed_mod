@@ -261,7 +261,7 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
     task<Exec>("flashMagiskAndReboot${variantCapped}") {
         group = "LSPosed"
         dependsOn(flashMagiskTask)
-        commandLine(adb, "shell", "/system/bin/svc", "power", "reboot")
+        commandLine(adb, "shell", "su", "-c", "/system/bin/svc", "power", "reboot")
     }
     val flashKsuTask = task<Exec>("flashKsu${variantCapped}") {
         group = "LSPosed"
@@ -274,7 +274,7 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
     task<Exec>("flashKsuAndReboot${variantCapped}") {
         group = "LSPosed"
         dependsOn(flashKsuTask)
-        commandLine(adb, "shell", "/system/bin/svc", "power", "reboot")
+        commandLine(adb, "shell", "su", "-c", "/system/bin/svc", "power", "reboot")
     }
 }
 
