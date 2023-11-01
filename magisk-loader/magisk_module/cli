@@ -1,15 +1,19 @@
 #!/system/bin/sh
 
-if ! which magisk >/dev/null; then
-    dex_path="/data/adb/modules"
-else
-    dex_path="$(magisk --path)/.magisk/modules"
-fi
-if [ -d "$dex_path/riru_lsposed" ]; then
-    dex_path="$dex_path/riru_lsposed"
-elif [ -d "$dex_path/zygisk_lsposed" ]; then
-    dex_path="$dex_path/zygisk_lsposed"
-else
+dex_path=""
+for DEXDIR in /data/adb/modules $(magisk --path)/.magisk/modules
+do
+    if [ -d "$DEXDIR/riru_lsposed" ]; then
+        dex_path="$DEXDIR/riru_lsposed"
+        break
+    elif [ -d "$DEXDIR/zygisk_lsposed" ]; then
+        dex_path="$DEXDIR/zygisk_lsposed"
+        break
+    fi
+done
+
+if [ -z "$dex_path" ]
+then
     echo "No lsposed module path found"
     exit 1
 fi
