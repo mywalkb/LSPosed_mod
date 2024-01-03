@@ -423,24 +423,24 @@ public class ConfigManager {
                         db.setVersion(2);
                     });
                 case 2:
+                    executeInTransaction(() -> {
+                        db.compileStatement("UPDATE scope SET app_pkg_name = 'system' WHERE app_pkg_name = 'android';").execute();
+                        db.setVersion(3);
+                    });
+                case 3:
                     try {
                         executeInTransaction(() -> {
                             db.compileStatement("ALTER TABLE modules ADD COLUMN automatic_add BOOLEAN DEFAULT 0 CHECK (automatic_add IN (0, 1));").execute();
-                            db.setVersion(3);
+                            db.setVersion(4);
                         });
                     } catch (SQLiteException ex) {
                         // Fix wrong init code for new column automatic_add
                         if (ex.getMessage().startsWith("duplicate column name: automatic_add")) {
-                            db.setVersion(3);
+                            db.setVersion(4);
                         } else {
                             throw ex;
                         }
                     }
-                case 3:
-                    executeInTransaction(() -> {
-                        db.compileStatement("UPDATE scope SET app_pkg_name = 'system' WHERE app_pkg_name = 'android';").execute();
-                        db.setVersion(4);
-                    });
                 default:
                     break;
             }
