@@ -427,20 +427,9 @@ public class ConfigManager {
                         db.compileStatement("UPDATE scope SET app_pkg_name = 'system' WHERE app_pkg_name = 'android';").execute();
                         db.setVersion(3);
                     });
+                    addColumnAutomicAdd();
                 case 3:
-                    try {
-                        executeInTransaction(() -> {
-                            db.compileStatement("ALTER TABLE modules ADD COLUMN automatic_add BOOLEAN DEFAULT 0 CHECK (automatic_add IN (0, 1));").execute();
-                            db.setVersion(4);
-                        });
-                    } catch (SQLiteException ex) {
-                        // Fix wrong init code for new column automatic_add
-                        if (ex.getMessage().startsWith("duplicate column name: automatic_add")) {
-                            db.setVersion(4);
-                        } else {
-                            throw ex;
-                        }
-                    }
+                    addColumnAutomicAdd();
                 default:
                     break;
             }
@@ -448,6 +437,22 @@ public class ConfigManager {
             Log.e(TAG, "init db", e);
         }
 
+    }
+
+    private void addColumnAutomicAdd() {
+        try {
+            executeInTransaction(() -> {
+                db.compileStatement("ALTER TABLE modules ADD COLUMN automatic_add BOOLEAN DEFAULT 0 CHECK (automatic_add IN (0, 1));").execute();
+                db.setVersion(4);
+            });
+        } catch (SQLiteException ex) {
+            // Fix wrong init code for new column automatic_add
+            if (ex.getMessage().startsWith("duplicate column name: automatic_add")) {
+                db.setVersion(4);
+            } else {
+                throw ex;
+            }
+        }
     }
 
     private List<ProcessScope> getAssociatedProcesses(Application app) throws RemoteException {
