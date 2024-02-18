@@ -3,7 +3,7 @@
 	url = https://github.com/mywalkb/XposedService.git
 [submodule "external/lsplant"]
 	path = external/lsplant
-	url = https://github.com/LSPosed/LSPlant.git
+	url = https://github.com/mywalkb/LSPlant_mod.git
 [submodule "external/dobby"]
 	path = external/dobby
 	url = https://github.com/LSPosed/Dobby.git
