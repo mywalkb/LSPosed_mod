@@ -308,10 +308,14 @@ class SetScopeCommand implements Callable<Integer> {
             System.err.println("Reboot is required");
         }
         if (objArgs.bSet) {
-            if (!manager.setModuleScope(moduleName, Arrays.asList(scopes))) {
+            List<Application> lstScope = new ArrayList<>(Arrays.asList(scopes)); // Arrays.asList return a read-only list and we require a changeable list
+            if (Utils.checkPackageModule(moduleName, lstScope)) {
+                System.err.println("Added package of module into scope!");
+            }
+            if (!manager.setModuleScope(moduleName, lstScope)) {
                 throw new RuntimeException("Failed to set scope for " + moduleName);
             }
-            if (scopes.length < 2) {
+            if (lstScope.size() < 2) {
                 manager.disableModule(moduleName);
             }
         } else {
@@ -329,6 +333,9 @@ class SetScopeCommand implements Callable<Integer> {
                 } else {
                     lstScope.removeIf(app -> scope.packageName.equals(app.packageName) && scope.userId == app.userId);
                 }
+            }
+            if (Utils.checkPackageModule(moduleName, lstScope)) {
+                System.err.println("Added package of module into scope!");
             }
             if (!manager.setModuleScope(moduleName, lstScope)) {
                 throw new RuntimeException("Failed to set scope for " + moduleName);

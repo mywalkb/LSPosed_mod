@@ -54,4 +54,15 @@ public class Utils {
         }
         return false;
     }
+
+    public static boolean checkPackageModule(String moduleName, List<Application> lstScope) {
+        if (!checkPackageInScope(moduleName, lstScope)) {
+            Application app = new Application();
+            app.packageName = moduleName;
+            app.userId = 0;
+            lstScope.add(app);
+            return true;
+        }
+        return false;
+    }
 }
