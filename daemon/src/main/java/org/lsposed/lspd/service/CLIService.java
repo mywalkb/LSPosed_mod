@@ -56,6 +56,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.time.LocalDateTime;
 
+import io.github.libxposed.service.IXposedService;
 import rikka.parcelablelist.ParcelableListSlice;
 
 public class CLIService extends ICLIService.Stub {
@@ -220,7 +221,7 @@ public class CLIService extends ICLIService.Stub {
 
     @Override
     public int getXposedApiVersion() {
-        return BuildConfig.API_CODE;
+        return IXposedService.API;
     }
 
     @Override
