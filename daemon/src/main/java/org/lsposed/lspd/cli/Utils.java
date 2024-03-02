@@ -33,7 +33,8 @@ public class Utils {
                 managerService.getInstalledPackagesFromAllUsers(PackageManager.GET_META_DATA | PackageManager.MATCH_UNINSTALLED_PACKAGES, true).getList();
         packagesMap = new HashMap<>();
         for (var packageInfo: packages) {
-            packagesMap.put(packageInfo.packageName, packageInfo);
+            int userid = packageInfo.applicationInfo.uid / 100000;
+            packagesMap.put(packageInfo.packageName + "|" + userid, packageInfo);
         }
     }
 
@@ -42,8 +43,7 @@ public class Utils {
             initPackagesMap(managerService);
         }
 
-        return packagesMap.containsKey(packageName)
-                && (Objects.requireNonNull(packagesMap.get(packageName)).applicationInfo.uid) / 100000 == userId;
+        return packagesMap.containsKey(packageName + "|" + userId);
     }
 
     public static boolean checkPackageInScope(String sPackageName, List<Application> lstScope) {
