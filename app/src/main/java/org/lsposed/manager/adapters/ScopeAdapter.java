@@ -293,7 +293,7 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
                 return false;
             }
         } else if (itemId == R.id.select_all) {
-            var tmpChkList = new HashSet<ApplicationWithEquals>();
+            var tmpChkList = new HashSet<ApplicationWithEquals>(ConfigManager.getModuleScope(module.packageName));
             for (AppInfo info : searchList) {
                 if (info.packageName.equals("android")) {
                     fragment.showHint(R.string.reboot_required, true, R.string.reboot, v -> ConfigManager.reboot());
@@ -302,10 +302,14 @@ public class ScopeAdapter extends EmptyStateRecyclerView.EmptyStateAdapter<Scope
             }
             ConfigManager.setModuleScope(module.packageName, module.legacy, tmpChkList);
         } else if (itemId == R.id.select_none) {
-            if (ConfigManager.getModuleScope(module.packageName).contains(new ApplicationWithEquals("android", 0))) {
-                fragment.showHint(R.string.reboot_required, true, R.string.reboot, v -> ConfigManager.reboot());
+            var tmpChkList = new HashSet<ApplicationWithEquals>(ConfigManager.getModuleScope(module.packageName));
+
+            for (AppInfo info : searchList) {
+                if (tmpChkList.remove(info.application) && info.packageName.equals("android")) {
+                    fragment.showHint(R.string.reboot_required, true, R.string.reboot, v -> ConfigManager.reboot());
+                }
             }
-            ConfigManager.setModuleScope(module.packageName, module.legacy, new HashSet<ApplicationWithEquals>());
+            ConfigManager.setModuleScope(module.packageName, module.legacy, tmpChkList);
         } else if (itemId == R.id.automatic_add) {
             item.setChecked(!item.isChecked());
             ConfigManager.setAutomaticAdd(module.packageName, item.isChecked());
