@@ -1,15 +1,16 @@
-### In my mod these are the changes:
-None
+### Changelog
 
-### Original Changelog
+- Support android 15 DP1
+- Support stripped libraries as libart in latest android and some custom ROM
+- CLI improvements: support multiuser and fix when cli is used without manager
+- Fix select all/none when used in multiuser environment
 
-* Fix `IContentProvider` for Android P and below
-* Properly handle invalid `Parcel`
-* Fix invalid `setOverrideTable` address on some devices
-* Move manager APK to the module path
-* Fix remote preferences listener not working on system_server
-* Fix hook crash on Android 14
-* Fix static method hook on some Android 14 devices
-* Fix some `LoadedApk`s not calling `onPackageLoad`
-* Fix the wrong path of the new `XSharedPreferences`
-* Add tips about deploying optimizations in Android Studio
+### Previous changes of other LSPosed's developers
+
+- set mount ns propagation to slave
+- fix set DdmHandleAppName to package name for daemon
+- fix fakecontext NPE
+- fix oneui notification
+- fix daemon could not post notification
+- fix blur android 14
+- fix dex2oat on 64 bit android 10
