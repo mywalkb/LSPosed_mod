@@ -123,10 +123,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: xposed_service-release
-          path: services/xposed-service/interface/build/intermediates/javac/release/classes/*
+          path: services/xposed-service/interface/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes/*
 
       - name: Upload XposedService Debug jar
         uses: actions/upload-artifact@v4
         with:
           name: xposed_service-debug
-          path: services/xposed-service/interface/build/intermediates/javac/debug/classes/*
+          path: services/xposed-service/interface/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/*

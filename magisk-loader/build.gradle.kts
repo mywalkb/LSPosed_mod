@@ -202,7 +202,7 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
             rename(".*\\.apk", "daemon.apk")
         }
         into("lib") {
-            from(layout.buildDirectory.dir("intermediates/stripped_native_libs/$variantCapped/out/lib")) {
+            from(layout.buildDirectory.dir("intermediates/stripped_native_libs/$variantCapped/strip${variantCapped}DebugSymbols/out/lib")) {
                 include("**/liblspd.so")
             }
         }
