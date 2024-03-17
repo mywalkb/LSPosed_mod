@@ -55,6 +55,8 @@ https://github.com/tclement0922</string>
     <string name="system_prop_incorrect"><![CDATA[Certaines propriétés nécessaires au système ont été supprimées ou modifiées.<br/>Des modules peuvent s\'invalider occasionnellement.]]></string>
     <string name="need_update">Mise à jour nécessaire</string>
     <string name="please_update_summary">Merci d\’installer la dernière version de LSPosed</string>
+    <string name="developer_warning_title">Tips for module developer</string>
+    <string name="developer_warning_summary">Please disable deploy optimizations on Android Studio, or use `gradlew installDebug` command to install. Otherwise the module apk will not be updated.</string>
     <string name="info_api_version">Version de l\’API</string>
     <string name="info_framework_version">Version du framework</string>
     <string name="info_manager_package_name">Nom de paquet du gestionnaire</string>
@@ -159,6 +161,10 @@ https://github.com/tclement0922</string>
     <string name="menu_hide">Masquage</string>
     <string name="deny_list">%s est sur la liste de refus. Cela pourrait ne pas avoir d\'effet.</string>
     <string name="deny_list_info">Sur liste de refus</string>
+    <string name="menu_select">Select</string>
+    <string name="menu_select_all">All</string>
+    <string name="menu_select_none">None</string>
+    <string name="menu_automatic_add">Automatic add</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Afficher dans une autre application</string>
     <string name="module_app_info">Informations d\’application</string>
@@ -167,6 +173,8 @@ https://github.com/tclement0922</string>
     <string name="settings_group_framework">Sous-système</string>
     <string name="settings_disable_verbose_log">Désactiver les journaux détaillés</string>
     <string name="settings_disable_verbose_log_summary">Demande de rapports sur les problèmes pour inclure les journaux détaillés</string>
+    <string name="settings_force_enable_log">Enable watchdog logs</string>
+    <string name="settings_force_enable_log_summary">Enable watchdog logs on LSPosed, some apps detect it and close</string>
     <string name="pure_black_dark_theme">Thème noir et sombre</string>
     <string name="pure_black_dark_theme_summary">Utiliser le thème noir pur si le thème noir est activé</string>
     <string name="settings_group_theme">Thème</string>
@@ -202,6 +210,14 @@ https://github.com/tclement0922</string>
     <string name="update_channel_nightly">Alpha</string>
     <string name="settings_xposed_api_call_protection">Protection des appels API Xposed</string>
     <string name="settings_xposed_api_call_protection_summary">Bloquer dynamiquement le code de module chargé pour utiliser l\'API Xposed, celà peut casser certains modules mais être bénéfique à la sécurité</string>
+    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
+    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="settings_group_cli">CLI</string>
+    <string name="pref_title_enable_cli">Enable CLI</string>
+    <string name="pref_summary_enable_cli">(experimental feature)</string>
+    <string name="timeout_session">Session timeout in minutes</string>
+    <string name="one_command">One command</string>
+    <string name="disabled">Disabled</string>
     <!-- Module Repo -->
     <string name="module_readme">Lisez-moi</string>
     <string name="module_releases">Versions</string>
