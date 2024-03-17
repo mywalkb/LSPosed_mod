@@ -12,6 +12,8 @@
     <string name="status_channel_name">Статус LSPosed</string>
     <string name="lsposed_running_notification_title">LSPosed завантажено</string>
     <string name="lsposed_running_notification_content">Натисніть на повідомлення, щоб відкрити менеджер</string>
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
     <string name="xposed_module_request_scope_title">Запит на визначення обсягу робіт</string>
     <string name="xposed_module_request_scope_content">%1$s на запит користувача %2$s з проханням додати %3$s до своєї області видимості.</string>
     <string name="scope_channel_name">Запит обсягу робіт</string>
