@@ -54,6 +54,8 @@
     <string name="system_prop_incorrect"><![CDATA[Ορισμένες απαραίτητες ιδιότητες συστήματος διαγράφηκαν ή τροποποιήθηκαν.<br/>Τα πρόσθετα μπορεί να ακυρωθούν περιστασιακά.]]></string>
     <string name="need_update">Απαιτείται ενημέρωση</string>
     <string name="please_update_summary">Παρακαλώ εγκαταστήστε την τελευταία έκδοση του LSPosed</string>
+    <string name="developer_warning_title">Tips for module developer</string>
+    <string name="developer_warning_summary">Please disable deploy optimizations on Android Studio, or use `gradlew installDebug` command to install. Otherwise the module apk will not be updated.</string>
     <string name="info_api_version">Έκδοση API</string>
     <string name="info_framework_version">Έκδοση πλαισίου</string>
     <string name="info_manager_package_name">Όνομα πακέτου διαχειριστή</string>
@@ -158,6 +160,10 @@
     <string name="menu_hide">Απόκρυψη</string>
     <string name="deny_list">%s είναι σε denylist. Μπορεί να μην τεθεί σε ισχύ.</string>
     <string name="deny_list_info">Κατά την denylist</string>
+    <string name="menu_select">Select</string>
+    <string name="menu_select_all">All</string>
+    <string name="menu_select_none">None</string>
+    <string name="menu_automatic_add">Automatic add</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Προβολή σε άλλη εφαρμογή</string>
     <string name="module_app_info">Πληροφορίες εφαρμογής</string>
@@ -166,6 +172,8 @@
     <string name="settings_group_framework">Framework</string>
     <string name="settings_disable_verbose_log">Απενεργοποιήστε αναλυτικά στοιχεία καταγραφής</string>
     <string name="settings_disable_verbose_log_summary">Αναφορά προβλημάτων ζητάει να συμπεριλαμβάνεται τα αναλυτικά στοιχεία καταγραφής</string>
+    <string name="settings_force_enable_log">Enable watchdog logs</string>
+    <string name="settings_force_enable_log_summary">Enable watchdog logs on LSPosed, some apps detect it and close</string>
     <string name="pure_black_dark_theme">Μαύρο σκούρο θέμα</string>
     <string name="pure_black_dark_theme_summary">Χρησιμοποιήστε το καθαρό μαύρο θέμα αν το σκούρο θέμα είναι ενεργοποιημένο</string>
     <string name="settings_group_theme">Θέμα</string>
@@ -201,6 +209,14 @@
     <string name="update_channel_nightly">Νυχτερινή κατασκευή</string>
     <string name="settings_xposed_api_call_protection">Προστασία κλήσεων Xposed API</string>
     <string name="settings_xposed_api_call_protection_summary">Αποκλείστε τον δυναμικά φορτωμένο κώδικα μονάδας για να χρησιμοποιήσετε το Xposed API, αυτό μπορεί να σπάσει ορισμένες μονάδες αλλά να ωφελήσει την ασφάλεια</string>
+    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
+    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="settings_group_cli">CLI</string>
+    <string name="pref_title_enable_cli">Enable CLI</string>
+    <string name="pref_summary_enable_cli">(experimental feature)</string>
+    <string name="timeout_session">Session timeout in minutes</string>
+    <string name="one_command">One command</string>
+    <string name="disabled">Disabled</string>
     <!-- Module Repo -->
     <string name="module_readme">Έτοιμο</string>
     <string name="module_releases">Εκδόσεις</string>
