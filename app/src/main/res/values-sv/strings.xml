@@ -54,6 +54,8 @@
     <string name="system_prop_incorrect"><![CDATA[Vissa nödvändiga systemegenskaper är raderade eller ändrade.<br/>Moduler kan komma att ogiltigförklara.]]></string>
     <string name="need_update">Behöver uppdateras</string>
     <string name="please_update_summary">Vänligen installera den senaste versionen av LSPosed</string>
+    <string name="developer_warning_title">Tips for module developer</string>
+    <string name="developer_warning_summary">Please disable deploy optimizations on Android Studio, or use `gradlew installDebug` command to install. Otherwise the module apk will not be updated.</string>
     <string name="info_api_version">API version</string>
     <string name="info_framework_version">Ramverk version</string>
     <string name="info_manager_package_name">Namn på managerpaket</string>
@@ -158,6 +160,10 @@
     <string name="menu_hide">Dölj</string>
     <string name="deny_list">%s finns på förnekarlistan. Det kan inte börja gälla.</string>
     <string name="deny_list_info">På förnekelselista</string>
+    <string name="menu_select">Select</string>
+    <string name="menu_select_all">All</string>
+    <string name="menu_select_none">None</string>
+    <string name="menu_automatic_add">Automatic add</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Visa i annan app</string>
     <string name="module_app_info">Information om appen</string>
@@ -166,6 +172,8 @@
     <string name="settings_group_framework">Framework</string>
     <string name="settings_disable_verbose_log">Inaktivera utförliga loggar</string>
     <string name="settings_disable_verbose_log_summary">Begäran om att inkludera verbose-loggar i rapporten</string>
+    <string name="settings_force_enable_log">Enable watchdog logs</string>
+    <string name="settings_force_enable_log_summary">Enable watchdog logs on LSPosed, some apps detect it and close</string>
     <string name="pure_black_dark_theme">Svart mörkt tema</string>
     <string name="pure_black_dark_theme_summary">Använd det rena svarta temat om mörkt tema är aktiverat</string>
     <string name="settings_group_theme">Tema</string>
@@ -201,6 +209,14 @@
     <string name="update_channel_nightly">Nattligt bygg</string>
     <string name="settings_xposed_api_call_protection">Skydd av Xposed API-anrop</string>
     <string name="settings_xposed_api_call_protection_summary">Blockera dynamiskt laddad modulkod för att använda Xposed API, vilket kan förstöra vissa moduler men gynnar säkerheten.</string>
+    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
+    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="settings_group_cli">CLI</string>
+    <string name="pref_title_enable_cli">Enable CLI</string>
+    <string name="pref_summary_enable_cli">(experimental feature)</string>
+    <string name="timeout_session">Session timeout in minutes</string>
+    <string name="one_command">One command</string>
+    <string name="disabled">Disabled</string>
     <!-- Module Repo -->
     <string name="module_readme">Läsa</string>
     <string name="module_releases">Släpp</string>
