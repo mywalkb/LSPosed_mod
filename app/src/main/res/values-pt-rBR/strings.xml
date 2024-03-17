@@ -17,7 +17,6 @@
   ~
   ~ Copyright (C) 2021 LSPosed Contributors
   -->
-
 <resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/xposed_module_updated_notification_*,@string/module_is_not_activated_*">
     <!-- MainActivity -->
     <string name="overview">Resumo</string>
@@ -41,7 +40,6 @@
     </plurals>
     <string name="about_view_source_code"><![CDATA[Veja o código-fonte no %1$s<br/>Entre em nosso canal no %2$s]]></string>
     <string name="translators" comment="Dear translators, please add your home page here following the format. There can be more than one translator. So feel free to append yourself.">VD171, Dan, Hitalo, Luiz Renato, PedriR19</string>
-
     <string name="install">Instalar</string>
     <string name="install_summary">Toque para instalar o LSPosed</string>
     <string name="not_installed">Não instalado</string>
@@ -77,7 +75,6 @@
     <string name="update_lsposed">Atualizar o LSPosed</string>
     <string name="update_lsposed_msg">Confirmar atualização do LSPosed? O aparelho irá reiniciar após completar a atualização</string>
     <string name="info_copied">Copiado para a área de transferência</string>
-
     <!-- WelcomeDialog -->
     <string name="parasitic_welcome">Bem-vindo ao LSPosed</string>
     <string name="parasitic_welcome_summary">Você está usando o gerenciador parasita, você pode criar o atalho ou então abrir a partir da notificação.</string>
@@ -86,7 +83,6 @@
     <string name="never_show">Não mostrar novamente</string>
     <string name="app_welcome">É recomendado o gerenciador parasita</string>
     <string name="app_welcome_summary">O LSPosed agora oferece suporte a parasitização do sistema para evitar detecções, você pode abrir o gerenciador parasita a partir da notificação. É recomendado desinstalar o aplicativo atual.</string>
-
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Salvar</string>
     <string name="nav_item_logs_verbose">Registros Detalhados</string>
@@ -104,7 +100,6 @@
     <string name="menu_enable_word_wrap">Quebra de Linha</string>
     <string name="enabled_verbose_log">Registros detalhados ativados</string>
     <string name="disabled_verbose_log">Registros detalhados desativados</string>
-
     <!-- ModulesActivity -->
     <string name="module_empty_description">(nenhuma descrição fornecida)</string>
     <string name="warning_xposed_min_version">Este módulo exige uma versão mais recente do Xposed (%d). Por isso, não poderá ser ativado</string>
@@ -125,7 +120,6 @@
     <string name="install_to_user_message">Deseja instalar %1$s no usuário %2$s? É recomendado instalar manualmente. Forçar a instalação via LSPosed pode causar problemas.</string>
     <string name="expand">expandir</string>
     <string name="collapse">recolher</string>
-
     <!-- AppListActivity -->
     <string name="compile_speed">Re-otimizar</string>
     <string name="compile_speed_msg">Otimizando…</string>
@@ -170,12 +164,10 @@
     <string name="menu_select_all">Tudo</string>
     <string name="menu_select_none">Nada</string>
     <string name="menu_automatic_add">Adicionar automaticamente</string>
-
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Ver na Play Store</string>
     <string name="module_app_info">Informações do app</string>
     <string name="list_empty">¯\\_(ツ)_/¯\nNada encontrado</string>
-
     <!-- SettingsActivity -->
     <string name="settings_group_framework">Framework</string>
     <string name="settings_disable_verbose_log">Desativar registros detalhados</string>
@@ -225,7 +217,6 @@
     <string name="timeout_session">Tempo limite da sessão em minutos</string>
     <string name="one_command">Um comando</string>
     <string name="disabled">Desativado</string>
-
     <!-- Module Repo -->
     <string name="module_readme">Leia-me</string>
     <string name="module_releases">Versões</string>
@@ -244,7 +235,6 @@
         <item quantity="one">%d baixado</item>
         <item quantity="other">%d baixados</item>
     </plurals>
-
     <!-- Colors -->
     <string name="color_sakura">Sakura</string>
     <string name="color_red">Vermelho</string>
@@ -265,5 +255,4 @@
     <string name="color_deep_orange">Laranja Escuro</string>
     <string name="color_brown">Marrom</string>
     <string name="color_blue_grey">Azul-acinzentado</string>
-
 </resources>
