@@ -160,6 +160,10 @@
     <string name="menu_hide">Nascondi</string>
     <string name="deny_list">%s è nella lista di blocco. Potrebbe non avere effetto.</string>
     <string name="deny_list_info">Nella lista di blocco</string>
+    <string name="menu_select">Select</string>
+    <string name="menu_select_all">All</string>
+    <string name="menu_select_none">None</string>
+    <string name="menu_automatic_add">Automatic add</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Mostra in un\'altra app</string>
     <string name="module_app_info">Informazioni app</string>
@@ -168,6 +172,8 @@
     <string name="settings_group_framework">Framework</string>
     <string name="settings_disable_verbose_log">Disabilita il log verboso</string>
     <string name="settings_disable_verbose_log_summary">La segnalazione di problemi richiede l\'inclusione di log dettagliati</string>
+    <string name="settings_force_enable_log">Enable watchdog logs</string>
+    <string name="settings_force_enable_log_summary">Enable watchdog logs on LSPosed, some apps detect it and close</string>
     <string name="pure_black_dark_theme">Tema nero scuro</string>
     <string name="pure_black_dark_theme_summary">Usa il tema nero puro quando è abilitato il tema scuro</string>
     <string name="settings_group_theme">Tema</string>
@@ -203,6 +209,14 @@
     <string name="update_channel_nightly">Nightly</string>
     <string name="settings_xposed_api_call_protection">API di protezione delle chiamate di Xposed</string>
     <string name="settings_xposed_api_call_protection_summary">Blocca dinamicamente il codice del modulo caricato per utilizzare l\'API di Xposed, questo potrebbe interrompere alcuni moduli ma favorire la sicurezza</string>
+    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
+    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="settings_group_cli">CLI</string>
+    <string name="pref_title_enable_cli">Enable CLI</string>
+    <string name="pref_summary_enable_cli">(experimental feature)</string>
+    <string name="timeout_session">Session timeout in minutes</string>
+    <string name="one_command">One command</string>
+    <string name="disabled">Disabled</string>
     <!-- Module Repo -->
     <string name="module_readme">Leggimi</string>
     <string name="module_releases">Versioni</string>
