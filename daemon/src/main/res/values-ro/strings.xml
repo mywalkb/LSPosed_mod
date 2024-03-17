@@ -12,6 +12,8 @@
     <string name="status_channel_name">LSPosed status</string>
     <string name="lsposed_running_notification_title">LSPosed încărcat</string>
     <string name="lsposed_running_notification_content">Atingeți ușor notificarea pentru a deschide managerul</string>
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
     <string name="xposed_module_request_scope_title">Cerere de domeniu de aplicare</string>
     <string name="xposed_module_request_scope_content">%1$s la cererea utilizatorului %2$s de a adăuga %3$s la domeniul său de aplicare.</string>
     <string name="scope_channel_name">Cerere de domeniu de aplicare</string>
