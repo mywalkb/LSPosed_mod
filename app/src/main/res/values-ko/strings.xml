@@ -158,6 +158,10 @@
     <string name="menu_hide">숨김</string>
     <string name="deny_list">%s 은 거부 목록에 있습니다. 적용되지 않을 수 있습니다.</string>
     <string name="deny_list_info">차단 목록에서</string>
+    <string name="menu_select">Select</string>
+    <string name="menu_select_all">All</string>
+    <string name="menu_select_none">None</string>
+    <string name="menu_automatic_add">Automatic add</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">다른 앱으로 보기</string>
     <string name="module_app_info">앱 정보</string>
@@ -166,6 +170,8 @@
     <string name="settings_group_framework">프레임워크</string>
     <string name="settings_disable_verbose_log">상세한 로그 비활성화</string>
     <string name="settings_disable_verbose_log_summary">자세한 로그를 포함한 오류 신고 요청</string>
+    <string name="settings_force_enable_log">Enable watchdog logs</string>
+    <string name="settings_force_enable_log_summary">Enable watchdog logs on LSPosed, some apps detect it and close</string>
     <string name="pure_black_dark_theme">블랙 다크 테마</string>
     <string name="pure_black_dark_theme_summary">다크 테마가 활성화된 경우 순수 검은색 테마를 사용합니다.</string>
     <string name="settings_group_theme">테마</string>
@@ -201,6 +207,14 @@
     <string name="update_channel_nightly">야간 빌드</string>
     <string name="settings_xposed_api_call_protection">Xposed API 호출 보호</string>
     <string name="settings_xposed_api_call_protection_summary">Xposed API를 사용하기 위해 로드된 모듈 코드를 동적으로 차단하면 일부 모듈이 손상될 수 있지만 보안에 도움이 됩니다.</string>
+    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
+    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="settings_group_cli">CLI</string>
+    <string name="pref_title_enable_cli">Enable CLI</string>
+    <string name="pref_summary_enable_cli">(experimental feature)</string>
+    <string name="timeout_session">Session timeout in minutes</string>
+    <string name="one_command">One command</string>
+    <string name="disabled">Disabled</string>
     <!-- Module Repo -->
     <string name="module_readme">읽어보기</string>
     <string name="module_releases">릴리스</string>
