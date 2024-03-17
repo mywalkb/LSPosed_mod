@@ -12,6 +12,8 @@
     <string name="status_channel_name">Stato LSPosed</string>
     <string name="lsposed_running_notification_title">LSPosed caricato</string>
     <string name="lsposed_running_notification_content">Tocca la notifica per aprire il manager</string>
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
     <string name="xposed_module_request_scope_title">Richiesta attivazione</string>
     <string name="xposed_module_request_scope_content">%1$s sull\'utente %2$s richiede di aggiungere %3$s alle sue attivazioni.</string>
     <string name="scope_channel_name">Richiesta attivazione</string>
