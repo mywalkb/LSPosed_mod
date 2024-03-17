@@ -12,6 +12,8 @@
     <string name="status_channel_name">LSPosert status</string>
     <string name="lsposed_running_notification_title">LSPosert lastet</string>
     <string name="lsposed_running_notification_content">Trykk på varselet for å åpne administrator</string>
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
     <string name="xposed_module_request_scope_title">Forespørsel om omfang</string>
     <string name="xposed_module_request_scope_content">%1$s på bruker %2$s ber om å legge til %3$s i omfanget.</string>
     <string name="scope_channel_name">Forespørsel om omfang</string>
