@@ -54,6 +54,8 @@
     <string name="system_prop_incorrect"><![CDATA[S\'han suprimit o modificat algunes propietats necessàries del sistema.<br/>Els mòduls poden invalidar-se ocasionalment.]]></string>
     <string name="need_update">Cal actualitzar</string>
     <string name="please_update_summary">Instal·leu la darrera versió de LSPosed</string>
+    <string name="developer_warning_title">Tips for module developer</string>
+    <string name="developer_warning_summary">Please disable deploy optimizations on Android Studio, or use `gradlew installDebug` command to install. Otherwise the module apk will not be updated.</string>
     <string name="info_api_version">Versió de l\'API</string>
     <string name="info_framework_version">Versió del marc</string>
     <string name="info_manager_package_name">Nom del paquet del gestor</string>
@@ -158,6 +160,10 @@
     <string name="menu_hide">Amaga</string>
     <string name="deny_list">%s és a la llista denegada. És possible que no tingui efecte.</string>
     <string name="deny_list_info">A la llista denegada</string>
+    <string name="menu_select">Select</string>
+    <string name="menu_select_all">All</string>
+    <string name="menu_select_none">None</string>
+    <string name="menu_automatic_add">Automatic add</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Veure en una altra aplicació</string>
     <string name="module_app_info">Informació de l\'aplicació</string>
@@ -166,6 +172,8 @@
     <string name="settings_group_framework">Marc</string>
     <string name="settings_disable_verbose_log">Desactiva els registres detallats</string>
     <string name="settings_disable_verbose_log_summary">Sol·licitud d\'informes de problemes per incloure registres detallats</string>
+    <string name="settings_force_enable_log">Enable watchdog logs</string>
+    <string name="settings_force_enable_log_summary">Enable watchdog logs on LSPosed, some apps detect it and close</string>
     <string name="pure_black_dark_theme">Tema negre fosc</string>
     <string name="pure_black_dark_theme_summary">Utilitzeu el tema negre pur si el tema fosc està habilitat</string>
     <string name="settings_group_theme">Tema</string>
@@ -201,6 +209,14 @@
     <string name="update_channel_nightly">Construcció nocturna</string>
     <string name="settings_xposed_api_call_protection">Protecció de trucades de l\'API Xposed</string>
     <string name="settings_xposed_api_call_protection_summary">Bloqueja el codi del mòdul carregat dinàmicament per utilitzar l\'API Xposed, això pot trencar alguns mòduls però beneficiar la seguretat</string>
+    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
+    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="settings_group_cli">CLI</string>
+    <string name="pref_title_enable_cli">Enable CLI</string>
+    <string name="pref_summary_enable_cli">(experimental feature)</string>
+    <string name="timeout_session">Session timeout in minutes</string>
+    <string name="one_command">One command</string>
+    <string name="disabled">Disabled</string>
     <!-- Module Repo -->
     <string name="module_readme">Llegiu-me</string>
     <string name="module_releases">Alliberaments</string>
