@@ -17,6 +17,7 @@
   ~
   ~ Copyright (C) 2021 LSPosed Contributors
   -->
+
 <resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/xposed_module_updated_notification_*,@string/module_is_not_activated_*">
     <!-- MainActivity -->
     <string name="overview">Resumo</string>
@@ -40,6 +41,7 @@
     </plurals>
     <string name="about_view_source_code"><![CDATA[Veja o código-fonte no %1$s<br/>Entre em nosso canal no %2$s]]></string>
     <string name="translators" comment="Dear translators, please add your home page here following the format. There can be more than one translator. So feel free to append yourself.">VD171, Dan, Hitalo, Luiz Renato, PedriR19</string>
+
     <string name="install">Instalar</string>
     <string name="install_summary">Toque para instalar o LSPosed</string>
     <string name="not_installed">Não instalado</string>
@@ -47,16 +49,18 @@
     <string name="activated">Ativado</string>
     <string name="partial_activated">Parcialmente Ativado</string>
     <string name="selinux_policy_not_loaded_summary">SEPolicy não está devidamente carregado</string>
-    <string name="selinux_policy_not_loaded"><![CDATA[Algumas características não funcionarão.<br/>Por favor informe <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> desenvolvedor.]]></string>
+    <string name="selinux_policy_not_loaded"><![CDATA[Alguns recursos não funcionarão.<br/>Por favor, relate isso ao desenvolvedor do <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a>.]]></string>
     <string name="system_inject_fail_summary">Falha na injeção ao Framework do Sistema</string>
     <string name="system_inject_fail"><![CDATA[Isso é raro e pode ter sido causado pelo <b>Magisk</b> ou por algum módulo do Magisk de baixa qualidade.<br/>Por favor, tente desativar os módulos do Magisk, exceto o LSPosed (e o Riru, caso esteja em uso). Ou envie todos os registros para os desenvolvedores.]]></string>
     <string name="system_prop_incorrect_summary">Propriedade do sistema incorreta</string>
     <string name="system_prop_incorrect"><![CDATA[Algumas propriedades necessárias do sistema foram excluídas ou modificadas.<br/>Alguns módulos podem falhar ocasionalmente.]]></string>
     <string name="need_update">Necessário atualizar</string>
     <string name="please_update_summary">Por favor, instale a versão mais recente do LSPosed</string>
+    <string name="developer_warning_title">Dicas para desenvolvedor de módulos</string>
+    <string name="developer_warning_summary">Desative a implantação de otimizações no Android Studio ou use o comando `gradlew installdebug` para instalar. Caso contrário, o módulo APK não será atualizado.</string>
     <string name="info_api_version">Versão da API</string>
     <string name="info_framework_version">Versão do Framework</string>
-    <string name="info_manager_package_name">Nome do pacote do gestor</string>
+    <string name="info_manager_package_name">Nome do pacote do gerenciador</string>
     <string name="info_system_version">Versão do Sistema</string>
     <string name="info_device">Aparelho</string>
     <string name="info_system_abi">Interfaces Binárias do Sistema</string>
@@ -73,6 +77,7 @@
     <string name="update_lsposed">Atualizar o LSPosed</string>
     <string name="update_lsposed_msg">Confirmar atualização do LSPosed? O aparelho irá reiniciar após completar a atualização</string>
     <string name="info_copied">Copiado para a área de transferência</string>
+
     <!-- WelcomeDialog -->
     <string name="parasitic_welcome">Bem-vindo ao LSPosed</string>
     <string name="parasitic_welcome_summary">Você está usando o gerenciador parasita, você pode criar o atalho ou então abrir a partir da notificação.</string>
@@ -81,11 +86,12 @@
     <string name="never_show">Não mostrar novamente</string>
     <string name="app_welcome">É recomendado o gerenciador parasita</string>
     <string name="app_welcome_summary">O LSPosed agora oferece suporte a parasitização do sistema para evitar detecções, você pode abrir o gerenciador parasita a partir da notificação. É recomendado desinstalar o aplicativo atual.</string>
+
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Salvar</string>
     <string name="nav_item_logs_verbose">Registros Detalhados</string>
     <string name="nav_item_logs_module">Registros dos Módulos</string>
-    <string name="logs_saving">A guardar o registo, aguarde</string>
+    <string name="logs_saving">Salvando registro, aguarde</string>
     <string name="logs_saved">Registros salvos</string>
     <string name="logs_save_failed2">Falha ao salvar:\n%s</string>
     <string name="menuClearLog">Limpar Registros</string>
@@ -98,10 +104,11 @@
     <string name="menu_enable_word_wrap">Quebra de Linha</string>
     <string name="enabled_verbose_log">Registros detalhados ativados</string>
     <string name="disabled_verbose_log">Registros detalhados desativados</string>
+
     <!-- ModulesActivity -->
     <string name="module_empty_description">(nenhuma descrição fornecida)</string>
     <string name="warning_xposed_min_version">Este módulo exige uma versão mais recente do Xposed (%d). Por isso, não poderá ser ativado</string>
-    <string name="warning_target_version_higher">Este módulo foi concebido para uma versão mais recente do Xposed (%d) e, portanto, algumas funcionalidades podem não funcionar</string>
+    <string name="warning_target_version_higher">Este módulo foi projetado para uma versão mais recente do Xposed (%d) e, portanto, algumas funcionalidades podem não funcionar</string>
     <string name="no_min_version_specified">Este módulo não especifica qual a versão necessária do Xposed.</string>
     <string name="warning_min_version_too_low">Este módulo foi criado para a versão %1$d do Xposed. Mas, devido mudanças incompatíveis na versão %2$d, ele foi desativado</string>
     <string name="warning_installed_on_external_storage">Este módulo não pode ser carregado porque está instalado no cartão de memória. Por favor, mova para o armazenamento interno</string>
@@ -118,6 +125,7 @@
     <string name="install_to_user_message">Deseja instalar %1$s no usuário %2$s? É recomendado instalar manualmente. Forçar a instalação via LSPosed pode causar problemas.</string>
     <string name="expand">expandir</string>
     <string name="collapse">recolher</string>
+
     <!-- AppListActivity -->
     <string name="compile_speed">Re-otimizar</string>
     <string name="compile_speed_msg">Otimizando…</string>
@@ -158,14 +166,22 @@
     <string name="menu_hide">Esconder</string>
     <string name="deny_list">%s está na lista de negação. Pode não ter efeito.</string>
     <string name="deny_list_info">Na lista de negação</string>
+    <string name="menu_select">Selecionar</string>
+    <string name="menu_select_all">Tudo</string>
+    <string name="menu_select_none">Nada</string>
+    <string name="menu_automatic_add">Adicionar automaticamente</string>
+
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Ver na Play Store</string>
     <string name="module_app_info">Informações do app</string>
-    <string name="list_empty">¯\\\\_(ツ)_\/¯\nNada encontrado</string>
+    <string name="list_empty">¯\\_(ツ)_/¯\nNada encontrado</string>
+
     <!-- SettingsActivity -->
     <string name="settings_group_framework">Framework</string>
     <string name="settings_disable_verbose_log">Desativar registros detalhados</string>
     <string name="settings_disable_verbose_log_summary">Relate o problema para incluir os registros detalhados</string>
+    <string name="settings_force_enable_log">Ativar logs do watchdog</string>
+    <string name="settings_force_enable_log_summary">Ativar logs do watchdog no LSPosed, alguns apps podem detectar isso e fecharem</string>
     <string name="pure_black_dark_theme">Usar Tema Preto Puro</string>
     <string name="pure_black_dark_theme_summary">Use o tema preto puro se o tema noturno estiver ativo</string>
     <string name="settings_group_theme">Tema</string>
@@ -190,8 +206,8 @@
     <string name="settings_translation">Participe das Traduções</string>
     <string name="settings_translation_summary">Ajude a traduzir o %s para o Português 🇵🇹🇧🇷</string>
     <string name="settings_create_shortcut_summary">Criar um atalho para abrir gerenciador parasita</string>
-    <string name="settings_shortcut_pinned_hint">Atalho com alfinete</string>
-    <string name="settings_unsupported_pin_shortcut_summary">O lançador padrão actual não suporta atalhos de pinos</string>
+    <string name="settings_shortcut_pinned_hint">Atalho fixado</string>
+    <string name="settings_unsupported_pin_shortcut_summary">O lançador padrão atual não suporta atalhos de pinos</string>
     <string name="settings_enable_status_notification">Notificação de estado</string>
     <string name="settings_enable_status_notification_summary">Mostrar uma notificação que possa abrir o gerenciador parasita</string>
     <string name="disable_status_notification_error">Nenhum atalho, não é possível desativar a notificação</string>
@@ -200,7 +216,16 @@
     <string name="update_channel_bate">Beta</string>
     <string name="update_channel_nightly">Nightly</string>
     <string name="settings_xposed_api_call_protection">Proteção da API do Xposed</string>
-    <string name="settings_xposed_api_call_protection_summary">Bloquear módulos carregados dinamicamente de usarem a API do Xposed, isso pode travar alguns módulos, mas melhora a segurança</string>
+    <string name="settings_xposed_api_call_protection_summary">Bloquear módulos carregados dinamicamente de usarem a API do Xposed. Isso pode travar alguns módulos, mas melhora a segurança</string>
+    <string name="pref_title_restrict_classloader">Apenas o classloader do módulo pode usar a API do Xposed</string>
+    <string name="pref_summary_restrict_classloader">Isso pode quebrar alguns módulos, mas beneficia a segurança (recurso experimental)</string>
+    <string name="settings_group_cli">CLI</string>
+    <string name="pref_title_enable_cli">Ativar CLI</string>
+    <string name="pref_summary_enable_cli">(recurso experimental)</string>
+    <string name="timeout_session">Tempo limite da sessão em minutos</string>
+    <string name="one_command">Um comando</string>
+    <string name="disabled">Desativado</string>
+
     <!-- Module Repo -->
     <string name="module_readme">Leia-me</string>
     <string name="module_releases">Versões</string>
@@ -219,6 +244,7 @@
         <item quantity="one">%d baixado</item>
         <item quantity="other">%d baixados</item>
     </plurals>
+
     <!-- Colors -->
     <string name="color_sakura">Sakura</string>
     <string name="color_red">Vermelho</string>
@@ -239,4 +265,5 @@
     <string name="color_deep_orange">Laranja Escuro</string>
     <string name="color_brown">Marrom</string>
     <string name="color_blue_grey">Azul-acinzentado</string>
+
 </resources>
