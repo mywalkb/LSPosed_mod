@@ -12,6 +12,8 @@
     <string name="status_channel_name">LSPosed status</string>
     <string name="lsposed_running_notification_title">LSPosed indlæst</string>
     <string name="lsposed_running_notification_content">Tryk på meddelelsen for at åbne administratoren</string>
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
     <string name="xposed_module_request_scope_title">Anmodning om anvendelsesområde</string>
     <string name="xposed_module_request_scope_content">%1$s på anmodninger fra brugeren %2$s om at tilføje %3$s til sit anvendelsesområde.</string>
     <string name="scope_channel_name">Anmodning om anvendelsesområde</string>

@@ -12,6 +12,8 @@
     <string name="status_channel_name">Stav LSPosed</string>
     <string name="lsposed_running_notification_title">LPosed načten</string>
     <string name="lsposed_running_notification_content">Klepnutím na oznámení otevřete správce</string>
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
     <string name="xposed_module_request_scope_title">Žádost o rozsah</string>
     <string name="xposed_module_request_scope_content">%1$s pro uživatele %2$s požaduje přidání %3$s do jeho rozsahu.</string>
     <string name="scope_channel_name">Žádost o rozsah</string>

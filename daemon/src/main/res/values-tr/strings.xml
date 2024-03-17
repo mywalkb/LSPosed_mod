@@ -12,6 +12,8 @@
     <string name="status_channel_name">LSPosed durumu</string>
     <string name="lsposed_running_notification_title">LSPosed yüklendi</string>
     <string name="lsposed_running_notification_content">Yöneticiyi açmak için bildirime dokunun</string>
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
     <string name="xposed_module_request_scope_title">Kapsam Talebi</string>
     <string name="xposed_module_request_scope_content">Kullanıcı %2$s %1$s kapsamına %3$s eklemek ister.</string>
     <string name="scope_channel_name">Kapsam talebi</string>
