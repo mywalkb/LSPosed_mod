@@ -12,6 +12,8 @@
     <string name="status_channel_name">LSPosed 状态</string>
     <string name="lsposed_running_notification_title">LSPosed 已加载</string>
     <string name="lsposed_running_notification_content">点按通知以打开管理器</string>
+    <!-- PIN Notification -->
+    <string name="pin_request_notification_title">PIN Code requested</string>
     <string name="xposed_module_request_scope_title">作用域请求</string>
     <string name="xposed_module_request_scope_content">用户 %2$s 上的 %1$s 请求将 %3$s 添加至其作用域。</string>
     <string name="scope_channel_name">作用域请求</string>
