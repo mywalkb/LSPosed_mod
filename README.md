@@ -56,7 +56,7 @@ We use our own module repository. We welcome developers to submit modules to our
 
 ## Translation Contributing
 
-You can contribute translation [here](https://lsposed.crowdin.com/lsposed).
+You can contribute translation [here](https://crowdin.com/project/lsposedmod).
 
 ## Credits 
 
