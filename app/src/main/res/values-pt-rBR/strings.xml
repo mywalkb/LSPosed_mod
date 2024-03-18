@@ -55,7 +55,7 @@
     <string name="need_update">Necessário atualizar</string>
     <string name="please_update_summary">Por favor, instale a versão mais recente do LSPosed</string>
     <string name="developer_warning_title">Dicas para desenvolvedor de módulos</string>
-    <string name="developer_warning_summary">Desative a implantação de otimizações no Android Studio ou use o comando `gradlew installdebug` para instalar. Caso contrário, o módulo APK não será atualizado.</string>
+    <string name="developer_warning_summary">Desative a implantação de otimizações no Android Studio ou use o comando `gradlew installDebug` para instalar. Caso contrário, o módulo APK não será atualizado.</string>
     <string name="info_api_version">Versão da API</string>
     <string name="info_framework_version">Versão do Framework</string>
     <string name="info_manager_package_name">Nome do pacote do gerenciador</string>
@@ -167,7 +167,7 @@
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Ver na Play Store</string>
     <string name="module_app_info">Informações do app</string>
-    <string name="list_empty">¯\\_(ツ)_/¯\nNada encontrado</string>
+    <string name="list_empty">¯\\_(ツ)_/¯\nNada aqui</string>
     <!-- SettingsActivity -->
     <string name="settings_group_framework">Framework</string>
     <string name="settings_disable_verbose_log">Desativar registros detalhados</string>
@@ -199,7 +199,7 @@
     <string name="settings_translation_summary">Ajude a traduzir o %s para o Português 🇧🇷🇵🇹</string>
     <string name="settings_create_shortcut_summary">Criar um atalho para abrir gerenciador parasita</string>
     <string name="settings_shortcut_pinned_hint">Atalho fixado</string>
-    <string name="settings_unsupported_pin_shortcut_summary">O lançador padrão atual não suporta atalhos de pinos</string>
+    <string name="settings_unsupported_pin_shortcut_summary">O lançador padrão atual não suporta atalhos fixados</string>
     <string name="settings_enable_status_notification">Notificação de estado</string>
     <string name="settings_enable_status_notification_summary">Mostrar uma notificação que possa abrir o gerenciador parasita</string>
     <string name="disable_status_notification_error">Nenhum atalho, não é possível desativar a notificação</string>
