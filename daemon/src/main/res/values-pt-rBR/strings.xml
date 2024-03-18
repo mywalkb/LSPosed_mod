@@ -13,7 +13,7 @@
     <string name="lsposed_running_notification_title">LSPosed carregado</string>
     <string name="lsposed_running_notification_content">Toque na notificação para abrir o gerenciador</string>
     <!-- PIN Notification -->
-    <string name="pin_request_notification_title">PIN Code requested</string>
+    <string name="pin_request_notification_title">Código PIN solicitado</string>
     <string name="xposed_module_request_scope_title">Solicitação de Escopo</string>
     <string name="xposed_module_request_scope_content">%1$s do usuário %2$s está solicitando para adicionar %3$s no seu escopo.</string>
     <string name="scope_channel_name">Solicitação de escopo</string>
