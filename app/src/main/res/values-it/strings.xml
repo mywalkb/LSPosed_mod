@@ -30,7 +30,7 @@
     <string name="feedback_or_suggestion">Feedback o suggerimenti</string>
     <string name="About">Informazioni</string>
     <string name="report_issue">Segnala il problema</string>
-    <string name="module_repo">Repository</string>
+    <string name="module_repo">Archivio</string>
     <string name="module_repo_up_to_date">Tutti i moduli sono aggiornati</string>
     <string name="module_repo_published_time">Pubblicato alle %s</string>
     <string name="module_repo_updated_time">Aggiornato alle %s</string>
@@ -39,13 +39,13 @@
         <item quantity="other">%d moduli aggiornabili</item>
     </plurals>
     <string name="about_view_source_code"><![CDATA[Visualizza il codice sorgente su %1$s<br/>Unisciti al nostro canale %2$s]]></string>
-    <string name="translators" comment="Dear translators, please add your home page here following the format. There can be more than one translator. So feel free to append yourself.">alex193a, Fs00, xDonatello</string>
+    <string name="translators" comment="Dear translators, please add your home page here following the format. There can be more than one translator. So feel free to append yourself.">alex193a, Fs00, xDonatello, juvannx</string>
     <string name="install">Installa</string>
     <string name="install_summary">Tocca per installare LSPosed</string>
     <string name="not_installed">Non installato</string>
     <string name="not_install_summary">LSPosed non è installato</string>
-    <string name="activated">Attivo</string>
-    <string name="partial_activated">Parzialmente attivo</string>
+    <string name="activated">Attivato</string>
+    <string name="partial_activated">Parzialmente attivato</string>
     <string name="selinux_policy_not_loaded_summary">SEPolicy non è caricato correttamente</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Alcune funzionalità non funzioneranno.<br/>Segnalalo allo sviluppatore di <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a>.]]></string>
     <string name="system_inject_fail_summary">Injection del framework di sistema fallita</string>
@@ -77,12 +77,12 @@
     <string name="info_copied">Copiato negli appunti</string>
     <!-- WelcomeDialog -->
     <string name="parasitic_welcome">Benvenuto in LSPosed</string>
-    <string name="parasitic_welcome_summary">Stai usando il manager parassitario, che può creare scorciatoie o essere aperto dalla notifica.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Stai usando il manager parassitario, che può essere aperto dalla notifica.</string>
+    <string name="parasitic_welcome_summary">Stai usando il manager parassita, che può creare scorciatoie o essere aperto dalla notifica.</string>
+    <string name="parasitic_welcome_summary_no_shortcut_support">Stai usando il manager parassita, che può creare scorciatoie o essere aperto dalla notifica.</string>
     <string name="create_shortcut">Crea scorciatoia</string>
     <string name="never_show">Non mostrare mai</string>
-    <string name="app_welcome">Manager parassitario consigliato</string>
-    <string name="app_welcome_summary">LSPosed ora supporta la parassitazione del sistema per evitarne il rilevamento, è possibile aprire il manager parassitario dalla notifica. Si consiglia di disinstallare l\'applicazione attuale.</string>
+    <string name="app_welcome">Manager parassita consigliato</string>
+    <string name="app_welcome_summary">LSPosed ora supporta il sistema parassita per evitarne il rilevamento, è possibile aprire il manager parassita dalla notifica. Si consiglia di disinstallare l\'applicazione attuale.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Salva</string>
     <string name="nav_item_logs_verbose">Log verbosi</string>
@@ -109,7 +109,7 @@
     <string name="warning_installed_on_external_storage">Questo modulo non può essere caricato perché è installato sulla scheda SD, spostalo nella memoria interna</string>
     <string name="module_uninstall">Disinstalla</string>
     <string name="module_settings">Impostazioni modulo</string>
-    <string name="view_in_repo">Visualizza nel repository</string>
+    <string name="view_in_repo">Visualizza nell\'archivio</string>
     <string name="module_uninstall_message">Vuoi disinstallare questo modulo?</string>
     <string name="module_uninstalled">%1$s disinstallato</string>
     <string name="module_uninstall_failed">Disinstallazione non riuscita</string>
@@ -121,7 +121,7 @@
     <string name="expand">espandi</string>
     <string name="collapse">comprimi</string>
     <!-- AppListActivity -->
-    <string name="compile_speed">Ri-ottimizza</string>
+    <string name="compile_speed">Ottimizza nuovamente</string>
     <string name="compile_speed_msg">Ottimizzazione in corso…</string>
     <string name="compile_done">Ottimizzazione completata</string>
     <string name="app_launch">Avvia</string>
@@ -129,7 +129,7 @@
     <string name="compile_failed_with_info">Ottimizzazione fallita: </string>
     <string name="sort_by_name">Nome dell\'applicazione</string>
     <string name="sort_by_package_name">Nome del pacchetto</string>
-    <string name="sort_by_install_time">Data di installazione</string>
+    <string name="sort_by_install_time">Data d\'installazione</string>
     <string name="sort_by_update_time">Data di aggiornamento</string>
     <string name="sort_reverse">Inverso</string>
     <string name="menu_show_system_apps">Applicazioni di sistema</string>
@@ -167,7 +167,7 @@
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Mostra in un\'altra app</string>
     <string name="module_app_info">Informazioni app</string>
-    <string name="list_empty">¯\\\\_(ツ)_\\/¯\nNon c\'è nulla qui</string>
+    <string name="list_empty">¯\\_(ツ)_\/¯\nNon c\'è nulla qui</string>
     <!-- SettingsActivity -->
     <string name="settings_group_framework">Framework</string>
     <string name="settings_disable_verbose_log">Disabilita il log verboso</string>
@@ -186,7 +186,7 @@
     <string name="settings_restore">Ripristina</string>
     <string name="settings_restore_failed2">Ripristino fallito:\n%s</string>
     <string name="group_network">Rete</string>
-    <string name="dns_over_http">DNS over HTTPS</string>
+    <string name="dns_over_http">DNS attraverso HTTPS</string>
     <string name="dns_over_http_summary">Aggira l\'avvelenamento della cache DNS in alcune nazioni</string>
     <string name="theme_color">Colore del tema</string>
     <string name="theme_color_system">Colore del tema del sistema</string>
@@ -197,23 +197,23 @@
     <string name="settings_translation_contributors">Contributori alla traduzione</string>
     <string name="settings_translation">Partecipa alla traduzione</string>
     <string name="settings_translation_summary">Aiutaci a tradurre %s nella tua lingua</string>
-    <string name="settings_create_shortcut_summary">Crea una scorciatoia che può aprire il manager parassitario</string>
+    <string name="settings_create_shortcut_summary">Crea una scorciatoia che può aprire il manager parassita</string>
     <string name="settings_shortcut_pinned_hint">Scorciatoia fissata</string>
-    <string name="settings_unsupported_pin_shortcut_summary">L\'attuale launcher predefinito non supporta le scorciatoie con i pin</string>
+    <string name="settings_unsupported_pin_shortcut_summary">L\'attuale launcher predefinito non supporta le scorciatoie pin</string>
     <string name="settings_enable_status_notification">Notifica di stato</string>
-    <string name="settings_enable_status_notification_summary">Mostra una notifica che può aprire il manager parassitario</string>
+    <string name="settings_enable_status_notification_summary">Mostra una notifica che può aprire il manager parassita</string>
     <string name="disable_status_notification_error">Nessuna scorciatoia, impossibile disattivare la notifica</string>
     <string name="settings_update_channel">Canale di aggiornamento</string>
     <string name="update_channel_stable">Stabile</string>
     <string name="update_channel_bate">Beta</string>
-    <string name="update_channel_nightly">Nightly</string>
-    <string name="settings_xposed_api_call_protection">API di protezione delle chiamate di Xposed</string>
+    <string name="update_channel_nightly">Compilazione notturna</string>
+    <string name="settings_xposed_api_call_protection">Protezione delle chiamate API Xposed</string>
     <string name="settings_xposed_api_call_protection_summary">Blocca dinamicamente il codice del modulo caricato per utilizzare l\'API di Xposed, questo potrebbe interrompere alcuni moduli ma favorire la sicurezza</string>
     <string name="pref_title_restrict_classloader">Solo il classloader del modulo può utilizzare le API Xposed</string>
-    <string name="pref_summary_restrict_classloader">Questo potrebbe rompere alcuni moduli ma beneficiare di sicurezza (funzione sperimentale)</string>
+    <string name="pref_summary_restrict_classloader">Questo potrebbe interrompere alcuni moduli ma beneficiare di sicurezza (funzione sperimentale)</string>
     <string name="settings_group_cli">CLI</string>
     <string name="pref_title_enable_cli">Abilita CLI</string>
-    <string name="pref_summary_enable_cli">(caratteristica sperimentale)</string>
+    <string name="pref_summary_enable_cli">(funzione sperimentale)</string>
     <string name="timeout_session">Scadenza sessione in minuti</string>
     <string name="one_command">Un commando</string>
     <string name="disabled">Disabilitato</string>
@@ -228,7 +228,7 @@
     <string name="menu_open_in_browser">Apri nel browser</string>
     <string name="module_release_load_more">Mostra le versioni precedenti</string>
     <string name="module_release_no_more">Non ci sono altre versioni</string>
-    <string name="repo_load_failed">Impossibile caricare il repository dei moduli: %s</string>
+    <string name="repo_load_failed">Impossibile caricare l\'archivio dei moduli: %s</string>
     <string name="sort_upgradable_first">Aggiornabili prima</string>
     <string name="installed">Installato</string>
     <plurals name="module_release_assets_download_count">
