@@ -209,12 +209,12 @@
     <string name="update_channel_nightly">Nightly</string>
     <string name="settings_xposed_api_call_protection">API di protezione delle chiamate di Xposed</string>
     <string name="settings_xposed_api_call_protection_summary">Blocca dinamicamente il codice del modulo caricato per utilizzare l\'API di Xposed, questo potrebbe interrompere alcuni moduli ma favorire la sicurezza</string>
-    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
-    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="pref_title_restrict_classloader">Solo il classloader del modulo può utilizzare le API Xposed</string>
+    <string name="pref_summary_restrict_classloader">Questo potrebbe rompere alcuni moduli ma beneficiare di sicurezza (funzione sperimentale)</string>
     <string name="settings_group_cli">CLI</string>
     <string name="pref_title_enable_cli">Abilita CLI</string>
     <string name="pref_summary_enable_cli">(caratteristica sperimentale)</string>
-    <string name="timeout_session">Session timeout in minutes</string>
+    <string name="timeout_session">Scadenza sessione in minuti</string>
     <string name="one_command">Un commando</string>
     <string name="disabled">Disabilitato</string>
     <!-- Module Repo -->
