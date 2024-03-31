@@ -67,6 +67,7 @@ You can contribute translation [here](https://crowdin.com/project/lsposedmod).
 - [Dobby](https://github.com/jmpews/Dobby): used for inline hooking
 - [LSPlant](https://github.com/LSPosed/LSPlant): the core ART hooking framework
 - [EdXposed](https://github.com/ElderDrivers/EdXposed): fork source
+- [XZ Embedded](https://git.tukaani.org/xz-embedded.git): for decompress debug_info section into stripped libraries
 - ~[SandHook](https://github.com/ganyao114/SandHook/): ART hooking framework for SandHook variant~
 - ~[YAHFA](https://github.com/rk700/YAHFA): previous ART hooking framework~
 - ~[dexmaker](https://github.com/linkedin/dexmaker) and [dalvikdx](https://github.com/JakeWharton/dalvik-dx): to dynamically generate YAHFA hooker classes~
