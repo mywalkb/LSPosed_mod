@@ -310,7 +310,7 @@ val pushDaemonNative = task<Exec>("pushDaemonNative") {
             }
             outputStream.toString().trim()
         }
-        workingDir(project(":daemon").layout.buildDirectory.dir("intermediates/stripped_native_libs/debug/out/lib/$abi"))
+        workingDir(project(":daemon").layout.buildDirectory.dir("intermediates/stripped_native_libs/debug/stripDebugDebugSymbols/out/lib/$abi"))
     }
     commandLine(adb, "push", "libdaemon.so", "/data/local/tmp/libdaemon.so")
 }
@@ -336,6 +336,11 @@ val pushApk = task<Exec>("pushApk") {
     doFirst {
         exec {
             commandLine(adb, "shell", "su", "-c", "rm", "-f", tmpApk)
+        }
+    }
+    doLast {
+        exec {
+            commandLine(adb, "shell", "su", "-c", "mv", tmpApk, "/data/adb/modules/zygisk_lsposed/")
         }
     }
     workingDir(project(":app").layout.buildDirectory.dir("outputs/apk/debug"))
