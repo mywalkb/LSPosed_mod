@@ -45,6 +45,7 @@
             android:id="@+id/nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?android:colorBackground"
             app:fitsSystemWindowsInsets="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
