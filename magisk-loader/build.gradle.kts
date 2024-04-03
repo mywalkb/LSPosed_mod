@@ -261,9 +261,11 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
             rename("classes.dex", "lspd.dex")
         }
         into("webroot") {
-            from("$projectDir/build/intermediates/generateWebRoot/dist") {
-                include("**/*.js")
-                include("**/*.html")
+            if (flavorLowered == "zygisk") {
+                from("$projectDir/build/intermediates/generateWebRoot/dist") {
+                    include("**/*.js")
+                    include("**/*.html")
+                }
             }
         }
 
