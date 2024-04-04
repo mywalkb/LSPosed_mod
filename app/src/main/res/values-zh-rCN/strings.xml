@@ -210,7 +210,7 @@
     <string name="pref_title_restrict_classloader">仅模块类加载器才能使用Xposed API</string>
     <string name="pref_summary_restrict_classloader">这可能会破坏某些模块，但有益于安全性(实验功能)</string>
     <string name="settings_group_cli">CLI</string>
-    <string name="pref_title_enable_cli">Enable CLI</string>
+    <string name="pref_title_enable_cli">启用 CLI</string>
     <string name="pref_summary_enable_cli">(实验功能)</string>
     <string name="timeout_session">Session timeout in minutes</string>
     <string name="one_command">One command</string>
