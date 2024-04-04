@@ -170,8 +170,8 @@
     <string name="settings_group_framework">框架</string>
     <string name="settings_disable_verbose_log">禁用详细日志</string>
     <string name="settings_disable_verbose_log_summary">报告问题要求包含详细日志</string>
-    <string name="settings_force_enable_log">Enable watchdog logs</string>
-    <string name="settings_force_enable_log_summary">在LSPosed上启用监测日志，但是某些应用程序会检测到它并退出</string>
+    <string name="settings_force_enable_log">启用 watchdog 日志</string>
+    <string name="settings_force_enable_log_summary">在 LSPosed 上启用 watchdog 日志，某些应用程序检测到这个会退出</string>
     <string name="pure_black_dark_theme">纯黑主题</string>
     <string name="pure_black_dark_theme_summary">当深色主题启用时使用纯黑主题</string>
     <string name="settings_group_theme">主题</string>
@@ -207,14 +207,14 @@
     <string name="update_channel_nightly">每夜版</string>
     <string name="settings_xposed_api_call_protection">Xposed API 调用保护</string>
     <string name="settings_xposed_api_call_protection_summary">阻止模块动态加载的代码使用 Xposed API，这会使某些模块失效，但有利于安全性</string>
-    <string name="pref_title_restrict_classloader">仅模块类加载器才能使用Xposed API</string>
-    <string name="pref_summary_restrict_classloader">这可能会破坏某些模块，但有益于安全性(实验功能)</string>
+    <string name="pref_title_restrict_classloader">仅模块类加载器才能使用 Xposed API</string>
+    <string name="pref_summary_restrict_classloader">这可能会破坏某些模块，但有益于安全性（实验性功能）</string>
     <string name="settings_group_cli">CLI</string>
-    <string name="pref_title_enable_cli">Enable CLI</string>
-    <string name="pref_summary_enable_cli">(实验功能)</string>
-    <string name="timeout_session">Session timeout in minutes</string>
-    <string name="one_command">One command</string>
-    <string name="disabled">Disabled</string>
+    <string name="pref_title_enable_cli">启用 CLI</string>
+    <string name="pref_summary_enable_cli">（实验性功能）</string>
+    <string name="timeout_session">会话超时时间（分钟）</string>
+    <string name="one_command">一行命令之后</string>
+    <string name="disabled">不启用</string>
     <!-- Module Repo -->
     <string name="module_readme">自述文件</string>
     <string name="module_releases">版本</string>
