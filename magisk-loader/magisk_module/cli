@@ -1,7 +1,7 @@
 #!/system/bin/sh
 
 dex_path=""
-for DEXDIR in /data/adb/modules $(magisk --path)/.magisk/modules
+for DEXDIR in /data/adb/modules $(magisk --path 2>/dev/null)/.magisk/modules
 do
     if [ -d "$DEXDIR/riru_lsposed" ]; then
         dex_path="$DEXDIR/riru_lsposed"
