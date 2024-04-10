@@ -93,7 +93,7 @@ extract "$ZIPFILE" 'cli'                '/data/adb/lspd/bin'
 
 if [ "$FLAVOR" == "zygisk" ]; then
   # extract only if KernelSU
-  if [ "$KSU" ]; then
+  if [ "$KSU" ] || [ "$APATCH" ]; then
     # webroot only for zygisk
     mkdir -p "$MODPATH/webroot"
     extract "$ZIPFILE" "webroot/index.html" "$MODPATH/webroot" true
