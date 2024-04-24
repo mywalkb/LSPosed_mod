@@ -52,7 +52,7 @@
     <string name="system_prop_incorrect"><![CDATA[必須のシステム設定が変更もしくは削除されています。<br/>モジュールが無効化される場合があります。]]></string>
     <string name="need_update">更新が必要です</string>
     <string name="please_update_summary">最新バージョンの LSPosedをインストールして下さい</string>
-    <string name="developer_warning_title">Tips for module developer</string>
+    <string name="developer_warning_title">モジュール開発者向けのヒント</string>
     <string name="developer_warning_summary">Please disable deploy optimizations on Android Studio, or use `gradlew installDebug` command to install. Otherwise the module apk will not be updated.</string>
     <string name="info_api_version">APIバージョン</string>
     <string name="info_framework_version">フレームワークバージョン</string>
@@ -158,10 +158,10 @@
     <string name="menu_hide">非表示</string>
     <string name="deny_list">%s が DenyList に登録されています。効果がないかもしれません。</string>
     <string name="deny_list_info">DenyList にあります</string>
-    <string name="menu_select">Select</string>
-    <string name="menu_select_all">All</string>
-    <string name="menu_select_none">None</string>
-    <string name="menu_automatic_add">Automatic add</string>
+    <string name="menu_select">選択</string>
+    <string name="menu_select_all">すべて</string>
+    <string name="menu_select_none">なし</string>
+    <string name="menu_automatic_add">自動的に追加</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">他のアプリで表示</string>
     <string name="module_app_info">アプリ情報</string>
@@ -170,7 +170,7 @@
     <string name="settings_group_framework">フレームワーク</string>
     <string name="settings_disable_verbose_log">詳細ログの無効化</string>
     <string name="settings_disable_verbose_log_summary">レポートに冗長ログを含めるように要求する</string>
-    <string name="settings_force_enable_log">Enable watchdog logs</string>
+    <string name="settings_force_enable_log">WatchDogログを有効化する</string>
     <string name="settings_force_enable_log_summary">Enable watchdog logs on LSPosed, some apps detect it and close</string>
     <string name="pure_black_dark_theme">ブラックダークテーマ</string>
     <string name="pure_black_dark_theme_summary">ダークテーマ有効時にピュアブラックのテーマを使用</string>
@@ -207,14 +207,14 @@
     <string name="update_channel_nightly">ナイトリービルド</string>
     <string name="settings_xposed_api_call_protection">Xposed APIの呼び出し保護</string>
     <string name="settings_xposed_api_call_protection_summary">Xposed APIを使用するために動的にロードされたモジュールコードをブロックします。これにより、一部のモジュールが壊れる可能性がありますが、セキュリティにメリットがあります</string>
-    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
+    <string name="pref_title_restrict_classloader">モジュールクラスローダーのみがXposed APIを使用できます</string>
     <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
     <string name="settings_group_cli">CLI</string>
-    <string name="pref_title_enable_cli">Enable CLI</string>
-    <string name="pref_summary_enable_cli">(experimental feature)</string>
-    <string name="timeout_session">Session timeout in minutes</string>
-    <string name="one_command">One command</string>
-    <string name="disabled">Disabled</string>
+    <string name="pref_title_enable_cli">CLIを有効化する</string>
+    <string name="pref_summary_enable_cli">(試験的な機能)</string>
+    <string name="timeout_session">セッションのタイムアウト (分)</string>
+    <string name="one_command">1つのコマンド</string>
+    <string name="disabled">無効</string>
     <!-- Module Repo -->
     <string name="module_readme">Readme</string>
     <string name="module_releases">リリース</string>
