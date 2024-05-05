@@ -25,7 +25,7 @@
         <item quantity="one">%d módulo activado</item>
         <item quantity="other">%d Módulos activados</item>
     </plurals>
-    <string name="Logs">Trozas</string>
+    <string name="Logs">Registros</string>
     <string name="Settings">Configuración</string>
     <string name="feedback_or_suggestion">Comentarios o sugerencia</string>
     <string name="About">Acerca de</string>
@@ -46,38 +46,38 @@
     <string name="not_install_summary">LSPosed no está instalado</string>
     <string name="activated">Activado</string>
     <string name="partial_activated">Parcialmente activado</string>
-    <string name="selinux_policy_not_loaded_summary">Selinux policy no está cargado correctamente</string>
-    <string name="selinux_policy_not_loaded"><![CDATA[Algunas funciones no funcionarán.<br/>Informa de ello al desarrollador de <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> .]]></string>
-    <string name="system_inject_fail_summary">System Framework injection failed</string>
-    <string name="system_inject_fail"><![CDATA[This is rare and may be caused by <b>Magisk</b> or some low-quality Magisk modules.<br/>Please try to disable Magisk modules other than Riru and LSPosed or submit full log to developers.]]></string>
-    <string name="system_prop_incorrect_summary">System prop incorrect</string>
-    <string name="system_prop_incorrect"><![CDATA[Some necessary system properties deleted or modified.<br/>Modules may invalidate occasionally.]]></string>
-    <string name="need_update">Need to update</string>
+    <string name="selinux_policy_not_loaded_summary">SEPolicy no se ha cargado correctamente</string>
+    <string name="selinux_policy_not_loaded"><![CDATA[Algunas funciones no estarán disponibles.<br/>Informa de esto al desarrollador de <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a>.]]></string>
+    <string name="system_inject_fail_summary">Error al inyectar en el framework del sistema</string>
+    <string name="system_inject_fail"><![CDATA[Esto es raro y puede ser causado por <b>Magisk</b> o por algunos módulos de Magisk de baja calidad.<br/>Por favor, intenta desactivar los módulos de Magisk excepto Riru y LSPosed o envía un registro completo a los desarrolladores.]]></string>
+    <string name="system_prop_incorrect_summary">Prop del sistema incorrecto</string>
+    <string name="system_prop_incorrect"><![CDATA[Se eliminaron o modificaron algunas propiedades importantes del sistema. <br/>Es posible que los módulos fallen ocasionalmente.]]></string>
+    <string name="need_update">Se necesita actualizar</string>
     <string name="please_update_summary">Por favor instale la última versión de LSPosed</string>
-    <string name="developer_warning_title">Tips for module developer</string>
-    <string name="developer_warning_summary">Please disable deploy optimizations on Android Studio, or use `gradlew installDebug` command to install. Otherwise the module apk will not be updated.</string>
+    <string name="developer_warning_title">Sugerencias para el desarrollador de módulos</string>
+    <string name="developer_warning_summary">Por favor, deshabilita la implementación de optimizaciones en Android Studio, o utiliza el comando `gradlew installDebug` para instalar. De lo contrario, el módulo apk no se actualizará.</string>
     <string name="info_api_version">Versión de la API</string>
     <string name="info_framework_version">Versión del framework</string>
-    <string name="info_manager_package_name">Nombre del paquete de gestión</string>
+    <string name="info_manager_package_name">Nombre del paquete del administrador</string>
     <string name="info_system_version">Versión del sistema</string>
     <string name="info_device">Dispositivo</string>
     <string name="info_system_abi">ABI del Sistema</string>
     <string name="info_dex2oat_wrapper">Envoltura del optimizador Dex</string>
     <string name="enabled">Activado</string>
     <string name="not_enabled">No habilitado</string>
-    <string name="supported">Apoyado</string>
+    <string name="supported">Soportado</string>
     <string name="unsupported">No soportado</string>
-    <string name="android_version_unsatisfied">Versión Android insatisfecha</string>
-    <string name="crashed">Se estrelló</string>
+    <string name="android_version_unsatisfied">Versión de Android no compatible</string>
+    <string name="crashed">Cerró inesperadamente</string>
     <string name="mount_failed">El montaje falló</string>
-    <string name="selinux_permissive">SELinux es permisivo</string>
+    <string name="selinux_permissive">SELinux está en modo permisivo</string>
     <string name="sepolicy_incorrect">La política de SELinux es incorrecta</string>
     <string name="update_lsposed">Actualizar LSPosed</string>
-    <string name="update_lsposed_msg">¿Confirmar para actualizar LSPose? Este dispositivo se reiniciará después de completar la actualización</string>
+    <string name="update_lsposed_msg">¿Confirmar la actualización de LSPosed? El dispositivo se reiniciará después de completar la actualización</string>
     <string name="info_copied">Información copiada al portapapeles</string>
     <!-- WelcomeDialog -->
     <string name="parasitic_welcome">Bienvenido a LSPosed</string>
-    <string name="parasitic_welcome_summary">Usted está utilizando el gestor de parásitos, que puede crear acceso directo o todavía abierta de notificación.</string>
+    <string name="parasitic_welcome_summary">Estás utilizando el gestor parasitario, que puede crear accesos directos o seguir abriéndose desde las notificaciones.</string>
     <string name="parasitic_welcome_summary_no_shortcut_support">Estás usando el gestor de parásitos, que se puede abrir desde la notificación.</string>
     <string name="create_shortcut">Crear acceso directo</string>
     <string name="never_show">Nunca mostrar</string>
@@ -139,7 +139,7 @@
     <string name="menu_show_games">Juegos</string>
     <string name="menu_show_modules">Módulos</string>
     <string name="menu_show_denylist">Lista de denegación</string>
-    <string name="failed_to_save_scope_list">Fallo al guardar la lista de scopes</string>
+    <string name="failed_to_save_scope_list">Error al guardar la lista de ámbitos</string>
     <string name="app_version">Versión: %1$s</string>
     <string name="use_recommended">Recomendado</string>
     <string name="no_scope_selected_has_recommended">No seleccionaste ninguna aplicación. ¿Quieres seleccionar las aplicaciones recomendadas?</string>
@@ -160,10 +160,10 @@
     <string name="menu_hide">Ocultar</string>
     <string name="deny_list">%s está en la lista de negación. Puede no tener efecto.</string>
     <string name="deny_list_info">En lista de denegación</string>
-    <string name="menu_select">Select</string>
-    <string name="menu_select_all">All</string>
-    <string name="menu_select_none">None</string>
-    <string name="menu_automatic_add">Automatic add</string>
+    <string name="menu_select">Seleccionar</string>
+    <string name="menu_select_all">Todos</string>
+    <string name="menu_select_none">Ninguno</string>
+    <string name="menu_automatic_add">Añadir automáticamente</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Ver en otra aplicación</string>
     <string name="module_app_info">Información de la aplicación</string>
@@ -171,15 +171,15 @@
     <!-- SettingsActivity -->
     <string name="settings_group_framework">Framework</string>
     <string name="settings_disable_verbose_log">Desactivar registros detallados</string>
-    <string name="settings_disable_verbose_log_summary">Solicitud de inclusión de registros detallados en los informes de incidencias</string>
-    <string name="settings_force_enable_log">Enable watchdog logs</string>
-    <string name="settings_force_enable_log_summary">Enable watchdog logs on LSPosed, some apps detect it and close</string>
+    <string name="settings_disable_verbose_log_summary">Las solicitudes de informes de problemas deben incluir registros detallados</string>
+    <string name="settings_force_enable_log">Habilitar registros de watchdog</string>
+    <string name="settings_force_enable_log_summary">Habilitar los registros de watchdog en LSPosed, algunas aplicaciones los detectan y se cierran</string>
     <string name="pure_black_dark_theme">Tema negro oscuro</string>
     <string name="pure_black_dark_theme_summary">Usar el tema negro puro si el tema oscuro está activado</string>
     <string name="settings_group_theme">Tema</string>
     <string name="settings_backup_and_restore">Respaldo y restauración</string>
-    <string name="settings_backup_summery">Hacer un respaldo de la lista de módulos y scopes.</string>
-    <string name="settings_restore_summery">Hacer una restauración de la lista de módulos y scopes.</string>
+    <string name="settings_backup_summery">Respaldar lista de módulos y ámbitos.</string>
+    <string name="settings_restore_summery">Restaurar lista de módulos y listas de ámbitos.</string>
     <string name="settings_backup">Hacer un respaldo</string>
     <string name="settings_backup_failed2">Error al realizar la copia de seguridad:\n%s</string>
     <string name="enable_documentui">Por favor, activa DocumentUI</string>
@@ -207,16 +207,16 @@
     <string name="update_channel_stable">Estable</string>
     <string name="update_channel_bate">Beta</string>
     <string name="update_channel_nightly">Construcción nocturna</string>
-    <string name="settings_xposed_api_call_protection">Protección de llamadas a la API Xposed</string>
-    <string name="settings_xposed_api_call_protection_summary">Bloquear el código del módulo cargado dinámicamente para utilizar Xposed API, esto puede romper algunos módulos, pero beneficiar a la seguridad</string>
-    <string name="pref_title_restrict_classloader">Only module classloader can use Xposed API</string>
-    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="settings_xposed_api_call_protection">Protección de la API de Xposed</string>
+    <string name="settings_xposed_api_call_protection_summary">Bloquea el uso de la API de Xposed por código de módulos cargados dinámicamente. Esto podría causar problemas con algunos módulos, pero mejora la seguridad</string>
+    <string name="pref_title_restrict_classloader">Solo el classloader del módulo puede usar la API de Xposed</string>
+    <string name="pref_summary_restrict_classloader">Esto puede afectar algunos módulos pero mejora la seguridad (característica experimental)</string>
     <string name="settings_group_cli">CLI</string>
-    <string name="pref_title_enable_cli">Enable CLI</string>
-    <string name="pref_summary_enable_cli">(experimental feature)</string>
-    <string name="timeout_session">Session timeout in minutes</string>
-    <string name="one_command">One command</string>
-    <string name="disabled">Disabled</string>
+    <string name="pref_title_enable_cli">Activar CLI</string>
+    <string name="pref_summary_enable_cli">(característica experimental)</string>
+    <string name="timeout_session">Tiempo de espera de la sesión en minutos</string>
+    <string name="one_command">Un comando</string>
+    <string name="disabled">Desactivado</string>
     <!-- Module Repo -->
     <string name="module_readme">Léeme</string>
     <string name="module_releases">Versiones</string>
