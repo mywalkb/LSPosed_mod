@@ -170,8 +170,8 @@
     <string name="settings_group_framework">框架</string>
     <string name="settings_disable_verbose_log">禁用详细日志</string>
     <string name="settings_disable_verbose_log_summary">报告问题要求包含详细日志</string>
-    <string name="settings_force_enable_log">启用 watchdog 日志</string>
-    <string name="settings_force_enable_log_summary">在 LSPosed 上启用 watchdog 日志，某些应用程序检测到它时会退出</string>
+    <string name="settings_force_enable_log">启用Watchdog日志</string>
+    <string name="settings_force_enable_log_summary">在 LSPosed 上启用 Watchdog 日志，某些应用程序检测到它时会退出</string>
     <string name="pure_black_dark_theme">纯黑主题</string>
     <string name="pure_black_dark_theme_summary">当深色主题启用时使用纯黑主题</string>
     <string name="settings_group_theme">主题</string>
