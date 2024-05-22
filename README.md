@@ -14,7 +14,7 @@ A Riru / Zygisk module trying to provide an ART hooking framework which delivers
 
 ## Supported Versions
 
-Android 8.1 ~ 15 Beta 1
+Android 8.1 ~ 15 Beta 2.1
 
 ## Install
 
@@ -34,8 +34,8 @@ Note: debug builds are only available in Github Actions.
 
 ## Migration
 
-You can install LSPosed_mod on top of official LSPosed installation
-If the app is installed and not parasitic, the app must be reinstalled from apk distribuited with LSPosed_mod
+You can install LSPosed_mod on top of official LSPosed installation.
+If the app is installed and not parasitic, the app must be reinstalled from apk distribuited with LSPosed_mod.
 
 ## Get Help
 
