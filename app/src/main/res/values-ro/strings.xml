@@ -212,13 +212,13 @@
     <string name="settings_xposed_api_call_protection">Protecția apelurilor API Xposed</string>
     <string name="settings_xposed_api_call_protection_summary">Blocați codul modulului încărcat dinamic pentru a utiliza API-ul Xposed, acest lucru poate întrerupe unele module, dar aduce beneficii în materie de securitate</string>
     <string name="pref_title_restrict_classloader">Doar încărcătoarele claselor din module pot utiliza API-ul Xposed</string>
-    <string name="pref_summary_restrict_classloader">This may break some modules but benefit security (experimental feature)</string>
+    <string name="pref_summary_restrict_classloader">Acest lucru poate strica unele module, dar beneficia securității (funcție experimentală)</string>
     <string name="settings_group_cli">CLI</string>
-    <string name="pref_title_enable_cli">Enable CLI</string>
-    <string name="pref_summary_enable_cli">(experimental feature)</string>
-    <string name="timeout_session">Session timeout in minutes</string>
-    <string name="one_command">One command</string>
-    <string name="disabled">Disabled</string>
+    <string name="pref_title_enable_cli">Activare CLI</string>
+    <string name="pref_summary_enable_cli">(funcție experimentală)</string>
+    <string name="timeout_session">Sesiunea expiră în minute</string>
+    <string name="one_command">O singură comandă</string>
+    <string name="disabled">Dezactivat</string>
     <!-- Module Repo -->
     <string name="module_readme">Citește-mă</string>
     <string name="module_releases">Lansări</string>
