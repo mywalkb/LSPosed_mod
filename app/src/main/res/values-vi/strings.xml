@@ -53,7 +53,7 @@
     <string name="need_update">Cần được cập nhật</string>
     <string name="please_update_summary">Vui lòng cài đặt phiên bản mới nhất của LSPosed</string>
     <string name="developer_warning_title">Tips for module developer</string>
-    <string name="developer_warning_summary">Please disable deploy optimizations on Android Studio, or use `gradlew installDebug` command to install. Otherwise the module apk will not be updated.</string>
+    <string name="developer_warning_summary">Vui lòng tắt tối ưu hóa triển khai trên Android Studio hoặc sử dụng lệnh `gradlew installDebug` để cài đặt. Nếu không, apk mô-đun sẽ không được cập nhật.</string>
     <string name="info_api_version">Phiên bản API</string>
     <string name="info_framework_version">Phiên bản Framework</string>
     <string name="info_manager_package_name">Tên gói quản lý</string>
@@ -159,10 +159,10 @@ Nên gỡ cài đặt ứng dụng hiện tại.</string>
     <string name="menu_hide">Ẩn</string>
     <string name="deny_list">%s đã trong danh sách từ chối. Nó có thể không có hiệu lực.</string>
     <string name="deny_list_info">Trong danh sách từ chối</string>
-    <string name="menu_select">Select</string>
-    <string name="menu_select_all">All</string>
-    <string name="menu_select_none">None</string>
-    <string name="menu_automatic_add">Automatic add</string>
+    <string name="menu_select">Chọn</string>
+    <string name="menu_select_all">Tất cả</string>
+    <string name="menu_select_none">Trống</string>
+    <string name="menu_automatic_add">Tự động thêm</string>
     <!-- ModulesActivity and AppListActivity -->
     <string name="modules_other_app">Xem trong ứng dụng khác</string>
     <string name="module_app_info">Thông tin ứng dụng</string>
@@ -216,7 +216,7 @@ Có thể làm hỏng một số tiện ích bổ sung nhưng có lợi cho bả
     <string name="pref_summary_enable_cli">(experimental feature)</string>
     <string name="timeout_session">Session timeout in minutes</string>
     <string name="one_command">One command</string>
-    <string name="disabled">Disabled</string>
+    <string name="disabled">Vô hiệu hóa</string>
     <!-- Module Repo -->
     <string name="module_readme">Đọc</string>
     <string name="module_releases">Bản phát hành</string>

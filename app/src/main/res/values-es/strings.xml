@@ -54,7 +54,7 @@
     <string name="system_prop_incorrect"><![CDATA[Se eliminaron o modificaron algunas propiedades importantes del sistema. <br/>Es posible que los módulos fallen ocasionalmente.]]></string>
     <string name="need_update">Se necesita actualizar</string>
     <string name="please_update_summary">Por favor instale la última versión de LSPosed</string>
-    <string name="developer_warning_title">Sugerencias para el desarrollador de módulos</string>
+    <string name="developer_warning_title">Tips for module developer</string>
     <string name="developer_warning_summary">Por favor, deshabilita la implementación de optimizaciones en Android Studio, o utiliza el comando `gradlew installDebug` para instalar. De lo contrario, el módulo apk no se actualizará.</string>
     <string name="info_api_version">Versión de la API</string>
     <string name="info_framework_version">Versión del framework</string>
@@ -71,7 +71,7 @@
     <string name="crashed">Cerró inesperadamente</string>
     <string name="mount_failed">El montaje falló</string>
     <string name="selinux_permissive">SELinux está en modo permisivo</string>
-    <string name="sepolicy_incorrect">La política de SELinux es incorrecta</string>
+    <string name="sepolicy_incorrect">La política de seguridad de SELinux es incorrecta</string>
     <string name="update_lsposed">Actualizar LSPosed</string>
     <string name="update_lsposed_msg">¿Confirmar la actualización de LSPosed? El dispositivo se reiniciará después de completar la actualización</string>
     <string name="info_copied">Información copiada al portapapeles</string>
