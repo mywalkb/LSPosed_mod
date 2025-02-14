@@ -29,3 +29,26 @@ public class MemberUtilsX {
         return MemberUtils.compareMethodFit(left, right, actual);
     }
 }
+API version
+Not installed
+
+Xposed API call protection
+Not installed
+
+Dex Optimizer Wrapper
+Not installed
+
+Framework version
+Not installed
+
+Manager package name
+org.lsposed.manager
+
+System version
+13 (API 33)
+
+Device
+Realme RMX3195 
+
+System ABI
+arm64-v8a
