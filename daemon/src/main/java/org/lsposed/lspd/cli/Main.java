@@ -282,26 +282,26 @@ class SetScopeCommand implements Callable<Integer> {
             objArgs.bSet = true;
         }
 
-        boolean bAndroidExist = false;
+        boolean bAndroidOrSystemExist = false;
         if (objArgs.bSet) {
             var lstScope = manager.getModuleScope(moduleName);
             if (lstScope == null) {
                 System.err.println(manager.getLastErrorMsg());
                 return ERRCODES.SET_SCOPE.ordinal();
             }
-            bAndroidExist = Utils.checkPackageInScope("android", lstScope);
+            bAndroidOrSystemExist = Utils.checkPackageInScope("android", lstScope) | Utils.checkPackageInScope("system", lstScope);
         }
 
         for(var scope : scopes) {
             if (Utils.validPackageNameAndUserId(manager, scope.packageName, scope.userId)) {
-                if (scope.packageName.equals("android")) {
+                if (scope.packageName.equals("android") || scope.packageName.equals("system")) {
                     bMsgReboot = true;
                 }
             } else if (!bIgnore) {
                 throw new RuntimeException("Error: " + scope.packageName + (scope.userId < 0? "" : ("/" + scope.userId)) + " is not a valid package name");
             }
         }
-        if (bAndroidExist && !bMsgReboot) { // if android is removed with setcommand reboot is required
+        if (bAndroidOrSystemExist && !bMsgReboot) { // if android or system is removed with setcommand reboot is required
             bMsgReboot = true;
         }
         if (bMsgReboot) {

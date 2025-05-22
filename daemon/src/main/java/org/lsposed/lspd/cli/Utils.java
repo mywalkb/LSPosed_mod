@@ -2,6 +2,7 @@ package org.lsposed.lspd.cli;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Parcel;
 import android.os.RemoteException;
 
 import org.lsposed.lspd.ICLIService;
@@ -35,6 +36,16 @@ public class Utils {
         for (var packageInfo: packages) {
             int userid = packageInfo.applicationInfo.uid / 100000;
             packagesMap.put(packageInfo.packageName + "|" + userid, packageInfo);
+
+            if ("android".equals(packageInfo.packageName)) {
+                var p = Parcel.obtain();
+                packageInfo.writeToParcel(p, 0);
+                p.setDataPosition(0);
+                PackageInfo system = PackageInfo.CREATOR.createFromParcel(p);
+                system.packageName = "system";
+                system.applicationInfo.packageName = system.packageName;
+                packagesMap.put(system.packageName + "|" + userid, system);
+            }
         }
     }
 

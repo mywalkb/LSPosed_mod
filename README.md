@@ -54,6 +54,10 @@ We use our own module repository. We welcome developers to submit modules to our
 
 - [LSPosed Module Repository](https://github.com/Xposed-Modules-Repo)
 
+## Building locally
+- Clone [libxposed:api](https://github.com/libxposed/api/commit/54582730315ba4a3d7cfaf9baf9d23c419e07006) and [libxposed:service](https://github.com/libxposed/service)
+- Execute `./gradlew publishToMavenLocal` so these dependencies can directly be referenced by this project
+
 ## Translation Contributing
 
 You can contribute translation [here](https://crowdin.com/project/lsposedmod).
