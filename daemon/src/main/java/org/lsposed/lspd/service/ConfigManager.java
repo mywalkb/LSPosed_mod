@@ -99,7 +99,7 @@ public class ConfigManager {
     private boolean logWatchdog = true;
     private boolean dexObfuscate = true;
     private boolean enableStatusNotification = true;
-    private boolean bEnableCli = false;
+    private boolean bEnableCli = true;
     private Path miscPath = null;
     private int iSessionTimeout = -1;
 
@@ -281,7 +281,9 @@ public class ConfigManager {
         }
 
         value = config.get("enable_cli");
-        bEnableCli = value != null && (boolean) value;
+        if(value != null) {
+            bEnableCli = (boolean) value;
+        }
 
         value = config.get("cli_session_timeout");
         iSessionTimeout = value == null ? -1 : (int) value;
